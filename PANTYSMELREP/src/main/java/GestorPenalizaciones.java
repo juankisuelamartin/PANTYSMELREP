@@ -11,6 +11,7 @@ public class GestorPenalizaciones {
 	 * 
 	 * @param u
 	 * u
+	 *
 	 */
 	public void aplicarPenalizacion(Usuario u) {
 		// TODO - implement GestorPenalizaciones.aplicarPenalizacion
