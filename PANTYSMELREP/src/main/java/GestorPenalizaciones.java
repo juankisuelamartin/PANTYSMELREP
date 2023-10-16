@@ -17,11 +17,11 @@ public class GestorPenalizaciones {
 	}
 
 	/**
-	 * 
+	 *  23232
 	 * @param u
 	 */
-	public void comprobarPenalización(Usuario u) {
-		// TODO - implement GestorPenalizaciones.comprobarPenalización
+	public void comprobarPenalizaciï¿½n(Usuario u) {
+		// TODO - implement GestorPenalizaciones.comprobarPenalizaciï¿½n
 		throw new UnsupportedOperationException();
 	}
 
