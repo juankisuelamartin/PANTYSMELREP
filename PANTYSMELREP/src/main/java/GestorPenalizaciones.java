@@ -10,7 +10,7 @@ public class GestorPenalizaciones {
 	/**
 	 * 
 	 * @param u
-	 * u
+	 *  ultimo
 	 *
 	 */
 	public void aplicarPenalizacion(Usuario u) {
