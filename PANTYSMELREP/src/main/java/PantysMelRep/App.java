@@ -4,7 +4,7 @@ package PantysMelRep;
  * Hello world!
  *ahuj
  *
- * Buenas
+ * Buenas 2
  */
 public class App 
 {
