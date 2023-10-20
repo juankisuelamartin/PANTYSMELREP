@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 
 public class AgenteBBDD {
 
-	private static Logger logJava = Logger.getLogger(GestorBBDD.class);
+	private static Logger logJava = Logger.getLogger(AgenteBBDD.class);
 	private final String logFatal = "LOG FATAL: ";
 
 	protected Connection mBD;
@@ -314,7 +314,7 @@ public class AgenteBBDD {
 						"insert into prestamos (fechaInicio, fechaFin, activo) VALUES (?,?,?)");
 				pstmt.setString(1, "05-03-2004");
 				pstmt.setString(2, "09-03-2004");
-				pstmt.setString(3, true);
+				pstmt.setString(3, String.valueOf(true));
 				pstmt.executeUpdate();
 			} catch (SQLException e) {
 				logJava.fatal(logFatal+e.toString());
@@ -329,7 +329,7 @@ public class AgenteBBDD {
 						"insert into prestamos (fechaInicio, fechaFin, activo) VALUES (?,?,?)");
 				pstmt.setString(1, "07-04-2004");
 				pstmt.setString(2, "02-05-2004");
-				pstmt.setString(3, true);
+				pstmt.setString(3, String.valueOf(true));
 				pstmt.executeUpdate();
 			} catch (SQLException e) {
 				logJava.fatal(logFatal+e.toString());
