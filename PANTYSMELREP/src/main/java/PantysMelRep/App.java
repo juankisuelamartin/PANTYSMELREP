@@ -2,9 +2,9 @@ package PantysMelRep;
 
 /**
  * Hello world!
- *ahuj
  *
- * Buenas 2
+ *
+ *
  */
 public class App 
 {
@@ -13,3 +13,4 @@ public class App
         System.out.println( "Hello World!" );
     }
 }
+
