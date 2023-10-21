@@ -10,8 +10,8 @@ public class AgenteBBDD {
 
 	private static Logger logJava = Logger.getLogger(AgenteBBDD.class);
 	private final String logFatal = "LOG FATAL: ";
-
-	protected Connection mBD;
+	protected static AgenteBBDD mInstancia = null;
+	protected static Connection mBD;
 	private final static String CONNECTION_STRING = "jdbc:mysql://localhost:3306/db_proyecto_iso2";
 	private final static String DBUSER = "root";
 	private final static String DBPASS = "root";
@@ -19,20 +19,29 @@ public class AgenteBBDD {
 	public AgenteBBDD() throws SQLException {
 		conectarBBDD();
 	}
-
 	public void conectarBBDD() throws SQLException {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // Cargar el controlador MySQL
 			this.mBD = DriverManager.getConnection(CONNECTION_STRING, DBUSER, DBPASS);
-
-		} catch (SQLException e) {
-			System.out.println("LOG FATAL: Error al conectar con la base de datos");
-			logJava.fatal(logFatal + e.toString());
-			logJava.fatal(logFatal + e.getErrorCode());
-			logJava.fatal(logFatal + e.getSQLState());
+			System.out.println("Conexión establecida con la base de datos.");
+			// La conexión se estableció correctamente, no es necesario crear la base de datos aquí
 		} catch (ClassNotFoundException e) {
-			System.out.println("LOG FATAL: Controlador MySQL no encontrado");
-			logJava.fatal(logFatal + e.toString());
+			logJava.fatal(logFatal + "No se pudo cargar el controlador JDBC de MySQL.");
+			e.printStackTrace();
+		} catch (SQLException e) {
+			if (e.getErrorCode() == 1049) {
+				// La base de datos no existe o la conexión falló
+				System.out.println("La base de datos no existe o la conexión falló. Creando la base de datos...");
+				logJava.info("La base de datos no existe o la conexión falló. Creando la base de datos...");
+				crearBaseDatosSinoExiste();
+				// Intentar conectar nuevamente después de crear la base de datos
+				conectarBBDD();
+			} else {
+				// Otro error
+				logJava.fatal(logFatal + e.toString());
+				logJava.fatal(logFatal + e.getErrorCode());
+				logJava.fatal(logFatal + e.getSQLState());
+			}
 		}
 	}
 
@@ -174,191 +183,74 @@ public class AgenteBBDD {
 		desconectarBBDD();
 		return res;
 	}
+	public static AgenteBBDD getAgente() throws Exception {
+		if (mInstancia == null) {
+			mInstancia = new AgenteBBDD();
+		}
+		return mInstancia;
+	}
 
-/*
 	private void crearBaseDatosSinoExiste() throws SQLException {
-
-		System.out.println("Creando base de datos...");
 		logJava.info("LOG INFO: Creando base de datos...");
-		PreparedStatement pstmt = null;
-		Statement stmt = null;
-		String createSQL = "create table usuarios (id varchar(10) not null, "
-				+ "nombre varchar(50) not null, apellidos varchar(50) not null, "
-				+ "fechaFinPenalizacion date, attribute varchar(50), primary key (id))";
+
+		// Crear la tabla usuarios si no existe
+		String createUsuariosSQL = "CREATE TABLE IF NOT EXISTS usuarios (id varchar(10) not null, " +
+				"nombre varchar(50) not null, apellidos varchar(50) not null, " +
+				"fechaFinPenalizacion date, attribute varchar(50), primary key (id))";
+
+		// Crear la tabla ejemplares si no existe
+		String createEjemplaresSQL = "CREATE TABLE IF NOT EXISTS ejemplares (id INT not null, primary key (id), titulo_id varchar(50),"+
+				" FOREIGN KEY (titulo_id) REFERENCES titulos(isbn))";
+
+		// Crear la tabla titulos si no existe
+		String createTitulosSQL = "CREATE TABLE IF NOT EXISTS titulos (isbn varchar(50) not null,titulo varchar(50) not null, " +
+				" numReserva varchar(50) not null, primary key (isbn))";
+
+		// Crear la tabla Autores si no existe
+		String createAutoresSQL = "CREATE TABLE IF NOT EXISTS autores (nombre VARCHAR(50) NOT NULL, " +
+				"apellido VARCHAR(50) NOT NULL, titulo_id varchar(50), PRIMARY KEY (nombre), FOREIGN KEY (titulo_id) REFERENCES titulos(isbn))";
+
+
+		// Crear la tabla Prestamos si no existe
+		String createPrestamosSQL = "CREATE TABLE IF NOT EXISTS prestamos (fechaInicio date, fechaFin date, activo boolean, " +
+				"primary key (fechaInicio))";
+
+		// Crear la tabla Reservas si no existe
+		String createReservasSQL = "CREATE TABLE IF NOT EXISTS reservas (fecha date, primary key (fecha))";
 
 		try {
-			// Crear la conexion y la BBDD
+			// Create a connection without specifying a database
+			this.mBD = DriverManager.getConnection("jdbc:mysql://localhost:3306/", DBUSER, DBPASS);
+
+			// Create the database if it doesn't exist
+			Statement createDatabaseStatement = this.mBD.createStatement();
+			createDatabaseStatement.executeUpdate("CREATE DATABASE IF NOT EXISTS db_proyecto_iso2");
+			createDatabaseStatement.close();
+
+			// Now that the database exists, switch to it
 			this.mBD = DriverManager.getConnection(CONNECTION_STRING, DBUSER, DBPASS);
 			this.mBD.setAutoCommit(false);
-			stmt = this.mBD.createStatement();
 
-			// Crear la tabla usuarios
-			stmt.execute(createSQL);
+			// Create the tables (as before)
+			Statement stmt = this.mBD.createStatement();
+			System.out.println("Creando tablas...");
+			stmt.execute(createTitulosSQL);
+			stmt.execute(createEjemplaresSQL);
+			stmt.execute(createUsuariosSQL);
+			stmt.execute(createAutoresSQL);
+			stmt.execute(createPrestamosSQL);
+			stmt.execute(createReservasSQL);
+			stmt.close();
 
-			try {
-				// Datos iniciales de usuarios
-				pstmt = this.mBD.prepareStatement(
-						"insert into USUARIOS (ID, NOMBRE, APELLIDOS, FECHAFINPENALIZACION, ATTRIBUTE) VALUES (?,?,?,?,?)");
-				pstmt.setString(1, "00000000A");
-				pstmt.setString(2, "Pepe");
-				pstmt.setString(3, "Perez");
-				pstmt.setString(4, "09-09-2009");
-				pstmt.setString(5, "?");
-				pstmt.executeUpdate();
-
-			} catch (SQLException e) {
-				logJava.fatal(logFatal+e.toString());
-				logJava.fatal(logFatal+e.getErrorCode());
-				logJava.fatal(logFatal+e.getSQLState());
-			} finally {
-				if (pstmt != null)
-					pstmt.close();
-			}
-
-			// Crear la tabla ejemplares
-			createSQL = "create table ejemplares (id int not null , primary key (id))";
-			stmt.execute(createSQL);
-
-			try {
-				// Datos iniciales de ejemplares
-				pstmt = this.mBD.prepareStatement("insert into ejemplares (id) VALUES (?)");
-				pstmt.setString(1, "123445");
-				pstmt.executeUpdate();
-
-			} catch (SQLException e) {
-				logJava.fatal(logFatal+e.toString());
-				logJava.fatal(logFatal+e.getErrorCode());
-				logJava.fatal(logFatal+e.getSQLState());
-			} finally {
-				if (pstmt != null)
-					pstmt.close();
-			}
-
-			// Crear la tabla titulos
-			createSQL = "create table titulos (titulo varchar(50) not null, isbn varchar(50) not null, numReserva varchar(50) not null, "
-					+ "primary key (titulo))";
-			stmt.execute(createSQL);
-
-			try {
-				pstmt = this.mBD.prepareStatement(
-						"insert into titulos (titulo, isbn, numReserva) VALUES (?,?,?)");
-				pstmt.setString(1, "Las flipantes aventuras de Raúl y su perra Josefina");
-				pstmt.setString(2, "1231234567813");
-				pstmt.setString(3, "1");
-				pstmt.executeUpdate();
-			} catch (SQLException e) {
-				logJava.fatal(logFatal+e.toString());
-				logJava.fatal(logFatal+e.getErrorCode());
-				logJava.fatal(logFatal+e.getSQLState());
-			} finally {
-				if (pstmt != null)
-					pstmt.close();
-			}
-			try {
-				pstmt = this.mBD.prepareStatement(
-						"insert into titulos (titulo, isbn, numReserva) VALUES (?,?,?)");
-				pstmt.setString(1, "Biografia de Kiko Rivera");
-				pstmt.setString(2, "4569876567813");
-				pstmt.setString(3, "2");
-				pstmt.executeUpdate();
-			} catch (SQLException e) {
-				logJava.fatal(logFatal+e.toString());
-				logJava.fatal(logFatal+e.getErrorCode());
-				logJava.fatal(logFatal+e.getSQLState());
-			} finally {
-				if (pstmt != null)
-					pstmt.close();
-			}
-
-			// Crear la tabla Autores
-			createSQL = "create table autores (nombre varchar(50) not null, apellido varchar(50) not null, "
-					+ "primary key (nombre))";
-			stmt.execute(createSQL);
-
-			try {
-				pstmt = this.mBD.prepareStatement(
-						"insert into autores (nombre, apellido) VALUES (?,?)");
-				pstmt.setString(1, "José Luis");
-				pstmt.setString(2, "Bravo");
-				pstmt.executeUpdate();
-			} catch (SQLException e) {
-				logJava.fatal(logFatal+e.toString());
-				logJava.fatal(logFatal+e.getErrorCode());
-				logJava.fatal(logFatal+e.getSQLState());
-			} finally {
-				if (pstmt != null)
-					pstmt.close();
-			}
-			// Crear la tabla Prestamos
-			createSQL = "create table prestamos (fechaInicio date, fechaFin, activo boolean, "
-					+ "primary key (fechaInicio))";
-			stmt.execute(createSQL);
-
-			try {
-				pstmt = this.mBD.prepareStatement(
-						"insert into prestamos (fechaInicio, fechaFin, activo) VALUES (?,?,?)");
-				pstmt.setString(1, "05-03-2004");
-				pstmt.setString(2, "09-03-2004");
-				pstmt.setString(3, String.valueOf(true));
-				pstmt.executeUpdate();
-			} catch (SQLException e) {
-				logJava.fatal(logFatal+e.toString());
-				logJava.fatal(logFatal+e.getErrorCode());
-				logJava.fatal(logFatal+e.getSQLState());
-			} finally {
-				if (pstmt != null)
-					pstmt.close();
-			}
-			try {
-				pstmt = this.mBD.prepareStatement(
-						"insert into prestamos (fechaInicio, fechaFin, activo) VALUES (?,?,?)");
-				pstmt.setString(1, "07-04-2004");
-				pstmt.setString(2, "02-05-2004");
-				pstmt.setString(3, String.valueOf(true));
-				pstmt.executeUpdate();
-			} catch (SQLException e) {
-				logJava.fatal(logFatal+e.toString());
-				logJava.fatal(logFatal+e.getErrorCode());
-				logJava.fatal(logFatal+e.getSQLState());
-			} finally {
-				if (pstmt != null)
-					pstmt.close();
-			}
-
-			// Crear la tabla Reservas
-			createSQL = "create table reservas (fecha date, "
-					+ "primary key (fecha))";
-			stmt.execute(createSQL);
-
-			try {
-				pstmt = this.mBD.prepareStatement(
-						"insert into prestamos (fecha) VALUES (?)");
-				pstmt.setString(1, "09-05-2004");
-				pstmt.executeUpdate();
-			} catch (SQLException e) {
-				logJava.fatal(logFatal+e.toString());
-				logJava.fatal(logFatal+e.getErrorCode());
-				logJava.fatal(logFatal+e.getSQLState());
-			} finally {
-				if (pstmt != null)
-					pstmt.close();
-			}
-
-			// Guardar cambios en la BD
+			// Commit changes in the database
 			this.mBD.commit();
-
 		} catch (SQLException e) {
-			logJava.fatal(logFatal+e.toString());
-			logJava.fatal(logFatal+e.getErrorCode());
-			logJava.fatal(logFatal+e.getSQLState());
+			logJava.fatal(logFatal + e.toString());
+			logJava.fatal(logFatal + e.getErrorCode());
+			logJava.fatal(logFatal + e.getSQLState());
 		} finally {
-			if (stmt != null)
-				stmt.close();
+			desconectarBBDD();
 		}
-
-		desconectarBBDD();
-
 	}
-*/
 
 }

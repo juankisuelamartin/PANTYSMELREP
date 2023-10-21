@@ -1,6 +1,7 @@
 package PantysMelRep;
 import java.sql.SQLException;
 import PantysMelRep.persistencia.AgenteBBDD;
+import PantysMelRep.persistencia.AutorDAO;
 
 /**
  * Hello world!
