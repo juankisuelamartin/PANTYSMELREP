@@ -1,41 +1,38 @@
 package PantysMelRep.domain.entities;
 
+import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.Date;
 
+@Entity
+@Table(name = "usuarios")
 public class Usuario {
-	Collection<Prestamo> prestamos;
-	Collection<Reserva> reservas;
+	@Id
 	private String id;
+
 	private String nombre;
 	private String apellidos;
+
+	@Temporal(TemporalType.DATE)
 	private Date fechaFinPenalizacion;
+
 	private int attribute;
 
-	public Usuario(Collection<Prestamo> prestamos, Collection<Reserva> reservas, String id, String nombre, String apellidos, Date fechaFinPenalizacion, int attribute) {
-		this.prestamos = prestamos;
-		this.reservas = reservas;
+	@OneToMany(mappedBy = "usuario")
+	private Collection<Prestamo> prestamos;
+
+	@OneToMany(mappedBy = "usuario")
+	private Collection<Reserva> reservas;
+
+	public Usuario() {
+	}
+
+	public Usuario(String id, String nombre, String apellidos, Date fechaFinPenalizacion, int attribute) {
 		this.id = id;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.fechaFinPenalizacion = fechaFinPenalizacion;
 		this.attribute = attribute;
-	}
-
-	public Collection<Prestamo> getPrestamos() {
-		return prestamos;
-	}
-
-	public void setPrestamos(Collection<Prestamo> prestamos) {
-		this.prestamos = prestamos;
-	}
-
-	public Collection<Reserva> getReservas() {
-		return reservas;
-	}
-
-	public void setReservas(Collection<Reserva> reservas) {
-		this.reservas = reservas;
 	}
 
 	public String getId() {

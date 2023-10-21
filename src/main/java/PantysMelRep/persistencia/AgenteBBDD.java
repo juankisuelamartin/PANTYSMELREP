@@ -33,7 +33,12 @@ public class AgenteBBDD {
 				// La base de datos no existe o la conexión falló
 				System.out.println("La base de datos no existe o la conexión falló. Creando la base de datos...");
 				logJava.info("La base de datos no existe o la conexión falló. Creando la base de datos...");
-				crearBaseDatosSinoExiste();
+
+
+				/*crearBaseDatosSinoExiste();*/
+
+
+
 				// Intentar conectar nuevamente después de crear la base de datos
 				conectarBBDD();
 			} else {
@@ -190,7 +195,7 @@ public class AgenteBBDD {
 		return mInstancia;
 	}
 
-	private void crearBaseDatosSinoExiste() throws SQLException {
+/*	private void crearBaseDatosSinoExiste() throws SQLException {
 		logJava.info("LOG INFO: Creando base de datos...");
 
 		// Crear la tabla usuarios si no existe
@@ -251,6 +256,6 @@ public class AgenteBBDD {
 		} finally {
 			desconectarBBDD();
 		}
-	}
+	}*/
 
 }

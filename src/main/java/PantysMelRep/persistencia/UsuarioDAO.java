@@ -1,23 +1,9 @@
 package PantysMelRep.persistencia;
+import PantysMelRep.domain.entities.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public class UsuarioDAO extends EntityDAO {
-    @Override
-    public Object select(String id) {
-        return null;
-    }
+@Repository
+public interface UsuarioDAO extends JpaRepository<Usuario, String> {
 
-    @Override
-    public int insert(Object entity) {
-        return 0;
-    }
-
-    @Override
-    public int update(Object entity) {
-        return 0;
-    }
-
-    @Override
-    public int delete(Object entity) {
-        return 0;
-    }
 }

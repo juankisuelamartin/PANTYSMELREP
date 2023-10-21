@@ -1,12 +1,27 @@
 package PantysMelRep.domain.entities;
 
-public class Ejemplar {
+import jakarta.persistence.*;
 
-	Titulo titulo;
+@Entity
+public class Ejemplar {
+	@Id
+	@Column(name = "id")
 	private String id;
 
-	public Ejemplar(Titulo titulo, String id) {
-		this.titulo = titulo;
+	@ManyToOne
+	@JoinColumn(name = "titulo_id")
+	private Titulo titulo;
+
+
+	public Ejemplar() {
+		// Constructor por defecto requerido por JPA
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -18,11 +33,8 @@ public class Ejemplar {
 		this.titulo = titulo;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+	@Override
+	public String toString() {
+		return String.format("Ejemplar [id=%s, titulo=%s]", id, titulo);
 	}
 }

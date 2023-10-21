@@ -1,13 +1,31 @@
 package PantysMelRep.domain.entities;
+import jakarta.persistence.*;
 import java.util.Date;
 
+
+@Entity
+@Table(name = "prestamos")
 public class Prestamo {
 
-	Usuario usuario;
-	Titulo titulo;
+	@Id
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
+
+	@ManyToOne
+	@JoinColumn(name = "titulo_id")
+	private Titulo titulo;
+
+	@Temporal(TemporalType.DATE)
 	private Date fechaInicio;
+
+	@Temporal(TemporalType.DATE)
 	private Date fechaFin;
+
 	private Boolean activo;
+
+	public Prestamo() {
+	}
 
 	public Prestamo(Usuario usuario, Titulo titulo, Date fechaInicio, Date fechaFin, Boolean activo) {
 		this.usuario = usuario;
@@ -17,21 +35,8 @@ public class Prestamo {
 		this.activo = activo;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
 
-	public Titulo getTitulo() {
-		return titulo;
-	}
-
-	public void setTitulo(Titulo titulo) {
-		this.titulo = titulo;
-	}
 
 	public Date getFechaInicio() {
 		return fechaInicio;
@@ -55,5 +60,11 @@ public class Prestamo {
 
 	public void setActivo(Boolean activo) {
 		this.activo = activo;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Prestamo [usuario=%s, titulo=%s, fechaInicio=%s, fechaFin=%s, activo=%s]",
+				 usuario, titulo, fechaInicio, fechaFin, activo);
 	}
 }

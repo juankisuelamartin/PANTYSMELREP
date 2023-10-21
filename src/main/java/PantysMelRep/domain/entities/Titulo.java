@@ -1,24 +1,38 @@
 package PantysMelRep.domain.entities;
 
+import jakarta.persistence.*;
+
 import java.util.Collection;
 
-public class Titulo {
-	Collection<Autor> autores;
-	Collection<Ejemplar> ejemplares;
-	Collection<Prestamo> prestamos;
-	Collection<Reserva> reservas;
+@Entity
+@Table(name = "titulos")
+public abstract class Titulo {
+
+	@Id
+	protected String isbn;
+	@OneToMany(mappedBy = "titulo")
+	private Collection<Ejemplar> ejemplares;
+
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(name = "autor_titulo",
+			joinColumns = @JoinColumn(name = "titulo_id"),
+			inverseJoinColumns = @JoinColumn(name = "autor_nombre"))
+	private Collection<Autor> autores;
+
+	@OneToMany(mappedBy = "titulo")
+	private Collection<Prestamo> prestamos;
+
+	@OneToMany(mappedBy = "titulo")
+	private Collection<Reserva> reservas;
+
+	@Column(name = "titulo")
 	private String titulo;
-	private String isbn;
+
+	@Column(name = "num_reserva")
 	private String numReserva;
 
-	public Titulo(Collection<Autor> autores, Collection<Ejemplar> ejemplares, Collection<Prestamo> prestamos, Collection<Reserva> reservas, String titulo, String isbn, String numReserva) {
-		this.autores = autores;
-		this.ejemplares = ejemplares;
-		this.prestamos = prestamos;
-		this.reservas = reservas;
-		this.titulo = titulo;
-		this.isbn = isbn;
-		this.numReserva = numReserva;
+	public Titulo() {
+		// Constructor vacío requerido por JPA
 	}
 
 	public Collection<Autor> getAutores() {

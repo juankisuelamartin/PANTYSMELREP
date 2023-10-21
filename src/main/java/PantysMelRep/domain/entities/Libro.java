@@ -1,10 +1,19 @@
 package PantysMelRep.domain.entities;
 
+import jakarta.persistence.*;
 import java.util.Collection;
 
+@Entity
 public class Libro extends Titulo {
-    public Libro(Collection<Autor> autores, Collection<Ejemplar> ejemplares, Collection<Prestamo> prestamos, Collection<Reserva> reservas, String titulo, String isbn, String numReserva) {
-        super(autores, ejemplares, prestamos, reservas, titulo, isbn, numReserva);
+    public Libro() {
+        super();
     }
 
+    @Override
+    public String toString() {
+        return "Libro{" +
+                "isbn=" + getIsbn() +
+                // Agregar otros campos a mostrar en el toString si es necesario
+                '}';
+    }
 }

@@ -1,23 +1,12 @@
 package PantysMelRep.persistencia;
+import PantysMelRep.domain.entities.Prestamo;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public class PrestamoDAO extends EntityDAO {
-    @Override
-    public Object select(String id) {
-        return null;
-    }
+import java.sql.Date;
 
-    @Override
-    public int insert(Object entity) {
-        return 0;
-    }
 
-    @Override
-    public int update(Object entity) {
-        return 0;
-    }
+@Repository
+public interface PrestamoDAO extends JpaRepository<Prestamo, Date>{
 
-    @Override
-    public int delete(Object entity) {
-        return 0;
-    }
 }

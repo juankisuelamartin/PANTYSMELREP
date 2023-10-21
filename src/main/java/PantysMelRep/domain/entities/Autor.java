@@ -1,17 +1,23 @@
 package PantysMelRep.domain.entities;
 
+import jakarta.persistence.*;
 import java.util.Collection;
 
+@Entity
+@Table(name = "autores")
 public class Autor {
+	@ManyToMany(mappedBy = "autores")
+	private Collection<Titulo> titulos;
 
-	Collection<Titulo> titulos;
+	@Id
+	@Column
 	private String nombre;
+
+	@Column
 	private String apellido;
 
-	public Autor(Collection<Titulo> titulos, String nombre, String apellido) {
-		this.titulos = titulos;
-		this.nombre = nombre;
-		this.apellido = apellido;
+	public Autor() {
+		// Constructor por defecto requerido por JPA
 	}
 
 	public Collection<Titulo> getTitulos() {
@@ -36,5 +42,10 @@ public class Autor {
 
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Autor [nombre=%s, apellido=%s]", nombre, apellido);
 	}
 }
