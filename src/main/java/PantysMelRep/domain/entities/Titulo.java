@@ -6,7 +6,7 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "titulos")
-public abstract class Titulo {
+public class Titulo {
 
 	@Id
 	protected String isbn;
@@ -15,9 +15,10 @@ public abstract class Titulo {
 
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "autor_titulo",
-			joinColumns = @JoinColumn(name = "titulo_id"),
-			inverseJoinColumns = @JoinColumn(name = "autor_nombre"))
+			joinColumns = @JoinColumn(name = "ISBN"),
+			inverseJoinColumns = {@JoinColumn(name = "autor_nombre"), @JoinColumn(name = "autor_apellido")})
 	private Collection<Autor> autores;
+
 
 	@OneToMany(mappedBy = "titulo")
 	private Collection<Prestamo> prestamos;
@@ -33,6 +34,16 @@ public abstract class Titulo {
 
 	public Titulo() {
 		// Constructor vacío requerido por JPA
+	}
+
+	public Titulo(String isbn, Collection<Ejemplar> ejemplares, Collection<Autor> autores, Collection<Prestamo> prestamos, Collection<Reserva> reservas, String titulo, String numReserva) {
+		this.isbn = isbn;
+		this.ejemplares = ejemplares;
+		this.autores = autores;
+		this.prestamos = prestamos;
+		this.reservas = reservas;
+		this.titulo = titulo;
+		this.numReserva = numReserva;
 	}
 
 	public Collection<Autor> getAutores() {

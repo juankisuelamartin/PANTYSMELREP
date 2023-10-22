@@ -1,23 +1,10 @@
 package PantysMelRep.persistencia;
+import PantysMelRep.domain.entities.Titulo;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public class EjemplarDAO extends EntityDAO {
-    @Override
-    public Object select(String id) {
-        return null;
-    }
 
-    @Override
-    public int insert(Object entity) {
-        return 0;
-    }
+@Repository
+public interface EjemplarDAO extends JpaRepository<Titulo, String>{
 
-    @Override
-    public int update(Object entity) {
-        return 0;
-    }
-
-    @Override
-    public int delete(Object entity) {
-        return 0;
-    }
 }
