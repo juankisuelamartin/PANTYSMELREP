@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+PANTYSMELREP/.idea/compiler.xml
+PANTYSMELREP/.idea/misc.xml
+PANTYSMELREP/.idea/workspace.xml
