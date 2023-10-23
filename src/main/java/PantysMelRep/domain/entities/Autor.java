@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.Collection;
 
 @Entity
+@IdClass(AutorId.class)
 @Table(name = "autores")
 public class Autor {
 	@ManyToMany(mappedBy = "autores")
@@ -13,11 +14,17 @@ public class Autor {
 	@Column
 	private String nombre;
 
+	@Id
 	@Column
 	private String apellido;
 
 	public Autor() {
 		// Constructor por defecto requerido por JPA
+	}
+
+	public Autor(String nombre, String apellido) {
+		this.nombre = nombre;
+		this.apellido = apellido;
 	}
 
 	public Collection<Titulo> getTitulos() {

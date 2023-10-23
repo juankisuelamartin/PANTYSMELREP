@@ -17,6 +17,11 @@ public class Ejemplar {
 		// Constructor por defecto requerido por JPA
 	}
 
+	public Ejemplar(String id, Titulo titulo) {
+		this.id = id;
+		this.titulo = titulo;
+	}
+
 	public String getId() {
 		return id;
 	}
