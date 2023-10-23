@@ -25,9 +25,8 @@ public class GestorTitulos {
 	AutorDAO autorDAO;
 	private AgenteBBDD agente;
 
-	public GestorTitulos() {
-		this.agente = AgenteBBDD.getAgente();
-		this.agente.conectar();
+	public void setAgenteBBDD(AgenteBBDD agente) {
+		this.agente = agente;
 	}
 
 	public Titulo altaTitulo(String titulo, String isbn, Collection<Autor> autores, int DType) {

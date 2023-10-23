@@ -24,9 +24,11 @@ import org.springframework.context.annotation.ComponentScan;
 public class App {
     public static void main(String[] args) throws SQLException {
         ConfigurableApplicationContext context = SpringApplication.run(App.class, args);
-
-        AgenteBBDD.getAgente().conectar();
+        AgenteBBDD agenteBBDD = AgenteBBDD.getAgente();
+        agenteBBDD.conectar();
         GestorTitulos gestorTitulos = context.getBean(GestorTitulos.class);
+        gestorTitulos.setAgenteBBDD(agenteBBDD);
+
 // DAR DE ALTA TITULOS
 /*
         gestorTitulos.altaTitulo("titulo_23", "isbn22", Arrays.asList(new Autor("Juan Carlos", "Suela"), new Autor("Pepe", "Martin")), 2);
@@ -39,7 +41,7 @@ public class App {
 
       /*  gestorTitulos.borrarTitulo("isbn");*/
 
-      /*  gestorTitulos.altaEjemplar("isbn2", "Prueba");*/
+      /*gestorTitulos.altaEjemplar("isbn2", "Prueba");*/
         gestorTitulos.bajaEjemplar("Prueba");
 
 
