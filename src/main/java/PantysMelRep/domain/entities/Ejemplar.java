@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 
 @Entity
 public class Ejemplar {
+	// TODO GENERATIVE COLUMN ID
 	@Id
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private String id;
 

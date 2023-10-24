@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Gestor de Títulos</title>
+</head>
+<body>
+<h1>Gestor de Títulos</h1>
+
+<h2>Alta de Título</h2>
+<form action="/biblioteca/altaTitulo" method="post">
+    <label for="titulo">Título:</label>
+    <input type="text" id="titulo" name="titulo">
+    <br>
+    <label for="isbn">ISBN:</label>
+    <input type="text" id="isbn" name="isbn">
+    <br>
+    <label for="autores">Autores (separados por comas):</label>
+    <input type="text" id="autores" name="autores">
+    <br>
+    <!-- TODO Poner desplegable-->
+    <label for="DType">Tipo (1 - Libro, 2 - Revista):</label>
+    <input type="number" id="DType" name="DType">
+    <br>
+    <input type="submit" value="Agregar Título">
+</form>
+
+
+<h2>Actualizar Título</h2>
+<form action="/biblioteca/actualizarTitulo" method="post">
+    <label for="isbn_actualizar">ISBN del Título a Actualizar:</label>
+    <input type="text" id="isbn_actualizar" name="isbn_actualizar">
+    <br>
+    <label for="titulo_actualizar">Nuevo Título:</label>
+    <input type="text" id="titulo_actualizar" name="titulo_actualizar">
+    <br>
+    <label for="autores_actualizar">Nuevos Autores (separados por comas):</label>
+    <input type="text" id="autores_actualizar" name="autores_actualizar">
+    <br>
+    <!-- TODO Poner desplegable-->
+  <label for="DType_actualizar">Nuevo Tipo (1 - Libro, 2 - Revista):</label>
+  <input type="number" id="DType_actualizar" name="DType_actualizar">
+  <br>
+  <input type="submit" value="Actualizar Título">
+</form>
+
+<h2>Borrar Título</h2>
+<form action="/biblioteca/borrarTitulo" method="post">
+  <label for="isbn_borrar">ISBN del Título a Borrar:</label>
+  <input type="text" id="isbn_borrar" name="isbn_borrar">
+  <br>
+  <input type="submit" value="Borrar Título">
+</form>
+
+<h2>Baja de Ejemplar</h2>
+<form action="biblioteca/bajaEjemplar" method="post">
+  <label for="id_baja">ID del Ejemplar a Borrar:</label>
+  <input type="text" id="id_baja" name="id_baja">
+  <br>
+  <input type="submit" value="Borrar Ejemplar">
+</form>
+
+<h2>Alta de Ejemplar</h2>
+<form action="/biblioteca/altaEjemplar" method="post">
+    <label for="isbn_ejemplar">ISBN del Título:</label>
+    <input type="text" id="isbn_ejemplar" name="isbn_ejemplar">
+    <br>
+    <label for="id_ejemplar">ID del Ejemplar:</label>
+    <input type="text" id="id_ejemplar" name="id_ejemplar">
+    <br>
+    <input type="submit" value="Agregar Ejemplar">
+</form>
+
+
+</body>
+</html>

@@ -18,7 +18,7 @@ import java.util.Collection;
 public class GestorTitulos {
 
 	@Autowired
-	TituloDAO tituloDAO;
+	static TituloDAO tituloDAO;
 	@Autowired
 	EjemplarDAO ejemplarDAO;
 	@Autowired
@@ -68,8 +68,7 @@ public class GestorTitulos {
         entidad2.setAutores(Arrays.asList(new Autor("JOSELUIS2", "fg"), new Autor("Pepe2", "S")));
 */
 
-
-	public void actualizarTitulo(Titulo t, int DType) {
+	public static void actualizarTitulo(Titulo t, int DType) {
 		// Buscar el título en la base de datos
 		Titulo titulo = tituloDAO.findById(t.getIsbn()).orElseThrow(() -> new RuntimeException("Título no encontrado"));
 
@@ -90,7 +89,7 @@ public class GestorTitulos {
 		tituloDAO.save(nuevoTitulo);
 	}
 
-	private void copiarDatos(Titulo origen, Titulo destino) {
+	static void copiarDatos(Titulo origen, Titulo destino) {
 		destino.setAutores(origen.getAutores());
 		destino.setTitulo(origen.getTitulo());
 		destino.setIsbn(origen.getIsbn());
