@@ -41,8 +41,7 @@ public class App {
 
       /*  gestorTitulos.borrarTitulo("isbn");*/
 
-      /*gestorTitulos.altaEjemplar("isbn2", "Prueba");*/
-        gestorTitulos.bajaEjemplar("Prueba");
+     /* gestorTitulos.altaEjemplar("24723482356723");*/
 
 
 

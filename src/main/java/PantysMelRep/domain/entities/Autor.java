@@ -4,27 +4,20 @@ import jakarta.persistence.*;
 import java.util.Collection;
 
 @Entity
-@IdClass(AutorId.class)
 @Table(name = "autores")
 public class Autor {
 	@ManyToMany(mappedBy = "autores")
 	private Collection<Titulo> titulos;
 
-	@Id
-	@Column
-	private String nombre;
-
-	@Id
-	@Column
-	private String apellido;
+	@EmbeddedId
+	private AutorId id;
 
 	public Autor() {
 		// Constructor por defecto requerido por JPA
 	}
 
 	public Autor(String nombre, String apellido) {
-		this.nombre = nombre;
-		this.apellido = apellido;
+		this.id = new AutorId(nombre, apellido);
 	}
 
 	public Collection<Titulo> getTitulos() {
@@ -35,24 +28,16 @@ public class Autor {
 		this.titulos = titulos;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public AutorId getId() {
+		return id;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getApellido() {
-		return apellido;
-	}
-
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
+	public void setId(AutorId id) {
+		this.id = id;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Autor [nombre=%s, apellido=%s]", nombre, apellido);
+		return String.format("Autor [nombre=%s, apellido=%s]", id.getNombre(), id.getApellido());
 	}
 }
