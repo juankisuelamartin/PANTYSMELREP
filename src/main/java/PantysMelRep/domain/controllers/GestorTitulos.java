@@ -105,6 +105,9 @@ public class GestorTitulos {
 	}
 	@Transactional
 	public void altaEjemplar(String isbn) {
+		// Iniciar una transacción
+		agente.getEntityManager().getTransaction().begin();
+
 		// Buscar el título en la base de datos
 		Titulo titulo = tituloDAO.findById(isbn).orElseThrow(() -> new RuntimeException("Título no encontrado"));
 
@@ -114,15 +117,13 @@ public class GestorTitulos {
 		// Añadir el nuevo ejemplar a la lista de ejemplares del título
 		titulo.getEjemplares().add(ejemplar);
 
-		// Iniciar una transacción
-		agente.getEntityManager().getTransaction().begin();
-
 		// Persistir el nuevo ejemplar en la base de datos
 		agente.getEntityManager().persist(ejemplar);
 
 		// Confirmar la transacción
 		agente.getEntityManager().getTransaction().commit();
 	}
+
 
 
 

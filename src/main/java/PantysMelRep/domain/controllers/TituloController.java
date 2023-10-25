@@ -2,6 +2,7 @@ package PantysMelRep.domain.controllers;
 
 import PantysMelRep.domain.entities.*;
 import PantysMelRep.persistencia.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.*;
 
 @Controller
+@Transactional
 @RequestMapping("/biblioteca")
 public class TituloController {
 
@@ -26,7 +28,7 @@ public class TituloController {
                              @RequestParam("isbn") String isbn,
                              @RequestParam("autores") List<String> autores,
                              @RequestParam("DType") int DType,
-                             RedirectAttributes redirectAttributes) {
+                             RedirectAttributes redirectAttributes) throws InterruptedException {
         // Comprobar si el ISBN ya existe en la base de datos
         if (tituloDAO.findById(isbn).isPresent()) {
             // El ISBN ya existe, mostrar un mensaje de error
@@ -133,30 +135,35 @@ public class TituloController {
     // TODO SI EXISTE UN EJEMPLAR NO SE PUEDE BORRAR EL TITULO.
     @PostMapping("/borrarTitulo")
     public String borrarTitulo(@RequestParam("isbn_borrar") String isbn) {
-        // Obtener el ISBN del formulario and enviarlo al servicio GestorTitulos
+        // Comprobar si existen ejemplares para el título
+        Optional<Titulo> optionalTitulo = tituloDAO.findById(isbn);
+        if (!optionalTitulo.isPresent()) {
+            // Manejar el caso en el que el título no existe
+            return "error"; // Puedes redirigir a una página de error o mostrar un mensaje al usuario
+        } else {
+            Titulo titulo = optionalTitulo.get(); // Obtener el valor del Optional
 
-        //TODO BORRAR EJEMPLARES ANTES QUE EL TITULO
+            if (titulo.getEjemplares() != null && !titulo.getEjemplares().isEmpty()) {
+                // Si hay ejemplares, eliminarlos
+                for (Ejemplar ejemplar : titulo.getEjemplares()) {
+                    gestorTitulos.bajaEjemplar(ejemplar.getId().toString());
+                }
+            }
 
-        gestorTitulos.borrarTitulo(isbn);
+            // Después de eliminar los ejemplares, puedes eliminar el título
+            gestorTitulos.borrarTitulo(isbn);
+        }
+
         return "redirect:/"; // Redirige a la página principal
     }
+
+
 // TODO GESTION DE ERRORES
 
     @PostMapping("/altaEjemplar")
     public String altaEjemplar(@RequestParam("isbn_ejemplar") String isbn, Model model) {
-        // Verificar si el ISBN del título existe en la base de datos
 
-        Titulo titulo = tituloDAO.findById(isbn).orElse(null);
-
-        if (titulo != null) {
-            // Si el título existe, agregar el ejemplar
             gestorTitulos.altaEjemplar(isbn);
-        } else {
-            // Si el título no existe, puedes manejar el error aquí
-            model.addAttribute("error", "El ISBN proporcionado no existe en la base de datos.");
-            return "altaEjemplar"; // Retorna a la misma vista con un mensaje de error
-        }
-
         return "redirect:/"; // Redirige a la página principal
     }
 
