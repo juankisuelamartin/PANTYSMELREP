@@ -64,7 +64,7 @@ public class TituloController {
         Titulo nuevoTitulo = gestorTitulos.altaTitulo(titulo, isbn, listaAutores, DType);
 
         if (nuevoTitulo != null) {
-            gestorTitulos.altaEjemplar(isbn);
+            gestorTitulos.altaEjemplar(nuevoTitulo.getIsbn());
             System.out.println("Ejemplar añadido");
             // El título se dio de alta exitosamente en la base de datos
             return "redirect:/"; // Redirige a la página principal o a donde desees
