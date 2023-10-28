@@ -25,6 +25,8 @@ public class GestorTitulos {
 	AutorDAO autorDAO;
 	private AgenteBBDD agente;
 
+
+
 	public void setAgenteBBDD(AgenteBBDD agente) {
 		this.agente = agente;
 	}
@@ -86,6 +88,22 @@ public class GestorTitulos {
 		// Eliminar el título antiguo y guardar el nuevo
 		tituloDAO.delete(titulo);
 		tituloDAO.save(nuevoTitulo);
+	}
+	public void cambiarTipoTitulo(Titulo t, String nuevoTipo) {
+		// Buscar el título en la base de datos
+		Titulo titulo = tituloDAO.findById(t.getIsbn()).orElseThrow(() -> new RuntimeException("Título no encontrado"));
+
+		// Verificar que el nuevo tipo es diferente del tipo actual
+		if ((titulo instanceof Libro && nuevoTipo.equalsIgnoreCase("Revista")) ||
+				(titulo instanceof Revista && nuevoTipo.equalsIgnoreCase("Libro"))) {
+			// Cambiar el tipo en la base de datos directamente
+			String updateQuery = "UPDATE Titulo t SET t.class = :newType WHERE t.isbn = :isbn";
+			AgenteBBDD.getEntityManager().createQuery(updateQuery)
+					.setParameter("newType", nuevoTipo)
+					.setParameter("isbn", t.getIsbn())
+					.executeUpdate();
+
+		}
 	}
 
 	static void copiarDatos(Titulo origen, Titulo destino) {

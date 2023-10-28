@@ -9,7 +9,7 @@ import java.util.List;
 
 public class AgenteBBDD {
     private EntityManagerFactory entityManagerFactory;
-    private EntityManager entityManager;
+    private static EntityManager entityManager;
 
     public boolean conectar() {
         try {
@@ -35,7 +35,7 @@ public class AgenteBBDD {
     public static AgenteBBDD getAgente() {
         return new AgenteBBDD();
     }
-    public EntityManager getEntityManager() {
+    public static EntityManager getEntityManager() {
         return entityManager;
     }
     public int insert(String sql) {

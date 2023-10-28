@@ -12,7 +12,7 @@ public class Ejemplar {
 	@Column(name = "id")
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne //(cascade = CascadeType.ALL)
 	@JoinColumn(name = "titulo_id")
 	private Titulo titulo;
 

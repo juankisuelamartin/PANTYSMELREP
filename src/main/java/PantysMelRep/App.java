@@ -29,13 +29,15 @@ public class App {
         GestorTitulos gestorTitulos = context.getBean(GestorTitulos.class);
         gestorTitulos.setAgenteBBDD(agenteBBDD);
 
+
+
 // DAR DE ALTA TITULOS
 /*
         gestorTitulos.altaTitulo("titulo_23", "isbn22", Arrays.asList(new Autor("Juan Carlos", "Suela"), new Autor("Pepe", "Martin")), 2);
 */
 
 /*
-        Titulo t=new Titulo("isbn",null,Arrays.asList(new Autor("Juan Carlos", "Suela")),null, null,"jorge gei", null);
+
         gestorTitulos.actualizarTitulo(t, 2);
 */
 
