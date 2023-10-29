@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface AutorDAO extends JpaRepository<Autor, String>{
+public interface AutorDAO extends JpaRepository<Autor, AutorId> {
 
-    Optional<Object> findById(AutorId autorId);
+    Optional<Autor> findById(AutorId autorId);
 }

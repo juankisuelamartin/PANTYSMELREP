@@ -65,6 +65,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+        <!-- Dependencia de Servlet API -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Dependencia de JSP API -->
+
     </dependencies>
 
     <build>

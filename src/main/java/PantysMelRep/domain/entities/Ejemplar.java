@@ -7,8 +7,9 @@ public class Ejemplar {
 
 	// TODO ELIMINACION EN CASCADA DE TITULOS
 	// TODO GENERATIVE COLUMN ID
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
@@ -21,7 +22,8 @@ public class Ejemplar {
 		// Constructor por defecto requerido por JPA
 	}
 
-	public Ejemplar(Titulo titulo) {
+	public Ejemplar(Long id, Titulo titulo) {
+		this.id=id;
 		this.titulo = titulo;
 	}
 

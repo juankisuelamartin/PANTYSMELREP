@@ -89,7 +89,7 @@ public class GestorTitulos {
 		tituloDAO.delete(titulo);
 		tituloDAO.save(nuevoTitulo);
 	}
-	public void cambiarTipoTitulo(Titulo t, String nuevoTipo) {
+	/*public void cambiarTipoTitulo(Titulo t, String nuevoTipo) {
 		// Buscar el título en la base de datos
 		Titulo titulo = tituloDAO.findById(t.getIsbn()).orElseThrow(() -> new RuntimeException("Título no encontrado"));
 
@@ -103,6 +103,22 @@ public class GestorTitulos {
 					.setParameter("isbn", t.getIsbn())
 					.executeUpdate();
 
+		}
+	}*/
+	@Transactional
+	public void cambiarTipoTitulo(Titulo t, String nuevoTipo) {
+		// Buscar el título en la base de datos
+		Titulo titulo = tituloDAO.findById(t.getIsbn()).orElseThrow(() -> new RuntimeException("Título no encontrado"));
+
+		// Verificar que el nuevo tipo es diferente del tipo actual
+		if ((titulo instanceof Libro && nuevoTipo.equalsIgnoreCase("Revista")) ||
+				(titulo instanceof Revista && nuevoTipo.equalsIgnoreCase("Libro"))) {
+			// Cambiar el tipo en la base de datos directamente
+			String updateQuery = "UPDATE Titulo t SET t.class = :newType WHERE t.isbn = :isbn";
+			AgenteBBDD.getEntityManager().createQuery(updateQuery)
+					.setParameter("newType", nuevoTipo)
+					.setParameter("isbn", t.getIsbn())
+					.executeUpdate();
 		}
 	}
 
@@ -120,6 +136,7 @@ public class GestorTitulos {
 	public void borrarTitulo(String isbn) {
 		Titulo titulo = tituloDAO.findById(isbn).orElseThrow(() -> new RuntimeException("Título no encontrado"));
 		tituloDAO.delete(titulo);
+		System.out.println("Titulo y ejemplares borrados");
 	}
 	@Transactional
 	public void altaEjemplar(String isbn) {
@@ -127,13 +144,31 @@ public class GestorTitulos {
 		// Buscar el título en la base de datos
 		Titulo titulo = tituloDAO.findById(isbn).orElseThrow(() -> new RuntimeException("Título no encontrado"));
 
+		// Generar un nuevo ID automáticamente para el nuevo ejemplar
+		Long nuevoId = generarNuevoIdParaEjemplar();
+		System.out.println(nuevoId);
 		// Crear un nuevo ejemplar
-		Ejemplar ejemplar = new Ejemplar(titulo);
+		Ejemplar ejemplar = new Ejemplar();
+		ejemplar.setId(nuevoId);
+		ejemplar.setTitulo(titulo);
 
 		// Añadir el nuevo ejemplar a la lista de ejemplares del título
-		titulo.getEjemplares().add(ejemplar);
 
+		System.out.println("Ejemplar añadido");
+		System.out.println(ejemplar.toString());
 		ejemplarDAO.save(ejemplar);
+	}
+	private Long generarNuevoIdParaEjemplar() {
+		// Buscar el ID máximo actual en los ejemplares existentes
+		Long maxId = ejemplarDAO.findMaxId();
+
+		// Generar el nuevo ID sumando 1 al ID máximo encontrado
+		if (maxId != null) {
+			return maxId + 1;
+		} else {
+			// Si no hay ejemplares existentes, asignar el ID inicial (por ejemplo, 1)
+			return 1L;
+		}
 	}
 
 
@@ -143,6 +178,7 @@ public class GestorTitulos {
 		Ejemplar ejemplar = ejemplarDAO.findById(id).orElseThrow(() -> new RuntimeException("Ejemplar no encontrado"));
 		if (ejemplar != null) {
 			ejemplarDAO.delete(ejemplar);
+			System.out.println("Ejemplar borrado");
 		}
 	}
 

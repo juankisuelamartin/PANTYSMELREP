@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.util.stream.Collectors;
 
 import java.util.*;
 
@@ -21,6 +22,8 @@ public class TituloController {
     @Autowired
     private TituloDAO tituloDAO;
     @Autowired
+    private EjemplarDAO ejemplarDAO;
+    @Autowired
     private AutorDAO autorDAO;
 // TODO AVISAR DE LOS ERRORES. ISBN YA EXISTE... ETC
     @PostMapping("/altaTitulo")
@@ -29,11 +32,11 @@ public class TituloController {
                              @RequestParam("autores") List<String> autores,
                              @RequestParam("DType") int DType,
                              RedirectAttributes redirectAttributes) throws InterruptedException {
+
         // Comprobar si el ISBN ya existe en la base de datos
         if (tituloDAO.findById(isbn).isPresent()) {
             // El ISBN ya existe, mostrar un mensaje de error
             System.out.println("El ISBN ya existe en la base de datos.");
-            redirectAttributes.addFlashAttribute("error", "El ISBN ya existe en la base de datos.");
             return "redirect:/"; // Redirige a la página principal o a donde desees
         }
 
@@ -64,11 +67,13 @@ public class TituloController {
         Titulo nuevoTitulo = gestorTitulos.altaTitulo(titulo, isbn, listaAutores, DType);
 
         if (nuevoTitulo != null) {
+
             gestorTitulos.altaEjemplar(nuevoTitulo.getIsbn());
-            System.out.println("Ejemplar añadido");
+
             // El título se dio de alta exitosamente en la base de datos
             return "redirect:/"; // Redirige a la página principal o a donde desees
         } else {
+
             // Hubo un error al dar de alta el título
             // Puedes redirigir a una página de error o mostrar un mensaje al usuario
             return "error"; // Cambia "error" al nombre de tu vista de error
@@ -76,14 +81,12 @@ public class TituloController {
     }
 
 
-   /* @PostMapping("/actualizarTitulo")
+    @Transactional
+    @PostMapping("/actualizarTitulo")
     public String actualizarTitulo(@RequestParam("isbn_actualizar") String isbn,
                                    @RequestParam("titulo_actualizar") String nuevoTitulo,
                                    @RequestParam("autores_actualizar") String nuevosAutores,
                                    @RequestParam("DType_actualizar") int DType) {
-        *//*Titulo titulo = new Titulo();
-        titulo.setIsbn(isbn);
-        titulo.setTitulo(nuevoTitulo);*//*
 
         // Recuperar el título existente de la base de datos
         Optional<Titulo> optionalTitulo = tituloDAO.findById(isbn);
@@ -92,43 +95,88 @@ public class TituloController {
             return "error"; // Puedes redirigir a una página de error o mostrar un mensaje al usuario
         }
 
-        Titulo titulo = optionalTitulo.get();
+        Titulo tituloExistente = optionalTitulo.get();
+
+        // Recoge todos los ejemplares asociados al título existente
+        Collection<Ejemplar> ejemplares = tituloExistente.getEjemplares();
+
+// Recoge los IDs de los ejemplares existentes
+        List<Long> ejemplarIds = ejemplares.stream().map(Ejemplar::getId).collect(Collectors.toList());
+
+// Elimina los ejemplares asociados al título
+        for (Ejemplar ejemplar : ejemplares) {
+            ejemplarDAO.delete(ejemplar);
+        }
+        // Elimina el título existente
+        tituloDAO.delete(tituloExistente);
+
+        // Crea un nuevo título con la información actualizada
+        Titulo tituloActualizado = gestorTitulos.altaTitulo(nuevoTitulo, isbn,null, DType);
+        tituloActualizado.setIsbn(isbn);
+        tituloActualizado.setTitulo(nuevoTitulo);
 
         if (!nuevosAutores.isEmpty()) {
-
-            // Separar los nombres de los autores
-            String[] nombresAutores = nuevosAutores.split(",");
-
-            // Crear una lista para almacenar los autores actualizados
-            List<Autor> listaAutoresActualizados = new ArrayList<>();
-
-            for (String nombreAutor : nombresAutores) {
-                String[] nombres = nombreAutor.trim().split(" ");
-
-                // Crear un nuevo AutorId con nombre y apellido
-                AutorId autorId = new AutorId(nombres[0], nombres[1]);
-
-                Autor autor;
-                if (autorDAO.existsById(autorId.toString())) {
-                    // Obtener el autor existente
-                    autor = autorDAO.findById(autorId.toString()).get();
-                } else {
-                    // Crear un nuevo autor y guardarlo en la base de datos
-                    autor = new Autor(nombres[0], nombres[1]);
-                    autorDAO.save(autor);
-                }
-                // Agregar el autor a la lista de autores actualizados
-                listaAutoresActualizados.add(autor);
-            }
-
-            // Actualizar la lista de autores del título
-            titulo.setAutores(listaAutoresActualizados);
+            // Procesa los autores y actualiza la lista de autores del título actualizado
+            List<Autor> listaAutoresActualizados = procesarAutores(nuevosAutores);
+            tituloActualizado.setAutores(listaAutoresActualizados);
         }
-        tituloDAO.save(titulo);
 
-        *//*GestorTitulos.actualizarTitulo(titulo, DType);*//*
+        for (Ejemplar ejemplar : ejemplares) {
+            ejemplar.setTitulo(tituloActualizado); // Asocia el ejemplar al nuevo título
+            tituloActualizado.getEjemplares().add(ejemplar); // Agrega el ejemplar a la lista de ejemplares del título
+        }
+        // Guarda el título actualizado en la base de datos
+        tituloDAO.save(tituloActualizado);
+        // Agrega los ejemplares al nuevo título
+
+
+
+
+
         return "redirect:/"; // Redirige a la página principal
-    }*/
+
+    }
+
+
+    private List<Autor> procesarAutores(String nuevosAutores) {
+
+        // Separar los nombres de los autores
+        String[] nombresAutores = nuevosAutores.split(",");
+
+        // Crear una lista para almacenar los autores actualizados
+        List<Autor> listaAutoresActualizados = new ArrayList<>();
+
+        for (String nombreAutor : nombresAutores) {
+            String[] nombres = nombreAutor.trim().split(" ");
+
+            // Crear un nuevo AutorId con nombre y apellido
+            AutorId autorId = new AutorId(nombres[0], nombres[1]);
+
+            Autor autor;
+            Optional<Autor> optionalAutor = autorDAO.findById(autorId);
+            if (optionalAutor.isPresent()) {
+                // Obtener el autor existente
+                autor = optionalAutor.get();
+            } else {
+                // Crear un nuevo autor y guardarlo en la base de datos
+                autor = new Autor(nombres[0], nombres[1]);
+                autorDAO.save(autor);
+            }
+            // Agregar el autor a la lista de autores actualizados
+            listaAutoresActualizados.add(autor);
+        }
+        return listaAutoresActualizados;
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -156,7 +204,7 @@ public class TituloController {
 
         return "redirect:/"; // Redirige a la página principal
     }
-
+/*
     @PostMapping("/actualizarTitulo")
     public String actualizarTitulo(@RequestParam("isbn_actualizar") String isbn,
                                    @RequestParam("titulo_actualizar") String nuevoTitulo,
@@ -181,7 +229,7 @@ public class TituloController {
 
         return "redirect:/"; // Redirige a la página principal
     }
-
+*/
 // TODO GESTION DE ERRORES
 
     @PostMapping("/altaEjemplar")

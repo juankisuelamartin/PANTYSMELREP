@@ -12,7 +12,7 @@ public class Titulo {
 	@Id
 	protected String isbn;
 
-	@OneToMany(mappedBy = "titulo")
+	@OneToMany(mappedBy = "titulo", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<Ejemplar> ejemplares = new ArrayList<>(); // Inicializa la colección
 
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
