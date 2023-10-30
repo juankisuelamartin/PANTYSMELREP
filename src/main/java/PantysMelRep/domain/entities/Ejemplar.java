@@ -4,11 +4,16 @@ import jakarta.persistence.*;
 
 @Entity
 public class Ejemplar {
+
+	// TODO ELIMINACION EN CASCADA DE TITULOS
+	// TODO GENERATIVE COLUMN ID
+
+
 	@Id
 	@Column(name = "id")
-	private String id;
+	private Long id;
 
-	@ManyToOne
+	@ManyToOne //(cascade = CascadeType.ALL)
 	@JoinColumn(name = "titulo_id")
 	private Titulo titulo;
 
@@ -17,16 +22,16 @@ public class Ejemplar {
 		// Constructor por defecto requerido por JPA
 	}
 
-	public Ejemplar(String id, Titulo titulo) {
-		this.id = id;
+	public Ejemplar(Long id, Titulo titulo) {
+		this.id=id;
 		this.titulo = titulo;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

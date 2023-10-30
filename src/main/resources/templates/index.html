@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Gestor de Títulos</title>
+    <style>
+        .content {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <h1>Gestor de Títulos</h1>
+    <div class="dropdown">
+        <button class="dropbtn">Categorías</button>
+        <div class="dropdown-content">
+            <a href="javascript:void(0)" onclick="showSection('altaTitulo')">Alta de Título</a>
+            <a href="javascript:void(0)" onclick="showSection('actualizarTitulo')">Actualizar Título</a>
+            <a href="javascript:void(0)" onclick="showSection('borrarTitulo')">Borrar Título</a>
+            <a href="javascript:void(0)" onclick="showSection('bajaEjemplar')">Baja de Ejemplar</a>
+            <a href="javascript:void(0)" onclick="showSection('altaEjemplar')">Alta de Ejemplar</a>
+        </div>
+    </div>
+</div>
+
+<div class="content" id="altaTitulo">
+    <h2>Alta de Título</h2>
+    <form action="/biblioteca/altaTitulo" method="post" onsubmit="return validateForm(this)">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" required>
+        <br>
+        <label for="isbn">ISBN:</label>
+        <input type="text" id="isbn" name="isbn" required>
+        <br>
+        <label for="autores">Autores (separados por comas):</label>
+        <input type="text" id="autores" name="autores" required>
+        <br>
+        <!-- Desplegable para elegir tipo -->
+        <label for="DType">Tipo:</label>
+        <select id="DType" name="DType">
+            <option value="1">Libro</option>
+            <option value="2">Revista</option>
+        </select>
+        <br>
+        <input type="submit" value="Agregar Título">
+    </form>
+
+</div>
+
+<div class="content" id="actualizarTitulo">
+    <h2>Actualizar Título</h2>
+    <form action="/biblioteca/actualizarTitulo" method="post" onsubmit="return validateForm(this)">
+        <label for="isbn_actualizar">ISBN del Título a Actualizar:</label>
+        <input type="text" id="isbn_actualizar" name="isbn_actualizar" required>
+        <br>
+        <label for="titulo_actualizar">Nuevo Título:</label>
+        <input type="text" id="titulo_actualizar" name="titulo_actualizar" required>
+        <br>
+        <label for="autores_actualizar">Nuevos Autores (separados por comas):</label>
+        <input type="text" id="autores_actualizar" name="autores_actualizar" required>
+        <br>
+        <!-- Desplegable para elegir tipo -->
+        <label for="DType_actualizar">Nuevo Tipo:</label>
+        <select id="DType_actualizar" name="DType_actualizar">
+            <option value="1">Libro</option>
+            <option value="2">Revista</option>
+        </select>
+        <br>
+        <input type="submit" value="Actualizar Título">
+    </form>
+</div>
+
+<div class="content" id="borrarTitulo">
+    <h2>Borrar Título</h2>
+    <form action="/biblioteca/borrarTitulo" method="post" onsubmit="return validateForm(this)">
+        <label for="isbn_borrar">ISBN del Título a Borrar:</label>
+        <input type="text" id="isbn_borrar" name="isbn_borrar" required>
+        <br>
+        <input type="submit" value="Borrar Título">
+    </form>
+</div>
+
+<div class="content" id="bajaEjemplar">
+    <h2>Baja de Ejemplar</h2>
+    <form action="/biblioteca/bajaEjemplar" method="post" onsubmit="return validateForm(this)">
+        <label for="id_baja">ID del Ejemplar a Borrar:</label>
+        <input type="text" id="id_baja" name="id_baja" required>
+        <br>
+        <input type="submit" value="Borrar Ejemplar">
+    </form>
+</div>
+
+<div class="content" id="altaEjemplar">
+    <h2>Alta de Ejemplar</h2>
+    <form action="/biblioteca/altaEjemplar" method="post" onsubmit="return validateForm(this)">
+        <label for="isbn_ejemplar">ISBN del Título:</label>
+        <input type="text" id="isbn_ejemplar" name="isbn_ejemplar" required>
+        <br>
+        <input type="submit" value="Agregar Ejemplar">
+    </form>
+</div>
+
+<script>
+
+
+
+    function showSection(sectionId) {
+        var sections = document.querySelectorAll('.content');
+        sections.forEach(function (section) {
+            section.classList.remove('active');
+        });
+
+        var sectionToShow = document.getElementById(sectionId);
+        sectionToShow.classList.add('active');
+    }
+
+    function validateForm(form) {
+        var inputs = form.querySelectorAll('input[required]');
+        for (var i = 0; i < inputs.length; i++) {
+            if (!inputs[i].value) {
+                alert('Por favor, complete todos los campos obligatorios.');
+                return false;
+            }
+        }
+        return true;
+    }
+
+</script>
+
+</body>
+</html>

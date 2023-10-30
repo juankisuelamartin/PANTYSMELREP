@@ -25,9 +25,11 @@ public class Prestamo {
 	private Titulo titulo;
 
 	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_inicio")
 	private Date fechaInicio;
 
 	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_fin")
 	private Date fechaFin;
 
 	private Boolean activo;

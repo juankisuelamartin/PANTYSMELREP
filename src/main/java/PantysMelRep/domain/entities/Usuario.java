@@ -14,9 +14,8 @@ public class Usuario {
 	private String apellidos;
 
 	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_fin_penalizacion")
 	private Date fechaFinPenalizacion;
-
-	private int attribute;
 
 	@OneToMany(mappedBy = "usuario")
 	private Collection<Prestamo> prestamos;
@@ -27,12 +26,11 @@ public class Usuario {
 	public Usuario() {
 	}
 
-	public Usuario(String id, String nombre, String apellidos, Date fechaFinPenalizacion, int attribute) {
+	public Usuario(String id, String nombre, String apellidos, Date fechaFinPenalizacion) {
 		this.id = id;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.fechaFinPenalizacion = fechaFinPenalizacion;
-		this.attribute = attribute;
 	}
 
 	public String getId() {
@@ -67,11 +65,4 @@ public class Usuario {
 		this.fechaFinPenalizacion = fechaFinPenalizacion;
 	}
 
-	public int getAttribute() {
-		return attribute;
-	}
-
-	public void setAttribute(int attribute) {
-		this.attribute = attribute;
-	}
 }

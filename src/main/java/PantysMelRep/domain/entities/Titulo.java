@@ -2,6 +2,7 @@ package PantysMelRep.domain.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -10,21 +11,21 @@ public class Titulo {
 
 	@Id
 	protected String isbn;
-	@OneToMany(mappedBy = "titulo")
-	private Collection<Ejemplar> ejemplares;
+
+	@OneToMany(mappedBy = "titulo", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Collection<Ejemplar> ejemplares = new ArrayList<>(); // Inicializa la colección
 
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "autor_titulo",
 			joinColumns = @JoinColumn(name = "ISBN"),
 			inverseJoinColumns = {@JoinColumn(name = "autor_nombre"), @JoinColumn(name = "autor_apellido")})
-	private Collection<Autor> autores;
-
-
-	@OneToMany(mappedBy = "titulo")
-	private Collection<Prestamo> prestamos;
+	private Collection<Autor> autores = new ArrayList<>(); // Inicializa la colección
 
 	@OneToMany(mappedBy = "titulo")
-	private Collection<Reserva> reservas;
+	private Collection<Prestamo> prestamos = new ArrayList<>(); // Inicializa la colección
+
+	@OneToMany(mappedBy = "titulo")
+	private Collection<Reserva> reservas = new ArrayList<>(); // Inicializa la colección
 
 	@Column(name = "titulo")
 	private String titulo;
@@ -36,12 +37,8 @@ public class Titulo {
 		// Constructor vacío requerido por JPA
 	}
 
-	public Titulo(String isbn, Collection<Ejemplar> ejemplares, Collection<Autor> autores, Collection<Prestamo> prestamos, Collection<Reserva> reservas, String titulo, String numReserva) {
+	public Titulo(String isbn, String titulo, String numReserva) {
 		this.isbn = isbn;
-		this.ejemplares = ejemplares;
-		this.autores = autores;
-		this.prestamos = prestamos;
-		this.reservas = reservas;
 		this.titulo = titulo;
 		this.numReserva = numReserva;
 	}
