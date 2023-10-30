@@ -129,10 +129,6 @@ public class TituloController {
         tituloDAO.save(tituloActualizado);
         // Agrega los ejemplares al nuevo título
 
-
-
-
-
         return "redirect:/"; // Redirige a la página principal
 
     }
@@ -169,17 +165,6 @@ public class TituloController {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
     // TODO SI EXISTE UN EJEMPLAR NO SE PUEDE BORRAR EL TITULO.
     @PostMapping("/borrarTitulo")
     public String borrarTitulo(@RequestParam("isbn_borrar") String isbn) {
@@ -204,32 +189,7 @@ public class TituloController {
 
         return "redirect:/"; // Redirige a la página principal
     }
-/*
-    @PostMapping("/actualizarTitulo")
-    public String actualizarTitulo(@RequestParam("isbn_actualizar") String isbn,
-                                   @RequestParam("titulo_actualizar") String nuevoTitulo,
-                                   @RequestParam("autores_actualizar") String nuevosAutores,
-                                   @RequestParam("DType_actualizar") int DType) {
-        Titulo titulo = new Titulo();
-        titulo.setIsbn(isbn);
-        titulo.setTitulo(nuevoTitulo);
 
-        // Recuperar el título existente de la base de datos
-        Optional<Titulo> optionalTitulo = tituloDAO.findById(isbn);
-        if (!optionalTitulo.isPresent()) {
-            // Manejar el caso en el que el título no existe
-            return "error"; // Puedes redirigir a una página de error o mostrar un mensaje al usuario
-        }
-
-        Titulo titulo2 = optionalTitulo.get();
-        gestorTitulos.cambiarTipoTitulo(titulo2, "Revista");
-
-        tituloDAO.save(titulo);
-
-
-        return "redirect:/"; // Redirige a la página principal
-    }
-*/
 // TODO GESTION DE ERRORES
 
     @PostMapping("/altaEjemplar")
@@ -244,7 +204,19 @@ public class TituloController {
     @PostMapping("/bajaEjemplar")
     public String bajaEjemplar(@RequestParam("id_baja") String id) {
         // Obtener el ID del formulario y enviarlo al servicio GestorTitulos
-        gestorTitulos.bajaEjemplar(id);
+        // Contar cuántos ejemplares existen con el mismo Titulo_Id
+        Titulo tituloId = ejemplarDAO.findById(id).orElseThrow(() -> new RuntimeException("Ejemplar no encontrado")).getTitulo();
+        long countEjemplares = ejemplarDAO.contarEjemplaresConMismoTitulo(tituloId);;
+        if (countEjemplares > 1) {
+            // Permitir la eliminación del ejemplar
+            gestorTitulos.bajaEjemplar(id);
+            countEjemplares -= 1;
+            System.out.println("Ejemplar con ID de ejemplar: "+id+ " y ISBN: " +tituloId.getIsbn()+ " borrado. Numero de ejemplares: " +countEjemplares);
+        } else {
+            System.out.println("Ejemplar con ID de ejemplar: "+id+ " y ISBN: " +tituloId.getIsbn()+ " no ha sido borrado. Numero de ejemplares: " +countEjemplares);
+            // No permitir la eliminación y mostrar un mensaje de error o redirigir a una página de error
+            // Puedes agregar un mensaje de error o redirigir a una página apropiada aquí.
+        }
 
         return "redirect:/"; // Redirige a la página principal
     }

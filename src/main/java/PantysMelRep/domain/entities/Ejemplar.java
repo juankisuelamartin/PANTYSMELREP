@@ -7,7 +7,7 @@ public class Ejemplar {
 
 	// TODO ELIMINACION EN CASCADA DE TITULOS
 	// TODO GENERATIVE COLUMN ID
-	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 
 	@Id
 	@Column(name = "id")

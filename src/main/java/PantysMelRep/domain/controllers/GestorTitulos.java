@@ -5,13 +5,13 @@ import PantysMelRep.persistencia.AgenteBBDD;
 import PantysMelRep.persistencia.AutorDAO;
 import PantysMelRep.persistencia.EjemplarDAO;
 import PantysMelRep.persistencia.TituloDAO;
+
 import jakarta.transaction.Transactional;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+
 import java.util.Collection;
 
 @Service
@@ -64,72 +64,9 @@ public class GestorTitulos {
 
 
 
-	/*        Libro entidad2 = new Libro();
-        entidad2.setIsbn("1232");
-        entidad2.setTitulo("PRUEBA2");
-        entidad2.setAutores(Arrays.asList(new Autor("JOSELUIS2", "fg"), new Autor("Pepe2", "S")));
-*/
-	public void actualizarTitulo(Titulo t, int DType) {
-		// Buscar el título en la base de datos
-		Titulo titulo = tituloDAO.findById(t.getIsbn()).orElseThrow(() -> new RuntimeException("Título no encontrado"));
 
-		Titulo nuevoTitulo;
 
-		if (DType == 1) {
-			// Crear un nuevo libro
-			nuevoTitulo = new Libro();
-		} else {
-			// Crear una nueva revista
-			nuevoTitulo = new Revista();
-		}
 
-		copiarDatos(t, nuevoTitulo);
-
-		// Eliminar el título antiguo y guardar el nuevo
-		tituloDAO.delete(titulo);
-		tituloDAO.save(nuevoTitulo);
-	}
-	/*public void cambiarTipoTitulo(Titulo t, String nuevoTipo) {
-		// Buscar el título en la base de datos
-		Titulo titulo = tituloDAO.findById(t.getIsbn()).orElseThrow(() -> new RuntimeException("Título no encontrado"));
-
-		// Verificar que el nuevo tipo es diferente del tipo actual
-		if ((titulo instanceof Libro && nuevoTipo.equalsIgnoreCase("Revista")) ||
-				(titulo instanceof Revista && nuevoTipo.equalsIgnoreCase("Libro"))) {
-			// Cambiar el tipo en la base de datos directamente
-			String updateQuery = "UPDATE Titulo t SET t.class = :newType WHERE t.isbn = :isbn";
-			AgenteBBDD.getEntityManager().createQuery(updateQuery)
-					.setParameter("newType", nuevoTipo)
-					.setParameter("isbn", t.getIsbn())
-					.executeUpdate();
-
-		}
-	}*/
-	@Transactional
-	public void cambiarTipoTitulo(Titulo t, String nuevoTipo) {
-		// Buscar el título en la base de datos
-		Titulo titulo = tituloDAO.findById(t.getIsbn()).orElseThrow(() -> new RuntimeException("Título no encontrado"));
-
-		// Verificar que el nuevo tipo es diferente del tipo actual
-		if ((titulo instanceof Libro && nuevoTipo.equalsIgnoreCase("Revista")) ||
-				(titulo instanceof Revista && nuevoTipo.equalsIgnoreCase("Libro"))) {
-			// Cambiar el tipo en la base de datos directamente
-			String updateQuery = "UPDATE Titulo t SET t.class = :newType WHERE t.isbn = :isbn";
-			AgenteBBDD.getEntityManager().createQuery(updateQuery)
-					.setParameter("newType", nuevoTipo)
-					.setParameter("isbn", t.getIsbn())
-					.executeUpdate();
-		}
-	}
-
-	static void copiarDatos(Titulo origen, Titulo destino) {
-		destino.setAutores(origen.getAutores());
-		destino.setTitulo(origen.getTitulo());
-		destino.setIsbn(origen.getIsbn());
-		destino.setNumReserva(origen.getNumReserva());
-		destino.setEjemplares(origen.getEjemplares());
-		destino.setPrestamos(origen.getPrestamos());
-	}
 
 
 
