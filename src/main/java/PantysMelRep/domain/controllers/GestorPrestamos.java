@@ -29,7 +29,40 @@ public class GestorPrestamos {
 
 	@Transactional
 	public void realizarPrestamo(String isbn, String idEjemplar, String idUsuario) {
+		// Recuperar el título y el usuario a partir de los IDs
+		Titulo titulo = tituloDAO.findById(isbn)
+				.orElseThrow(() -> new RuntimeException("Título no encontrado"));
 
+		Usuario usuario = usuarioDAO.findById(idUsuario)
+				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+
+		// (String usuarioId, String tituloId, Usuario usuario, Titulo titulo, Date fechaInicio, Date fechaFin, Boolean activo) {
+		// Crear un nuevo objeto Prestamo y establecer sus atributos
+		Prestamo prestamo = new Prestamo();
+		prestamo.setUsuario(usuario);
+		prestamo.setTitulo(titulo);
+
+		// Obtener la fecha actual y establecerla como la fecha de inicio
+		Date fechaActual = new Date();
+		prestamo.setFechaInicio(fechaActual);
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(fechaActual);
+		calendar.add(Calendar.DAY_OF_MONTH, 30);
+		prestamo.setFechaFin(calendar.getTime());
+
+		prestamo.setActivo(true);
+
+		prestamoDAO.save(prestamo);
+
+		// Realizar otras operaciones relacionadas con el préstamo, como actualizar el ejemplar, etc.
+
+		// Actualizar la fecha de fin en el ejemplar, si es necesario
+
+		// Realizar otras operaciones necesarias para gestionar el préstamo
+
+		// Notificar al usuario que el préstamo se ha realizado con éxito o manejar errores si es necesario
 	}
 	/**
 	 * 
