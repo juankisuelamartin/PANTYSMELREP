@@ -30,7 +30,7 @@ public class App {
         GestorTitulos gestorTitulos = context.getBean(GestorTitulos.class);
         gestorTitulos.setAgenteBBDD(agenteBBDD);
         GestorPrestamos gestorPrestamos = context.getBean(GestorPrestamos.class);
-        gestorPrestamos.realizarPrestamo("isbn", "1", "admin");
+        gestorPrestamos.realizarPrestamo("Prueba", "1", "admin");
          System.out.println("Conectado.");
     }
 }

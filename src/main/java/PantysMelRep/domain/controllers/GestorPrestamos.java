@@ -43,6 +43,7 @@ public class GestorPrestamos {
 		prestamo.setUsuario(usuario);
 		prestamo.setTitulo(titulo);
 
+		//(Usuario usuario, Titulo titulo, Date fechaInicio, Date fechaFin, Boolean activo)
 		// Obtener la fecha actual y establecerla como la fecha de inicio
 		Date fechaActual = new Date();
 		prestamo.setFechaInicio(fechaActual);

@@ -8,18 +8,15 @@ import java.util.Date;
 @Table(name = "prestamos")
 public class Prestamo {
 
-	@Id
-	@Column(name = "usuario_id")
-	private String usuarioId;
+	@EmbeddedId
+	private PrestamoId id;
 
-	@Id
-	@Column(name = "titulo_id")
-	private String tituloId;
-
+	@MapsId("usuarioId")
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
+	@MapsId("tituloId")
 	@ManyToOne
 	@JoinColumn(name = "titulo_id")
 	private Titulo titulo;
@@ -32,35 +29,26 @@ public class Prestamo {
 	@Column(name = "fecha_fin")
 	private Date fechaFin;
 
-	private Boolean activo;
+	private boolean activo;
 
-	public Prestamo() {
-	}
-
-	public Prestamo(Usuario usuario, Titulo titulo, Date fechaInicio, Date fechaFin, Boolean activo) {
+	public Prestamo(PrestamoId id, Usuario usuario, Titulo titulo, Date fechaInicio, Date fechaFin, boolean activo) {
+		this.id = id;
+		this.usuario = usuario;
+		this.titulo = titulo;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.activo = activo;
-		this.usuario = usuario;
-		this.titulo = titulo;
-		this.usuarioId = usuario.getId();
-		this.tituloId = titulo.getIsbn();
+	}
+	public Prestamo(){
+
 	}
 
-	public String getUsuarioId() {
-		return usuarioId;
+	public PrestamoId getId() {
+		return id;
 	}
 
-	public void setUsuarioId(String usuarioId) {
-		this.usuarioId = usuarioId;
-	}
-
-	public String getTituloId() {
-		return tituloId;
-	}
-
-	public void setTituloId(String tituloId) {
-		this.tituloId = tituloId;
+	public void setId(PrestamoId id) {
+		this.id = id;
 	}
 
 	public Usuario getUsuario() {
@@ -69,14 +57,16 @@ public class Prestamo {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
-	}
-
-	public Titulo getTitulo() {
-		return titulo;
+		this.id.setUsuarioId(usuario.getId());  // Set the id field here
 	}
 
 	public void setTitulo(Titulo titulo) {
 		this.titulo = titulo;
+		this.id.setTituloId(titulo.getIsbn());  // Set the id field here
+	}
+
+	public Titulo getTitulo() {
+		return titulo;
 	}
 
 	public Date getFechaInicio() {
@@ -95,11 +85,11 @@ public class Prestamo {
 		this.fechaFin = fechaFin;
 	}
 
-	public Boolean getActivo() {
+	public boolean isActivo() {
 		return activo;
 	}
 
-	public void setActivo(Boolean activo) {
+	public void setActivo(boolean activo) {
 		this.activo = activo;
 	}
 }
