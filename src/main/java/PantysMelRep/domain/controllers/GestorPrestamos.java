@@ -3,10 +3,8 @@ package PantysMelRep.domain.controllers;
 import PantysMelRep.domain.entities.Prestamo;
 import PantysMelRep.domain.entities.Titulo;
 import PantysMelRep.domain.entities.Usuario;
-import PantysMelRep.persistencia.PrestamoDAO;
-import PantysMelRep.persistencia.ReservaDAO;
-import PantysMelRep.persistencia.TituloDAO;
-import PantysMelRep.persistencia.UsuarioDAO;
+import PantysMelRep.domain.entities.Ejemplar;
+import PantysMelRep.persistencia.*;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +24,8 @@ public class GestorPrestamos {
 	private TituloDAO tituloDAO;
 	@Autowired
 	private UsuarioDAO usuarioDAO;
+	@Autowired
+	private EjemplarDAO ejemplarDAO;
 
 	@Transactional
 	public void realizarPrestamo(String isbn, String idEjemplar, String idUsuario) {
@@ -36,12 +36,19 @@ public class GestorPrestamos {
 		Usuario usuario = usuarioDAO.findById(idUsuario)
 				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
+		Ejemplar ejemplar = ejemplarDAO.findById(idEjemplar)
+				.orElseThrow(() -> new RuntimeException("Ejemplar no encontrado"));
 
 		// (String usuarioId, String tituloId, Usuario usuario, Titulo titulo, Date fechaInicio, Date fechaFin, Boolean activo) {
 		// Crear un nuevo objeto Prestamo y establecer sus atributos
 		Prestamo prestamo = new Prestamo();
 		prestamo.setUsuario(usuario);
 		prestamo.setTitulo(titulo);
+		prestamo.setTituloId((titulo.getIsbn()));
+		prestamo.setUsuarioId(usuario.getId());
+		prestamo.setEjemplar(ejemplar);
+		prestamo.setEjemplarId(ejemplar.getId());
+
 
 		//(Usuario usuario, Titulo titulo, Date fechaInicio, Date fechaFin, Boolean activo)
 		// Obtener la fecha actual y establecerla como la fecha de inicio

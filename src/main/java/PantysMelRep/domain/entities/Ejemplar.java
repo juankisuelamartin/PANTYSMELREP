@@ -5,9 +5,6 @@ import jakarta.persistence.*;
 @Entity
 public class Ejemplar {
 
-	// TODO ELIMINACION EN CASCADA DE TITULOS
-	// TODO GENERATIVE COLUMN ID
-
 
 	@Id
 	@Column(name = "id")
