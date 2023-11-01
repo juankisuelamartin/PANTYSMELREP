@@ -37,9 +37,8 @@ public class Prestamo {
 	@Column(name = "fecha_fin")
 	private Date fechaFin;
 
-
 	@ManyToOne
-	@JoinColumn(name = "ejemplar_id", referencedColumnName = "id")
+	@JoinColumn(name = "ejemplar_id", referencedColumnName = "id", insertable = false, updatable = false)
 	private Ejemplar ejemplar;
 
 	private boolean activo;
@@ -54,8 +53,8 @@ public class Prestamo {
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.activo = activo;
-		this.usuarioId = usuario.getId();  // Asignar el usuarioId aquí
-		this.tituloId = titulo.getIsbn();  // Asignar el tituloId aquí
+		this.usuarioId = usuario.getId();
+		this.tituloId = titulo.getIsbn();
 		this.ejemplarId = ejemplar.getId();
 	}
 
