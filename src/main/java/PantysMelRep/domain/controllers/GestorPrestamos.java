@@ -1,9 +1,6 @@
 package PantysMelRep.domain.controllers;
 
-import PantysMelRep.domain.entities.Prestamo;
-import PantysMelRep.domain.entities.Titulo;
-import PantysMelRep.domain.entities.Usuario;
-import PantysMelRep.domain.entities.Ejemplar;
+import PantysMelRep.domain.entities.*;
 import PantysMelRep.persistencia.*;
 
 import jakarta.transaction.Transactional;
@@ -39,39 +36,47 @@ public class GestorPrestamos {
 		Ejemplar ejemplar = ejemplarDAO.findById(idEjemplar)
 				.orElseThrow(() -> new RuntimeException("Ejemplar no encontrado"));
 
-		// (String usuarioId, String tituloId, Usuario usuario, Titulo titulo, Date fechaInicio, Date fechaFin, Boolean activo) {
-		// Crear un nuevo objeto Prestamo y establecer sus atributos
-		Prestamo prestamo = new Prestamo();
-		prestamo.setUsuario(usuario);
-		prestamo.setTitulo(titulo);
-		prestamo.setTituloId((titulo.getIsbn()));
-		prestamo.setUsuarioId(usuario.getId());
-		prestamo.setEjemplar(ejemplar);
-		prestamo.setEjemplarId(ejemplar.getId());
+		PrestamoId prestamoId = new PrestamoId(usuario.getId(), titulo.getIsbn());
+		Prestamo prestamoExistente = (Prestamo) prestamoDAO.findById(prestamoId).orElse(null);
 
-
-		//(Usuario usuario, Titulo titulo, Date fechaInicio, Date fechaFin, Boolean activo)
-		// Obtener la fecha actual y establecerla como la fecha de inicio
 		Date fechaActual = new Date();
-		prestamo.setFechaInicio(fechaActual);
-
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(fechaActual);
 		calendar.add(Calendar.DAY_OF_MONTH, 30);
-		prestamo.setFechaFin(calendar.getTime());
 
-		prestamo.setActivo(true);
+		if (prestamoExistente != null) {
+			if (prestamoExistente.isActivo()) {
+				System.out.println("El usuario ya tiene un préstamo activo de este título.");
+			} else {
+				prestamoExistente.setActivo(true);
+				prestamoExistente.setEjemplar(ejemplar);
+				prestamoExistente.setEjemplarId(ejemplar.getId());
+				prestamoExistente.setFechaInicio(fechaActual);
+				prestamoExistente.setFechaFin(calendar.getTime());
+				prestamoDAO.save(prestamoExistente);
+			}
+		}
+		else{
+				Prestamo prestamo = new Prestamo();
+				prestamo.setUsuario(usuario);
+				prestamo.setTitulo(titulo);
+				prestamo.setTituloId((titulo.getIsbn()));
+				prestamo.setUsuarioId(usuario.getId());
+				prestamo.setEjemplar(ejemplar);
+				prestamo.setEjemplarId(ejemplar.getId());
+				prestamo.setFechaInicio(fechaActual);
+				prestamo.setFechaFin(calendar.getTime());
+				prestamo.setActivo(true);
 
-		prestamoDAO.save(prestamo);
+				prestamoDAO.save(prestamo);
+			}
 
-		// Realizar otras operaciones relacionadas con el préstamo, como actualizar el ejemplar, etc.
 
-		// Actualizar la fecha de fin en el ejemplar, si es necesario
 
-		// Realizar otras operaciones necesarias para gestionar el préstamo
 
-		// Notificar al usuario que el préstamo se ha realizado con éxito o manejar errores si es necesario
-	}
+
+		}
+
 	/**
 	 * 
 	 * @param isbn
