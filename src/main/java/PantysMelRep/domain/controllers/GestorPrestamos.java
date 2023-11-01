@@ -80,12 +80,30 @@ public class GestorPrestamos {
 	/**
 	 * 
 	 * @param isbn
-	 * @param idEjemplar
 	 * @param idUsuario
 	 */
-	public void realizarDevolucion(String isbn, String idEjemplar, String idUsuario) {
-		// TODO - implement GestorPrestamos.realizarDevolucion
-		throw new UnsupportedOperationException();
+	public void realizarDevolucion(String isbn, String idUsuario) {
+		PrestamoId prestamoId = new PrestamoId(idUsuario, isbn);
+		Prestamo prestamoExistente = (Prestamo) prestamoDAO.findById(prestamoId).orElse(null);
+		if (prestamoExistente != null) {
+			if (prestamoExistente.isActivo()) {
+				if(prestamoExistente.getFechaFin().before(new Date())){
+					System.out.println("El usuario ha devuelto el libro fuera de plazo.");
+
+					//TODO: Penalizar al usuario
+				}
+				else{
+					System.out.println("El usuario ha devuelto el libro a tiempo.");
+
+				}
+				prestamoExistente.setActivo(false);
+				prestamoDAO.save(prestamoExistente);
+			} else {
+				System.out.println("El usuario no tiene un préstamo activo de este título.");
+			}
+		} else {
+			System.out.println("El usuario no tiene un préstamo activo de este título.");
+		}
 	}
 
 	/**
