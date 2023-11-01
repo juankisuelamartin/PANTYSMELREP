@@ -54,6 +54,7 @@ public class GestorPrestamos {
 				prestamoExistente.setFechaInicio(fechaActual);
 				prestamoExistente.setFechaFin(calendar.getTime());
 				prestamoDAO.save(prestamoExistente);
+				System.out.println("Prestamo realizado");
 			}
 		}
 		else{
@@ -69,7 +70,7 @@ public class GestorPrestamos {
 				prestamo.setActivo(true);
 
 				prestamoDAO.save(prestamo);
-				System.out.println("El usuario ya tiene un préstamo activo de este título.");
+				System.out.println("Prestamo realizado");
 			}
 
 
