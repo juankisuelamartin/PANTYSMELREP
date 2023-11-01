@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface PrestamoDAO extends JpaRepository<Prestamo, PrestamoId> {
     Optional<Prestamo> findById(PrestamoId prestamoId);
+    Optional<Prestamo> findByejemplarId(Long id);
 }

@@ -35,7 +35,7 @@ public class GestorPrestamos {
 
 		Ejemplar ejemplar = ejemplarDAO.findById(idEjemplar)
 				.orElseThrow(() -> new RuntimeException("Ejemplar no encontrado"));
-
+		//TODO LOG4J
 		PrestamoId prestamoId = new PrestamoId(usuario.getId(), titulo.getIsbn());
 		Prestamo prestamoExistente = (Prestamo) prestamoDAO.findById(prestamoId).orElse(null);
 
@@ -69,6 +69,7 @@ public class GestorPrestamos {
 				prestamo.setActivo(true);
 
 				prestamoDAO.save(prestamo);
+				System.out.println("El usuario ya tiene un préstamo activo de este título.");
 			}
 
 
