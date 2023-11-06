@@ -1,4 +1,6 @@
 package PantysMelRep.persistencia;
+import PantysMelRep.domain.entities.Autor;
+import PantysMelRep.domain.entities.AutorId;
 import PantysMelRep.domain.entities.Ejemplar;
 import PantysMelRep.domain.entities.Titulo;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -6,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
 
 
 @Repository
@@ -15,4 +18,5 @@ public interface EjemplarDAO extends JpaRepository<Ejemplar, String>{
     Long findMaxId();
     @Query("SELECT COUNT(e) FROM Ejemplar e WHERE e.titulo = :tituloId")
     long contarEjemplaresConMismoTitulo(@Param("tituloId") Titulo tituloId);
+
 }

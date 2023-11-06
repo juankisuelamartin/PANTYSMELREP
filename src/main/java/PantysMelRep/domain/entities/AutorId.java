@@ -3,6 +3,7 @@ package PantysMelRep.domain.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+/*@Embeddable*/
 public class AutorId implements Serializable {
     private String nombre;
     private String apellido;

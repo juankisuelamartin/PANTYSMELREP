@@ -1,10 +1,7 @@
 package PantysMelRep.domain.controllers;
 
 import PantysMelRep.domain.entities.*;
-import PantysMelRep.persistencia.AgenteBBDD;
-import PantysMelRep.persistencia.AutorDAO;
-import PantysMelRep.persistencia.EjemplarDAO;
-import PantysMelRep.persistencia.TituloDAO;
+import PantysMelRep.persistencia.*;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class GestorTitulos {
@@ -23,6 +21,8 @@ public class GestorTitulos {
 	EjemplarDAO ejemplarDAO;
 	@Autowired
 	AutorDAO autorDAO;
+	@Autowired
+	PrestamoDAO prestamoDAO;
 	private AgenteBBDD agente;
 
 
@@ -73,7 +73,6 @@ public class GestorTitulos {
 	public void borrarTitulo(String isbn) {
 		Titulo titulo = tituloDAO.findById(isbn).orElseThrow(() -> new RuntimeException("Título no encontrado"));
 		tituloDAO.delete(titulo);
-		System.out.println("Titulo y ejemplares borrados");
 	}
 	@Transactional
 	public void altaEjemplar(String isbn) {
@@ -114,14 +113,30 @@ public class GestorTitulos {
 		// Buscar el ejemplar en la base de datos
 		Ejemplar ejemplar = ejemplarDAO.findById(id).orElseThrow(() -> new RuntimeException("Ejemplar no encontrado"));
 		if (ejemplar != null) {
-			ejemplarDAO.delete(ejemplar);
-			System.out.println("Ejemplar borrado");
+			System.out.println(Long.parseLong(id));
+			if(prestamoDAO.findByejemplarId(Long.parseLong(id)).isPresent()){
+				Prestamo prestamo = prestamoDAO.findByejemplarId(Long.parseLong(id)).orElseThrow(() -> new RuntimeException("Prestamo no encontrado"));
+				if(prestamo!= null){
+					if (prestamo.isActivo()){
+						System.out.println("El ejemplar no se puede borrar porque está prestado");
+					}
+					else{
+						prestamoDAO.delete(prestamo);
+						ejemplarDAO.delete(ejemplar);
+						System.out.println("Ejemplar borrado. y prestamo inactivo borrado.");
+					}
+			}
+			}else{
+				ejemplarDAO.delete(ejemplar);
+				System.out.println("Ejemplar borrado.");
+
+
 		}
 	}
 
 
 
-
+}
 
 
 }
