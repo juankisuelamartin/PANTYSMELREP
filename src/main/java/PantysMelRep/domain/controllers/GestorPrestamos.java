@@ -114,8 +114,35 @@ public class GestorPrestamos {
 	 * @param isbn
 	 */
 	public void realizarReserva(String idUsuario, String isbn) {
-		// TODO - implement GestorPrestamos.realizarReserva
-		throw new UnsupportedOperationException();
+		// Verificar si el usuario ya tiene un préstamo activo del título
+		PrestamoId prestamoId = new PrestamoId(idUsuario, isbn);
+		Prestamo prestamoExistente = prestamoDAO.findById(prestamoId).orElse(null);
+
+		if (prestamoExistente != null && prestamoExistente.isActivo()) {
+			System.out.println("El usuario ya tiene un préstamo activo de este título. No se puede realizar una reserva.");
+		} else {
+			// Comprobar si ya existe una reserva para este usuario y título
+			Reserva reservaExistente = reservaDAO.findByUsuarioIdAndTituloId(idUsuario, isbn);
+
+			if (reservaExistente != null) {
+				System.out.println("El usuario ya tiene una reserva activa de este título.");
+			} else {
+				// Crear una nueva reserva
+				Usuario usuario = usuarioDAO.findById(idUsuario)
+						.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+				Titulo titulo = tituloDAO.findById(isbn)
+						.orElseThrow(() -> new RuntimeException("Título no encontrado"));
+
+				Reserva reserva = new Reserva();
+				reserva.setUsuario(usuario);
+				reserva.setTitulo(titulo);
+				reserva.setFecha(new Date());
+
+				reservaDAO.save(reserva);
+				System.out.println("Reserva realizada con éxito.");
+			}
+		}
 	}
+
 
 }
