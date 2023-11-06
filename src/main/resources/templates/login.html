@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Iniciar sesión</title>
+</head>
+<body>
+<div class="navbar">
+    <h1>Comprobar credenciales</h1>
+    <div class="dropdown">
+        <div class="dropdown-content">
+            <a href="javascript:void(0)" onclick="showSection('login')">Iniciar Sesión</a>
+            <a href="javascript:void(0)" onclick="showSection('signin')">Registrarse</a>
+        </div>
+    </div>
+</div>
+
+<div class="login-seccion" id="login">
+    <h1>Iniciar sesión</h1>
+    <form action="login" method="post">
+        <label for="dni_log">DNI:</label>
+        <input type="text" id="dni_log" name="dni_log" required><br>
+
+        <label for="contrasena_log">Contraseña:</label>
+        <input type="password" id="contrasena_log" name="contrasena_log" required><br>
+
+        <input type="submit" name="action" value="Iniciar sesión">
+    </form>
+</div>
+
+<div class="registro-seccion" id="signin">
+    <h1>Registrarse</h1>
+    <form action="signin" method="post">
+        <label for="dni">DNI:</label>
+        <input type="text" id="dni" name="dni" required><br>
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br>
+
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" id="apellidos" name="apellidos" required><br>
+
+        <label for="contrasena">Contraseña:</label>
+        <input type="password" id="contrasena" name="contrasena" required><br>
+
+        <input type="submit" name="action" value="Registrarse">
+    </form>
+</div>
+
+
+<script>
+    // Esta función muestra la sección especificada y oculta la otra
+    function showSection(sectionId) {
+        var sections = document.querySelectorAll('.login-seccion, .registro-seccion');
+        sections.forEach(function (section) {
+            section.style.display = 'none';
+        });
+
+        var sectionToShow = document.getElementById(sectionId);
+        sectionToShow.style.display = 'block';
+    }
+
+    // Mostrar la sección de inicio de sesión por defecto
+    showSection('login');
+</script>
+</body>
+</html>
