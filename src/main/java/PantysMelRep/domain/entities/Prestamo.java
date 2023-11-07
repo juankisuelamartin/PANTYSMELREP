@@ -16,10 +16,15 @@ public class Prestamo {
 	@Column(name = "titulo_id")
 	private String tituloId;
 
+	@Column(name = "ejemplar_id")
+	private Long ejemplarId;
+
+	@MapsId("usuarioId")
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
+	@MapsId("tituloId")
 	@ManyToOne
 	@JoinColumn(name = "titulo_id")
 	private Titulo titulo;
@@ -32,19 +37,25 @@ public class Prestamo {
 	@Column(name = "fecha_fin")
 	private Date fechaFin;
 
-	private Boolean activo;
+	@ManyToOne
+	@JoinColumn(name = "ejemplar_id", referencedColumnName = "id", insertable = false, updatable = false)
+	private Ejemplar ejemplar;
+
+	private boolean activo;
 
 	public Prestamo() {
+		// Constructor sin argumentos
 	}
 
-	public Prestamo(Usuario usuario, Titulo titulo, Date fechaInicio, Date fechaFin, Boolean activo) {
+	public Prestamo(Usuario usuario, Titulo titulo, Date fechaInicio, Date fechaFin, Ejemplar ejemplar, boolean activo) {
+		this.usuario = usuario;
+		this.titulo = titulo;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.activo = activo;
-		this.usuario = usuario;
-		this.titulo = titulo;
 		this.usuarioId = usuario.getId();
 		this.tituloId = titulo.getIsbn();
+		this.ejemplarId = ejemplar.getId();
 	}
 
 	public String getUsuarioId() {
@@ -61,6 +72,14 @@ public class Prestamo {
 
 	public void setTituloId(String tituloId) {
 		this.tituloId = tituloId;
+	}
+
+	public Long getEjemplarId() {
+		return ejemplarId;
+	}
+
+	public void setEjemplarId(Long ejemplarId) {
+		this.ejemplarId = ejemplarId;
 	}
 
 	public Usuario getUsuario() {
@@ -95,11 +114,19 @@ public class Prestamo {
 		this.fechaFin = fechaFin;
 	}
 
-	public Boolean getActivo() {
+	public Ejemplar getEjemplar() {
+		return ejemplar;
+	}
+
+	public void setEjemplar(Ejemplar ejemplar) {
+		this.ejemplar = ejemplar;
+	}
+
+	public boolean isActivo() {
 		return activo;
 	}
 
-	public void setActivo(Boolean activo) {
+	public void setActivo(boolean activo) {
 		this.activo = activo;
 	}
 }

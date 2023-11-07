@@ -1,13 +1,20 @@
 package PantysMelRep.domain.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class ReservaId implements Serializable {
 
+    @Column(name="usuario_id")
     private String usuarioId;
+
+    @Column(name="titulo_id")
     private String tituloId;
 
     public ReservaId() {

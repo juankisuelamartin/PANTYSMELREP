@@ -165,7 +165,7 @@ public class TituloController {
     }
 
 
-    // TODO SI EXISTE UN EJEMPLAR NO SE PUEDE BORRAR EL TITULO.
+
     @PostMapping("/borrarTitulo")
     public String borrarTitulo(@RequestParam("isbn_borrar") String isbn) {
         // Comprobar si existen ejemplares para el título

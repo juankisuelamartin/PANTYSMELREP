@@ -29,8 +29,7 @@ public class App {
         agenteBBDD.conectar();
         GestorTitulos gestorTitulos = context.getBean(GestorTitulos.class);
         gestorTitulos.setAgenteBBDD(agenteBBDD);
-        GestorPrestamos gestorPrestamos = context.getBean(GestorPrestamos.class);
-        gestorPrestamos.realizarPrestamo("isbn", "1", "admin");
+
          System.out.println("Conectado.");
     }
 }
