@@ -8,6 +8,7 @@ import java.util.Date;
 @Table(name = "reservas")
 public class Reserva {
 
+
 	@Id
 	@Column(name = "usuario_id")
 	private String usuarioId;
@@ -16,6 +17,7 @@ public class Reserva {
 	@Column(name = "titulo_id")
 	private String tituloId;
 
+	@MapsId("usuarioId")
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
@@ -27,6 +29,9 @@ public class Reserva {
 
 	@Temporal(TemporalType.DATE)
 	private Date fecha;
+
+	//@EmbeddedId
+	//private ReservaId reservaId;
 
 	public Reserva() {
 		// Constructor por defecto requerido por JPA
@@ -42,13 +47,29 @@ public class Reserva {
 		this.usuarioId = usuario.getId();
 		this.tituloId = titulo.getIsbn();
 	}
+
+	public String getUsuarioId() {
+		return usuarioId;
+	}
+
+	public void setUsuarioId(String usuarioId) {
+		this.usuarioId = usuarioId;
+	}
+
+	public String getTituloId() {
+		return tituloId;
+	}
+
+	public void setTituloId(String tituloId) {
+		this.tituloId = tituloId;
+	}
+
 	public Usuario getUsuario() {
 		return usuario;
 	}
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
-		this.usuarioId = usuarioId;
 	}
 
 	public Titulo getTitulo() {
@@ -56,8 +77,7 @@ public class Reserva {
 	}
 
 	public void setTitulo(Titulo titulo) {
-
-		this.tituloId = tituloId;
+		this.titulo = titulo;
 	}
 
 	public Date getFecha() {

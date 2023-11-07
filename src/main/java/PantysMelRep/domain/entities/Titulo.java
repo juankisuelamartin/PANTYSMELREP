@@ -24,7 +24,7 @@ public class Titulo {
 	@OneToMany(mappedBy = "titulo")
 	private Collection<Prestamo> prestamos = new ArrayList<>(); // Inicializa la colección
 
-	@OneToMany(mappedBy = "titulo")
+	@OneToMany(mappedBy = "titulo", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<Reserva> reservas = new ArrayList<>(); // Inicializa la colección
 
 	@Column(name = "titulo")

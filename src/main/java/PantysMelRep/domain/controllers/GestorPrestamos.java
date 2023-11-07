@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class GestorPrestamos {
@@ -122,7 +123,8 @@ public class GestorPrestamos {
 			System.out.println("El usuario ya tiene un préstamo activo de este título. No se puede realizar una reserva.");
 		} else {
 			// Comprobar si ya existe una reserva para este usuario y título
-			Reserva reservaExistente = reservaDAO.findByUsuarioIdAndTituloId(idUsuario, isbn);
+			ReservaId reservaId = new ReservaId(idUsuario, isbn);
+			Reserva reservaExistente = (Reserva) reservaDAO.findById(reservaId).orElse(null);;
 
 			if (reservaExistente != null) {
 				System.out.println("El usuario ya tiene una reserva activa de este título.");
