@@ -11,11 +11,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 @Controller
 public class LoginController {
 
     @Autowired
     private UsuarioDAO usuarioDAO;
+
+    @GetMapping("/")
+    public String home(@RequestParam(value = "firstTime", required = false) String firstTime, RedirectAttributes redirectAttributes) {
+        if (firstTime == null) {
+            redirectAttributes.addAttribute("firstTime", "no");
+            return "redirect:/login";
+        }
+
+        return "redirect:/home"; // Nombre de la vista de la página principal
+    }
+
+    @GetMapping("/home")
+    public String homePage() {
+        return "home"; // Nombre de la vista de tu página principal
+    }
 
     @GetMapping("/login")
     public String showLoginForm() {
@@ -25,8 +43,6 @@ public class LoginController {
     public String showSigninform() {
         return "signin"; // Nombre de la vista de tu formulario de inicio de sesión
     }
-
-
 
 
     @PostMapping("/login")
@@ -43,12 +59,12 @@ public class LoginController {
 
             // Redirigir a la página principal o a donde desees después del inicio de sesión
             System.out.println("Credenciales correctas");
-            return "redirect:/";
+            return "redirect:/home";
         } else {
             // Si el inicio de sesión falla, puedes agregar un mensaje de error y redirigir nuevamente a la página de inicio de sesión
             redirectAttributes.addFlashAttribute("error", "Credenciales de inicio de sesión incorrectas");
             System.out.println("Credenciales incorrectas");
-            return "redirect:/login.html";
+            return "redirect:/login";
         }
     }
 
