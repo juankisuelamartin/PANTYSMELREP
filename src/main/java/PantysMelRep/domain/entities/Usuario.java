@@ -11,6 +11,8 @@ public class Usuario {
 	private String id;
 
 	private String nombre;
+
+	private String contrasena;
 	private String apellidos;
 
 	@Temporal(TemporalType.DATE)
@@ -26,11 +28,20 @@ public class Usuario {
 	public Usuario() {
 	}
 
+	//Objeto usuario controlladores
 	public Usuario(String id, String nombre, String apellidos, Date fechaFinPenalizacion) {
 		this.id = id;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.fechaFinPenalizacion = fechaFinPenalizacion;
+	}
+
+	//Usuario Básico para login
+	public Usuario(String dni, String nombre, String apellidos, String contrasena) {
+		this.id = dni;
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.contrasena=contrasena;
 	}
 
 	public String getId() {
@@ -55,6 +66,14 @@ public class Usuario {
 
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
+	}
+
+	public String getContrasena() {
+		return contrasena;
+	}
+
+	public void setContrasena(String contrasena) {
+		this.contrasena = contrasena;
 	}
 
 	public Date getFechaFinPenalizacion() {
