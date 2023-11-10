@@ -13,7 +13,7 @@ public class AgenteBBDD {
 
     public boolean conectar() {
         try {
-            entityManagerFactory = Persistence.createEntityManagerFactory("db_proyecto_iso2");
+            entityManagerFactory = Persistence.createEntityManagerFactory("dbproyectoiso2");
             entityManager = entityManagerFactory.createEntityManager();
             return true;
         } catch (Exception e) {
