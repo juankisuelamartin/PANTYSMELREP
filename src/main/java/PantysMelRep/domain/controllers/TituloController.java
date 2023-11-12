@@ -3,6 +3,8 @@ package PantysMelRep.domain.controllers;
 import PantysMelRep.domain.entities.*;
 import PantysMelRep.persistencia.*;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,9 @@ import java.util.*;
 @Transactional
 @RequestMapping("/biblioteca")
 public class TituloController {
+
+    private static final Logger logTitulo = LoggerFactory.getLogger(TituloController.class);
+
 
     @Autowired
     private GestorTitulos gestorTitulos;
@@ -33,11 +38,14 @@ public class TituloController {
                              @RequestParam("DType") int DType,
                              RedirectAttributes redirectAttributes) throws InterruptedException {
 
+
+
         // Comprobar si el ISBN ya existe en la base de datos
         if (tituloDAO.findById(isbn).isPresent()) {
             // El ISBN ya existe, mostrar un mensaje de error
-            System.out.println("El ISBN ya existe en la base de datos.");
-            return "redirect:/"; // Redirige a la página principal o a donde desees
+            logTitulo.info("El ISBN ya existe en la Base de Datos.");
+            redirectAttributes.addFlashAttribute("error", "Error: El ISBN ya existe en la Base de Datos.");
+            return "redirect:/homea74f88ojk345"; // Redirige a la página principal o a donde desees
         }
 
         // Procesar la lista de autores
@@ -52,13 +60,16 @@ public class TituloController {
 
                 if (autorExistente != null) {
                     // El autor ya existe, usar el autor existente en lugar de crear uno nuevo
-                    System.out.println("El autor: " + nombreApellido[0] + " " + nombreApellido[1] + " ya existe en la base de datos.");
+                    logTitulo.info("El autor: " + nombreApellido[0] + " " + nombreApellido[1] + " ya existe en la base de datos.");
+                    redirectAttributes.addFlashAttribute("error", "ERROR: El autor: " + nombreApellido[0] + " " + nombreApellido[1] + " ya existe en la base de datos.");
                     listaAutores.add(autorExistente);
                 } else {
                     // Crear un nuevo autor y guardarlo en la base de datos
                     Autor nuevoAutor = new Autor();
                     nuevoAutor.setId(autorId);
                     listaAutores.add(nuevoAutor);
+                    logTitulo.info("Autor creado con éxito.");
+                    redirectAttributes.addFlashAttribute("success", "Autor creado con éxito.");
                 }
             }
         }
@@ -69,13 +80,16 @@ public class TituloController {
         if (nuevoTitulo != null) {
 
             gestorTitulos.altaEjemplar(nuevoTitulo.getIsbn());
-
+            logTitulo.info("El título ha sido dado de alta con éxito.");
+            redirectAttributes.addFlashAttribute("success", "El título ha sido dado de alta con éxito");
             // El título se dio de alta exitosamente en la base de datos
-            return "redirect:/"; // Redirige a la página principal o a donde desees
+            return "redirect:/homea74f88ojk345"; // Redirige a la página principal o a donde desees
         } else {
 
             // Hubo un error al dar de alta el título
             // Puedes redirigir a una página de error o mostrar un mensaje al usuario
+            logTitulo.info("ERROR: No se ha podido dar de alta el título.");
+            redirectAttributes.addFlashAttribute("error", "ERROR: No se ha podido dar de alta el título.");
             return "error"; // Cambia "error" al nombre de tu vista de error
         }
     }
@@ -86,12 +100,15 @@ public class TituloController {
     public String actualizarTitulo(@RequestParam("isbn_actualizar") String isbn,
                                    @RequestParam("titulo_actualizar") String nuevoTitulo,
                                    @RequestParam("autores_actualizar") String nuevosAutores,
-                                   @RequestParam("DType_actualizar") int DType) {
+                                   @RequestParam("DType_actualizar") int DType,
+                                   RedirectAttributes redirectAttributes) throws InterruptedException {
 
         // Recuperar el título existente de la base de datos
         Optional<Titulo> optionalTitulo = tituloDAO.findById(isbn);
         if (!optionalTitulo.isPresent()) {
             // Manejar el caso en el que el título no existe
+            logTitulo.info("ERROR: El título no existe.");
+            redirectAttributes.addFlashAttribute("error", "ERROR: El título no existe.");
             return "error"; // Puedes redirigir a una página de error o mostrar un mensaje al usuario
         }
 
@@ -127,9 +144,11 @@ public class TituloController {
         }
         // Guarda el título actualizado en la base de datos
         tituloDAO.save(tituloActualizado);
+        logTitulo.info("Título actualizado con éxito.");
+        redirectAttributes.addFlashAttribute("success", "Título actualizado con éxito.");
         // Agrega los ejemplares al nuevo título
 
-        return "redirect:/"; // Redirige a la página principal
+        return "redirect:/homea74f88ojk345"; // Redirige a la página principal
 
     }
 
@@ -160,6 +179,7 @@ public class TituloController {
             }
             // Agregar el autor a la lista de autores actualizados
             listaAutoresActualizados.add(autor);
+
         }
         return listaAutoresActualizados;
     }
@@ -167,11 +187,15 @@ public class TituloController {
 
 
     @PostMapping("/borrarTitulo")
-    public String borrarTitulo(@RequestParam("isbn_borrar") String isbn) {
+    public String borrarTitulo(@RequestParam("isbn_borrar") String isbn,
+                               RedirectAttributes redirectAttributes) throws InterruptedException {
+
         // Comprobar si existen ejemplares para el título
         Optional<Titulo> optionalTitulo = tituloDAO.findById(isbn);
         if (!optionalTitulo.isPresent()) {
             // Manejar el caso en el que el título no existe
+            logTitulo.info("ERROR: El título no existe.");
+            redirectAttributes.addFlashAttribute("error", "ERROR: El título no existe.");
             return "error"; // Puedes redirigir a una página de error o mostrar un mensaje al usuario
         } else {
             Titulo titulo = optionalTitulo.get(); // Obtener el valor del Optional
@@ -185,24 +209,31 @@ public class TituloController {
 
             // Después de eliminar los ejemplares, puedes eliminar el título
             gestorTitulos.borrarTitulo(isbn);
+            logTitulo.info("Título eliminado con éxito");
+            redirectAttributes.addFlashAttribute("success", "Título eliminado con éxito");
         }
 
-        return "redirect:/"; // Redirige a la página principal
+        return "redirect:/homea74f88ojk345"; // Redirige a la página principal
     }
 
 // TODO GESTION DE ERRORES
 
     @PostMapping("/altaEjemplar")
-    public String altaEjemplar(@RequestParam("isbn_ejemplar") String isbn, Model model) {
+    public String altaEjemplar(@RequestParam("isbn_ejemplar") String isbn, Model model,
+                               RedirectAttributes redirectAttributes) throws InterruptedException {
 
             gestorTitulos.altaEjemplar(isbn);
-        return "redirect:/"; // Redirige a la página principal
+        logTitulo.info("Ejemplar dado de alta con éxito.");
+        redirectAttributes.addFlashAttribute("success", "Ejemplar dado de alta con éxito");
+        return "redirect:/homea74f88ojk345"; // Redirige a la página principal
     }
 
 
     // TODO COMPROBAR QUE EXISTE EL EJEMPLAR/TITULO A BORRAR
     @PostMapping("/bajaEjemplar")
-    public String bajaEjemplar(@RequestParam("id_baja") String id) {
+    public String bajaEjemplar(@RequestParam("id_baja") String id,
+                               RedirectAttributes redirectAttributes) throws InterruptedException {
+
         // Obtener el ID del formulario y enviarlo al servicio GestorTitulos
         // Contar cuántos ejemplares existen con el mismo Titulo_Id
         Titulo tituloId = ejemplarDAO.findById(id).orElseThrow(() -> new RuntimeException("Ejemplar no encontrado")).getTitulo();
@@ -211,13 +242,15 @@ public class TituloController {
             // Permitir la eliminación del ejemplar
             gestorTitulos.bajaEjemplar(id);
             countEjemplares -= 1;
-            System.out.println("Ejemplar con ID de ejemplar: "+id+ " y ISBN: " +tituloId.getIsbn()+ " borrado. Numero de ejemplares: " +countEjemplares);
+            logTitulo.info("Ejemplar con ID de ejemplar: "+id+ " y ISBN: " +tituloId.getIsbn()+ " borrado. Numero de ejemplares: " +countEjemplares);
+            redirectAttributes.addFlashAttribute("success", "Ejemplar con ID de ejemplar: "+id+ " y ISBN: " +tituloId.getIsbn()+ " borrado. Numero de ejemplares: " +countEjemplares);
         } else {
-            System.out.println("Ejemplar con ID de ejemplar: "+id+ " y ISBN: " +tituloId.getIsbn()+ " no ha sido borrado. Numero de ejemplares: " +countEjemplares);
+           logTitulo.info("ERROR: Ejemplar con ID de ejemplar: "+id+ " y ISBN: " +tituloId.getIsbn()+ " no ha sido borrado. Numero de ejemplares: " +countEjemplares);
+            redirectAttributes.addFlashAttribute("error", "ERROR: Ejemplar con ID de ejemplar: "+id+ " y ISBN: " +tituloId.getIsbn()+ " no ha sido borrado. Numero de ejemplares: " +countEjemplares);
             // No permitir la eliminación y mostrar un mensaje de error o redirigir a una página de error
             // Puedes agregar un mensaje de error o redirigir a una página apropiada aquí.
         }
 
-        return "redirect:/"; // Redirige a la página principal
+        return "redirect:/homea74f88ojk345"; // Redirige a la página principal
     }
 }

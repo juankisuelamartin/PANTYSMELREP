@@ -3,6 +3,8 @@ package PantysMelRep.domain.controllers;
 import PantysMelRep.domain.entities.Prestamo;
 import PantysMelRep.persistencia.PrestamoDAO;
 import PantysMelRep.domain.controllers.GestorPrestamos;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/biblioteca")
 public class PrestamoController {
+
+    private static final Logger logPrestamo = LoggerFactory.getLogger(PrestamoController.class);
 
     @Autowired
     private GestorPrestamos gestorPrestamos;
@@ -26,9 +30,11 @@ public class PrestamoController {
 
         // Realizar el préstamo usando el Gestor de Préstamos
         gestorPrestamos.realizarPrestamo(isbn, idEjemplar, idUsuario);
+        logPrestamo.info("Prestamo realizado con éxito");
+        redirectAttributes.addFlashAttribute("success", "Prestamo realizado con éxito");
 
         // Redirigir a la página principal o a donde desees
-        return "redirect:/";
+        return "redirect:/homea74f88ojk345";
     }
 
     @PostMapping("/realizarDevolucion")
@@ -38,9 +44,10 @@ public class PrestamoController {
 
         // Realizar la devolución usando el Gestor de Préstamos
         gestorPrestamos.realizarDevolucion(isbn, idUsuario);
-
+        logPrestamo.info("Devolución realizada con éxito");
+        redirectAttributes.addFlashAttribute("success", "Devolución realizada con éxito");
         // Redirigir a la página principal o a donde desees
-        return "redirect:/";
+        return "redirect:/homea74f88ojk345";
     }
 
     @PostMapping("/realizarReserva")
@@ -50,8 +57,9 @@ public class PrestamoController {
 
         // Realizar la reserva usando el Gestor de Préstamos
         gestorPrestamos.realizarReserva(idUsuario, isbn);
-
+        logPrestamo.info("Reserva realizada con éxito");
+        redirectAttributes.addFlashAttribute("success", "Reserva realizada con éxito");
         // Redirigir a la página principal o a donde desees
-        return "redirect:/";
+        return "redirect:/homea74f88ojk345";
     }
 }
