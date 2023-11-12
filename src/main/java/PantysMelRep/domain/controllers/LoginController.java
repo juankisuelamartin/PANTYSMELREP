@@ -2,6 +2,8 @@ package PantysMelRep.domain.controllers;
 
 import PantysMelRep.domain.entities.Usuario;
 import PantysMelRep.persistencia.UsuarioDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class LoginController {
 
+    private static final Logger logLogin = LoggerFactory.getLogger(LoginController.class);
+
     @Autowired
     private UsuarioDAO usuarioDAO;
 
@@ -27,10 +31,10 @@ public class LoginController {
             return "redirect:/login";
         }
 
-        return "redirect:/home"; // Nombre de la vista de la página principal
+        return "redirect:/homea74f88ojk345"; // Nombre de la vista de la página principal
     }
 
-    @GetMapping("/home")
+    @GetMapping("/homea74f88ojk345")
     public String homePage() {
         return "home"; // Nombre de la vista de tu página principal
     }
@@ -58,12 +62,12 @@ public class LoginController {
             // Por ejemplo, establecer una sesión de usuario
 
             // Redirigir a la página principal o a donde desees después del inicio de sesión
-            System.out.println("Credenciales correctas");
-            return "redirect:/home";
+            logLogin.info("Credenciales correctas");
+            return "redirect:/homea74f88ojk345";
         } else {
             // Si el inicio de sesión falla, puedes agregar un mensaje de error y redirigir nuevamente a la página de inicio de sesión
             redirectAttributes.addFlashAttribute("error", "Credenciales de inicio de sesión incorrectas");
-            System.out.println("Credenciales incorrectas");
+            logLogin.info("Credenciales incorrectas");
             return "redirect:/login";
         }
     }
@@ -77,7 +81,7 @@ public class LoginController {
         Usuario usuarioExistente = usuarioDAO.findById(dni).orElse(null);
         if (usuarioExistente != null) {
             // El usuario con el mismo DNI ya existe, puedes manejar este caso como desees
-            System.out.println("Ya existe un usuario con el mismo DNI");
+            logLogin.info("Ya existe un usuario con el mismo DNI");
             // Puedes redirigir a una página de error, mostrar un mensaje al usuario, etc.
             return "redirect:/error";
         } else {

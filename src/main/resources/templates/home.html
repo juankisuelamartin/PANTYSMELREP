@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -157,6 +157,38 @@
     <!-- Aquí va el contenido de la sección de penalizaciones -->
 </div>
 
+<!-- Envío mensaje de exito -->
+<div th:if="${success}" class="success-mensaje-flash">
+    <p th:text="${success}"></p>
+</div>
+
+<!-- Puedes personalizar el estilo de la clase "mensaje-flash" según tus necesidades -->
+<style>
+    .success-mensaje-flash {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        margin: 15px 0;
+        text-align: center;
+    }
+</style>
+
+<!-- Envío mensaje de error -->
+<div th:if="${error}" class="error-mensaje-flash">
+    <p th:text="${error}"></p>
+</div>
+
+<!-- Puedes personalizar el estilo de la clase "mensaje-flash" según tus necesidades -->
+<style>
+    .error-mensaje-flash {
+        background-color: #d50000;
+        color: white;
+        padding: 10px;
+        margin: 15px 0;
+        text-align: center;
+    }
+</style>
+
 <script>
     function showSection(sectionId) {
         var sections = document.querySelectorAll('.content');
@@ -179,5 +211,6 @@
         return true;
     }
 </script>
+
 </body>
 </html>
