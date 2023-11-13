@@ -1,164 +1,16 @@
-
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--<meta http-equiv="refresh" content="0;url=login">-->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="icon" type="image/png" sizes="16x16" href="https://gamepedia.cursecdn.com/minecraft_de_gamepedia/3/35/Buch.png?v">
     <title>BIBLIOTECA PANTYSMEL</title>
-    <style>
-        .content {
-            display: none;
-        }
-
-        .active {
-            display: block;
-        }
-    </style>
 </head>
 <body>
 <div class="navbar">
-    <h1>Gestor de Títulos</h1>
-    <div class="dropdown">
-        <button class="dropbtn">Categorías</button>
-        <div class="dropdown-content">
-            <a href="javascript:void(0)" onclick="showSection('titulos')">Títulos</a>
-            <a href="javascript:void(0)" onclick="showSection('prestamos')">Préstamos</a>
-            <a href="javascript:void(0)" onclick="showSection('penalizaciones')">Penalizaciones</a>
-        </div>
-    </div>
+    <div th:replace="header :: header"></div>
 </div>
-
-<div class="content active" id="titulos">
-    <div id="altaTitulo">
-        <h2>Alta de Título</h2>
-        <form action="/biblioteca/altaTitulo" method="post" onsubmit="return validateForm(this)">
-            <label for="titulo">Título:</label>
-            <input type="text" id="titulo" name="titulo" required>
-            <br>
-            <label for="isbn">ISBN:</label>
-            <input type="text" id="isbn" name="isbn" required>
-            <br>
-            <label for="autores">Autores (separados por comas):</label>
-            <input type="text" id="autores" name="autores" required>
-            <br>
-            <!-- Desplegable para elegir tipo -->
-            <label for="DType">Tipo:</label>
-            <select id="DType" name="DType">
-                <option value="1">Libro</option>
-                <option value="2">Revista</option>
-            </select>
-            <br>
-            <input type="submit" value="Agregar Título">
-        </form>
-    </div>
-
-    <div id="actualizarTitulo">
-        <h2>Actualizar Título</h2>
-        <form action="/biblioteca/actualizarTitulo" method="post" onsubmit="return validateForm(this)">
-            <label for="isbn_actualizar">ISBN del Título a Actualizar:</label>
-            <input type="text" id="isbn_actualizar" name="isbn_actualizar" required>
-            <br>
-            <label for= "titulo_actualizar">Nuevo Título:</label>
-            <input type="text" id="titulo_actualizar" name="titulo_actualizar" required>
-            <br>
-            <label for="autores_actualizar">Nuevos Autores (separados por comas):</label>
-            <input type="text" id="autores_actualizar" name="autores_actualizar" required>
-            <br>
-            <!-- Desplegable para elegir tipo -->
-            <label for="DType_actualizar">Nuevo Tipo:</label>
-            <select id="DType_actualizar" name="DType_actualizar">
-                <option value="1">Libro</option>
-                <option value="2">Revista</option>
-            </select>
-            <br>
-            <input type="submit" value="Actualizar Título">
-        </form>
-    </div>
-
-    <div id="borrarTitulo">
-        <h2>Borrar Título</h2>
-        <form action="/biblioteca/borrarTitulo" method="post" onsubmit="return validateForm(this)">
-            <label for="isbn_borrar">ISBN del Título a Borrar:</label>
-            <input type="text" id="isbn_borrar" name="isbn_borrar" required>
-            <br>
-            <input type="submit" value="Borrar Título">
-        </form>
-    </div>
-
-    <div id="bajaEjemplar">
-        <h2>Baja de Ejemplar</h2>
-        <form action="/biblioteca/bajaEjemplar" method="post" onsubmit="return validateForm(this)">
-            <label for="id_baja">ID del Ejemplar a Borrar:</label>
-            <input type="text" id="id_baja" name="id_baja" required>
-            <br>
-            <input type="submit" value="Borrar Ejemplar">
-        </form>
-    </div>
-
-    <div id="altaEjemplar">
-        <h2>Alta de Ejemplar</h2>
-        <form action="/biblioteca/altaEjemplar" method="post" onsubmit="return validateForm(this)">
-            <label for="isbn_ejemplar">ISBN del Título:</label>
-            <input type="text" id="isbn_ejemplar" name="isbn_ejemplar" required>
-            <br>
-            <input type="submit" value="Agregar Ejemplar">
-        </form>
-    </div>
-</div>
-
-<div class="content" id="prestamos">
-    <div id="realizarPrestamo">
-        <h2>Realizar Préstamo</h2>
-        <form action="/biblioteca/realizarPrestamo" method="post" onsubmit="return validateForm(this)">
-            <label for="isbn_prestamo">ISBN del Título:</label>
-            <input type="text" id="isbn_prestamo" name="isbn_prestamo" required>
-            <br>
-            <label for="idEjemplar_prestamo">ID del Ejemplar:</label>
-            <input type="text" id="idEjemplar_prestamo" name="idEjemplar_prestamo" required>
-            <br>
-            <label for="idUsuario_prestamo">ID del Usuario:</label>
-            <input type="text" id="idUsuario_prestamo" name="idUsuario_prestamo" required>
-            <br>
-            <input type="submit" value="Realizar Préstamo">
-        </form>
-    </div>
-
-    <div id="realizarDevolucion">
-        <h2>Realizar Devolución</h2>
-        <form action="/biblioteca/realizarDevolucion" method="post" onsubmit="return validateForm(this)">
-            <label for="isbn_devolucion">ISBN del Título:</label>
-            <input type="text" id="isbn_devolucion" name="isbn_devolucion" required>
-            <br>
-            <label for="idUsuario_devolucion">ID del Usuario:</label>
-            <input type="text" id="idUsuario_devolucion" name="idUsuario_devolucion" required>
-            <br>
-            <input type="submit" value="Realizar Devolución">
-        </form>
-    </div>
-
-    <div id="realizarReserva">
-        <h2>Realizar Reserva</h2>
-        <form action="/biblioteca/realizarReserva" method="post" onsubmit="return validateForm(this)">
-            <label for="isbn_reserva">ISBN del Título:</label>
-            <input type="text" id="isbn_reserva" name="isbn_reserva" required>
-            <br>
-            <label for="idUsuario_reserva">ID del Usuario:</label>
-            <input type="text" id="idUsuario_reserva" name="idUsuario_reserva" required>
-            <br>
-            <input type="submit" value="Realizar Reserva">
-        </form>
-    </div>
-</div>
-
-<div class="content" id="penalizaciones">
-    <!-- Aquí va el contenido de la sección de penalizaciones -->
-</div>
-
-
-
 <script>
     function showSection(sectionId) {
         var sections = document.querySelectorAll('.content');

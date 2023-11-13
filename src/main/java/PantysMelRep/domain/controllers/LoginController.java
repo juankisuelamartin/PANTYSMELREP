@@ -32,10 +32,10 @@ public class LoginController {
         }
 
 
-        return "redirect:/homea74f88ojk345"; // Nombre de la vista de la página principal
+        return "redirect:/home"; // Nombre de la vista de la página principal
     }
 
-    @GetMapping("/homea74f88ojk345")
+    @GetMapping("/home")
     public String homePage() {
         return "home"; // Nombre de la vista de tu página principal
     }
@@ -64,7 +64,7 @@ public class LoginController {
 
             // Redirigir a la página principal o a donde desees después del inicio de sesión
             logLogin.info("Credenciales correctas");
-            return "redirect:/homea74f88ojk345";
+            return "redirect:/home";
         } else {
             // Si el inicio de sesión falla, puedes agregar un mensaje de error y redirigir nuevamente a la página de inicio de sesión
             redirectAttributes.addFlashAttribute("error", "Credenciales de inicio de sesión incorrectas");

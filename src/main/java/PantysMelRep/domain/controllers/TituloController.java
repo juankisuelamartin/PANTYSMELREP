@@ -45,7 +45,7 @@ public class TituloController {
             // El ISBN ya existe, mostrar un mensaje de error
             logTitulo.info("El ISBN ya existe en la Base de Datos.");
             redirectAttributes.addFlashAttribute("error", "Error: El ISBN ya existe en la Base de Datos.");
-            return "redirect:/homea74f88ojk345"; // Redirige a la página principal o a donde desees
+            return "redirect:/home"; // Redirige a la página principal o a donde desees
         }
 
         // Procesar la lista de autores
@@ -82,7 +82,7 @@ public class TituloController {
             logTitulo.info("El título ha sido dado de alta con éxito.");
             redirectAttributes.addFlashAttribute("success", "El título ha sido dado de alta con éxito");
             // El título se dio de alta exitosamente en la base de datos
-            return "redirect:/homea74f88ojk345"; // Redirige a la página principal o a donde desees
+            return "redirect:/home"; // Redirige a la página principal o a donde desees
         } else {
 
             // Hubo un error al dar de alta el título
@@ -147,7 +147,7 @@ public class TituloController {
         redirectAttributes.addFlashAttribute("success", "Título actualizado con éxito.");
         // Agrega los ejemplares al nuevo título
 
-        return "redirect:/homea74f88ojk345"; // Redirige a la página principal
+        return "redirect:/home"; // Redirige a la página principal
 
     }
 
@@ -212,7 +212,7 @@ public class TituloController {
             redirectAttributes.addFlashAttribute("success", "Título eliminado con éxito");
         }
 
-        return "redirect:/homea74f88ojk345"; // Redirige a la página principal
+        return "redirect:/home"; // Redirige a la página principal
     }
 
 // TODO GESTION DE ERRORES
@@ -224,7 +224,7 @@ public class TituloController {
             gestorTitulos.altaEjemplar(isbn, redirectAttributes);
         logTitulo.info("Ejemplar dado de alta con éxito.");
         redirectAttributes.addFlashAttribute("success", "Ejemplar dado de alta con éxito");
-        return "redirect:/homea74f88ojk345"; // Redirige a la página principal
+        return "redirect:/home"; // Redirige a la página principal
     }
 
 
@@ -250,6 +250,6 @@ public class TituloController {
             // Puedes agregar un mensaje de error o redirigir a una página apropiada aquí.
         }
 
-        return "redirect:/homea74f88ojk345"; // Redirige a la página principal
+        return "redirect:/home"; // Redirige a la página principal
     }
 }
