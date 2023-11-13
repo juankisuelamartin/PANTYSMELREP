@@ -4,9 +4,12 @@ import PantysMelRep.domain.entities.*;
 import PantysMelRep.persistencia.*;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.Collection;
@@ -24,7 +27,7 @@ public class GestorTitulos {
 	@Autowired
 	PrestamoDAO prestamoDAO;
 	private AgenteBBDD agente;
-
+	private static final Logger logTitulo = LoggerFactory.getLogger(TituloController.class);
 
 
 	public void setAgenteBBDD(AgenteBBDD agente) {
@@ -52,7 +55,6 @@ public class GestorTitulos {
 
 			// Guardar el nuevo título en la base de datos
 			tituloDAO.save(nuevoTitulo);
-			System.out.println("Título guardado en la base de datos");
 
 			return nuevoTitulo;
 		} catch (DataIntegrityViolationException e) {
@@ -75,24 +77,22 @@ public class GestorTitulos {
 		tituloDAO.delete(titulo);
 	}
 	@Transactional
-	public void altaEjemplar(String isbn) {
+	public void altaEjemplar(String isbn, RedirectAttributes redirectAttributes) {
 
 		// Buscar el título en la base de datos
 		Titulo titulo = tituloDAO.findById(isbn).orElseThrow(() -> new RuntimeException("Título no encontrado"));
 
 		// Generar un nuevo ID automáticamente para el nuevo ejemplar
 		Long nuevoId = generarNuevoIdParaEjemplar();
-		System.out.println(nuevoId);
 		// Crear un nuevo ejemplar
 		Ejemplar ejemplar = new Ejemplar();
 		ejemplar.setId(nuevoId);
 		ejemplar.setTitulo(titulo);
 
 		// Añadir el nuevo ejemplar a la lista de ejemplares del título
-
-		System.out.println("Ejemplar añadido");
-		System.out.println(ejemplar.toString());
 		ejemplarDAO.save(ejemplar);
+		logTitulo.info("Ejemplar añadido: " +ejemplar.toString());
+		redirectAttributes.addFlashAttribute("success", "Ejemplar añadido: " +ejemplar.toString());
 	}
 	private Long generarNuevoIdParaEjemplar() {
 		// Buscar el ID máximo actual en los ejemplares existentes
@@ -109,26 +109,28 @@ public class GestorTitulos {
 
 
 	@Transactional
-	public void bajaEjemplar(String id) {
+	public void bajaEjemplar(String id, RedirectAttributes redirectAttributes) {
 		// Buscar el ejemplar en la base de datos
 		Ejemplar ejemplar = ejemplarDAO.findById(id).orElseThrow(() -> new RuntimeException("Ejemplar no encontrado"));
 		if (ejemplar != null) {
-			System.out.println(Long.parseLong(id));
 			if(prestamoDAO.findByejemplarId(Long.parseLong(id)).isPresent()){
 				Prestamo prestamo = prestamoDAO.findByejemplarId(Long.parseLong(id)).orElseThrow(() -> new RuntimeException("Prestamo no encontrado"));
 				if(prestamo!= null){
 					if (prestamo.isActivo()){
-						System.out.println("El ejemplar no se puede borrar porque está prestado");
+						logTitulo.error("El ejemplar no se puede borrar porque está prestado");
+						redirectAttributes.addFlashAttribute("error", "El ejemplar no se puede borrar porque está prestado");
 					}
 					else{
 						prestamoDAO.delete(prestamo);
 						ejemplarDAO.delete(ejemplar);
-						System.out.println("Ejemplar borrado. y prestamo inactivo borrado.");
+						logTitulo.info("Ejemplar borrado. y prestamo inactivo borrado.");
+						redirectAttributes.addFlashAttribute("success", "Ejemplar borrado. y prestamo inactivo borrado.");
 					}
 			}
 			}else{
 				ejemplarDAO.delete(ejemplar);
-				System.out.println("Ejemplar borrado.");
+				logTitulo.info("Ejemplar borrado.");
+				redirectAttributes.addFlashAttribute("success", "Ejemplar borrado.");
 
 
 		}

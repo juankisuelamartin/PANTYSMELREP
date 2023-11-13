@@ -61,7 +61,6 @@ public class TituloController {
                 if (autorExistente != null) {
                     // El autor ya existe, usar el autor existente en lugar de crear uno nuevo
                     logTitulo.info("El autor: " + nombreApellido[0] + " " + nombreApellido[1] + " ya existe en la base de datos.");
-                    redirectAttributes.addFlashAttribute("error", "ERROR: El autor: " + nombreApellido[0] + " " + nombreApellido[1] + " ya existe en la base de datos.");
                     listaAutores.add(autorExistente);
                 } else {
                     // Crear un nuevo autor y guardarlo en la base de datos
@@ -79,7 +78,7 @@ public class TituloController {
 
         if (nuevoTitulo != null) {
 
-            gestorTitulos.altaEjemplar(nuevoTitulo.getIsbn());
+            gestorTitulos.altaEjemplar(nuevoTitulo.getIsbn(), redirectAttributes);
             logTitulo.info("El título ha sido dado de alta con éxito.");
             redirectAttributes.addFlashAttribute("success", "El título ha sido dado de alta con éxito");
             // El título se dio de alta exitosamente en la base de datos
@@ -203,7 +202,7 @@ public class TituloController {
             if (titulo.getEjemplares() != null && !titulo.getEjemplares().isEmpty()) {
                 // Si hay ejemplares, eliminarlos
                 for (Ejemplar ejemplar : titulo.getEjemplares()) {
-                    gestorTitulos.bajaEjemplar(ejemplar.getId().toString());
+                    gestorTitulos.bajaEjemplar(ejemplar.getId().toString(), redirectAttributes);
                 }
             }
 
@@ -222,7 +221,7 @@ public class TituloController {
     public String altaEjemplar(@RequestParam("isbn_ejemplar") String isbn, Model model,
                                RedirectAttributes redirectAttributes) throws InterruptedException {
 
-            gestorTitulos.altaEjemplar(isbn);
+            gestorTitulos.altaEjemplar(isbn, redirectAttributes);
         logTitulo.info("Ejemplar dado de alta con éxito.");
         redirectAttributes.addFlashAttribute("success", "Ejemplar dado de alta con éxito");
         return "redirect:/homea74f88ojk345"; // Redirige a la página principal
@@ -240,7 +239,7 @@ public class TituloController {
         long countEjemplares = ejemplarDAO.contarEjemplaresConMismoTitulo(tituloId);;
         if (countEjemplares > 1) {
             // Permitir la eliminación del ejemplar
-            gestorTitulos.bajaEjemplar(id);
+            gestorTitulos.bajaEjemplar(id, redirectAttributes);
             countEjemplares -= 1;
             logTitulo.info("Ejemplar con ID de ejemplar: "+id+ " y ISBN: " +tituloId.getIsbn()+ " borrado. Numero de ejemplares: " +countEjemplares);
             redirectAttributes.addFlashAttribute("success", "Ejemplar con ID de ejemplar: "+id+ " y ISBN: " +tituloId.getIsbn()+ " borrado. Numero de ejemplares: " +countEjemplares);
