@@ -31,6 +31,7 @@ public class LoginController {
             return "redirect:/login";
         }
 
+
         return "redirect:/homea74f88ojk345"; // Nombre de la vista de la página principal
     }
 
