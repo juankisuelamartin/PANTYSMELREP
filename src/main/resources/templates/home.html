@@ -9,8 +9,9 @@
 </head>
 <body>
 <div class="navbar">
-    <div th:replace="header :: header"></div>
+    <div th:replace="~{header :: header}"></div>
 </div>
+
 <script>
     function showSection(sectionId) {
         var sections = document.querySelectorAll('.content');

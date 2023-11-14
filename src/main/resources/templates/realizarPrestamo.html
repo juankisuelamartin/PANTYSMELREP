@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="icon" type="image/png" sizes="16x16"
+          href="https://gamepedia.cursecdn.com/minecraft_de_gamepedia/3/35/Buch.png?v">
+    <title>Gestión Prestamos</title>
+    <style>
+        .content-realizarPrestamo{
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+<div class="navbar">
+    <div th:replace="~{header :: header}"></div>
+</div>
+
+<div class="content-realizarPrestamo active" id="realizarPrestamo">
+    <h2>Realizar Préstamo</h2>
+    <form action="/biblioteca/realizarPrestamo" method="post" onsubmit="return validateForm(this)">
+        <label for="isbn_prestamo">ISBN del Título:</label>
+        <input type="text" id="isbn_prestamo" name="isbn_prestamo" required>
+        <br>
+        <label for="idEjemplar_prestamo">ID del Ejemplar:</label>
+        <input type="text" id="idEjemplar_prestamo" name="idEjemplar_prestamo" required>
+        <br>
+        <label for="idUsuario_prestamo">ID del Usuario:</label>
+        <input type="text" id="idUsuario_prestamo" name="idUsuario_prestamo" required>
+        <br>
+        <input type="submit" value="Realizar Préstamo">
+    </form>
+</div>
+
+<script>
+    function showForm(formId) {
+        var forms = document.querySelectorAll('.content-realizarPrestamo, .content-realizarDevolucion, .content-realizarReserva');
+        for (var i = 0; i < forms.length; i++) {
+            var form = forms[i];
+            if (form.id === formId) {
+                form.classList.add('active');
+            } else {
+                form.classList.remove('active');
+            }
+        }
+    }
+
+    function validateForm(form) {
+        var inputs = form.querySelectorAll('input[required]');
+        for (var i = 0; i < inputs.length; i++) {
+            if (!inputs[i].value) {
+                alert('Por favor, complete todos los campos obligatorios.');
+                return false;
+            }
+        }
+        return true;
+    }
+</script>
+
+<script th:if="${error}" th:inline="javascript">
+    /* <![CDATA[*/
+    alert([[${error}]]);
+    /* ]]>*/
+</script>
+<script th:if="${success}" th:inline="javascript">
+    /* <![CDATA[*/
+    alert([[${success}]]);
+    /* ]]>*/
+</script>
+</body>
+
+</html>

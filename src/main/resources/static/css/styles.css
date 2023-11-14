@@ -1,11 +1,15 @@
 body {
-    margin: 0;
+    margin: 5px;
     font-family: Helvetica;
     font-size: 11px;
     text-transform: uppercase;
     box-sizing: border-box; /* Incluye el padding y el borde en el ancho y alto del elemento */
+    background-color: #dcdcdc;
 }
+#bar, #bar2, #bar3, #bar4 {
+    font-weight: bold;
 
+}
 .content {
     display: none;
 }

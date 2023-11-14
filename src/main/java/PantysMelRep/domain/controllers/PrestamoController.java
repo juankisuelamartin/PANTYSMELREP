@@ -66,18 +66,18 @@ public class PrestamoController {
     @GetMapping("/realizarPrestamo")
     public String mostrarFormulariorealizarPrestamo(Model model) {
         // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
-        return "Prestamos :: realizarPrestamoFragment";
+        return "realizarPrestamo";
     }
 
     @GetMapping("/realizarDevolucion")
     public String mostrarFormulariorealizarDevolucion(Model model) {
         // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
-        return "Prestamos :: realizarDevolucionFragment";
+        return "realizarDevolucion";
     }
 
     @GetMapping("/realizarReserva")
     public String mostrarFormulariorealizarReserva(Model model) {
         // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
-        return "Prestamos :: realizarReservaFragment";
+        return "realizarReserva";
     }
 }

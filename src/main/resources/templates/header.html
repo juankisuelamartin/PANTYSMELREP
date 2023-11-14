@@ -14,27 +14,27 @@
     <h1>Admin - Biblioteca</h1>
     <ul class="navigation-menu">
       <li><a th:href="@{/home}">Home</a></li>
-      <li><a th:href="@{/Titulos}">Gestión Titulos</a>
+      <li><p id="bar">Gestión Títulos</p>
         <ul>
           <li><a href="/titulos/altaTitulo" onclick="showForm('altaTitulo')">Alta Título</a></li>
           <li><a href="/titulos/actualizarTitulo" onclick="showForm('actualizarTitulo')">Actualizar Título</a></li>
           <li><a href="/titulos/borrarTitulo" onclick="showForm('borrarTitulo')">Borrar Título</a></li>
         </ul>
       </li>
-      <li><a th:href="@{/Ejemplares}">GESTIÓN EJEMPLARES</a>
+      <li><p id="bar2">Gestión Ejemplares</p>
         <ul>
           <li><a href="/titulos/altaEjemplar" onclick="showForm('altaEjemplar')">ALTA EJEMPLAR</a></li>
           <li><a href="/titulos/bajaEjemplar" onclick="showForm('bajaEjemplar')">BAJA EJEMPLAR</a></li>
         </ul>
       </li>
-      <li><a th:href="@{/Prestamos}">GESTIÓN PRESTAMOS</a>
+      <li><p id="bar3">Gestión Préstamos</p>
         <ul>
           <li><a href="/prestamos/realizarPrestamo" onclick="showForm('realizarPrestamo')">REALIZAR PRESTAMO</a></li>
           <li><a href="/prestamos/realizarDevolucion" onclick="showForm('realizarDevolucion')">DEVOLVER PRESTAMO</a></li>
           <li><a href="/prestamos/realizarReserva" onclick="showForm('realizarReserva')">REALIZAR RESERVA</a></li>
         </ul>
       </li>
-      <li><a href="Penalizaciones.html">GESTIÓN PENALIZACIONES</a>
+      <li><p id="bar4">Gestión Penalización</p>
         <ul>
           <li><a href="#">Alta penalización</a></li>
           <li><a href="#">Baja penalización</a></li>

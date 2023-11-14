@@ -255,25 +255,25 @@ public class TituloController {
     @GetMapping("/altaTitulo")
     public String mostrarFormularioAltaTitulo() {
         // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
-        return "Titulos :: altaTituloFragment";
+        return "altaTitulo";
     }
 
     @GetMapping("/actualizarTitulo")
     public String mostrarFormularioActualizarTitulo(Model model) {
         // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
-        return "Titulos :: actualizarTituloFragment";
+        return "actualizarTitulo";
     }
 
     @GetMapping("/borrarTitulo")
     public String mostrarFormularioBorrarTitulo(Model model) {
         // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
-        return "Titulos :: borrarTituloFragment";
+        return "borrarTitulo";
     }
 
     @GetMapping("/altaEjemplar")
     public String mostrarFormularioAltaEjemplar(Model model) {
         // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
-        return "Ejemplares :: altaEjemplarFragment";
+        return "altaEjemplar";
     }
 
     @GetMapping("/bajaEjemplar")
