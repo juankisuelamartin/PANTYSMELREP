@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://gamepedia.cursecdn.com/minecraft_de_gamepedia/3/35/Buch.png?v">
+    <title>Gestión Títulos - Alta de Título</title>
+    <style>
+        .content-altaTitulo {
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <div th:replace="~{header :: header}"></div>
+</div>
+<div th:fragment="altaTituloFragment" class="content-altaTitulo" id="altaTitulo">
+
+    <h2>Alta de Título</h2>
+
+    <form action="/titulos/altaTitulo" method="post" onsubmit="return validateForm(this)">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" required><br>
+
+        <label for="isbn">ISBN:</label>
+        <input type="text" id="isbn" name="isbn" required><br>
+
+        <label for="autores">Autores (separados por comas):</label>
+        <input type="text" id="autores" name="autores" required><br>
+
+        <!-- Desplegable para elegir tipo -->
+        <label for="DType">Tipo:</label>
+        <select id="DType" name="DType">
+            <option value="1">Libro</option>
+            <option value="2">Revista</option>
+        </select><br>
+
+        <input type="submit" value="Agregar Título">
+    </form>
+</div>
+
+<script>
+    function showForm(formId) {
+        var forms = document.querySelectorAll('.content-altaTitulo, .content-actualizarTitulo, .content-borrarTitulo');
+        for (var i = 0; i < forms.length; i++) {
+            var form = forms[i];
+            if (form.id === formId) {
+                // Si es el formulario clicado, se agrega la clase active
+                form.classList.add('active');
+            } else {
+                // Si no es el formulario clicado, se quita la clase active
+                form.classList.remove('active');
+            }
+        }
+    }
+
+    function validateForm(form) {
+        var inputs = form.querySelectorAll('input[required]');
+        for (var i = 0; i < inputs.length; i++) {
+            if (!inputs[i].value) {
+                alert('Por favor, complete todos los campos obligatorios.');
+                return false;
+            }
+        }
+        return true;
+    }
+</script>
+<script th:if="${error}" th:inline="javascript">
+    /* <![CDATA[*/
+    alert([[${error}]]);
+    /* ]]>*/
+</script>
+<script th:if="${success}" th:inline="javascript">
+    /* <![CDATA[*/
+    alert([[${success}]]);
+    /* ]]>*/
+</script>
+</body>
+</html>

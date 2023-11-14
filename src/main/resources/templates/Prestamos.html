@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://gamepedia.cursecdn.com/minecraft_de_gamepedia/3/35/Buch.png?v">
+    <title>Gestión Prestamos</title>
+    <style>
+        .content-realizarPrestamo,
+        .content-realizarDevolucion,
+        .content-realizarReserva{
+
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <div th:replace="header :: header"></div>
+</div>
+
+<div th:fragment="realizarPrestamoFragment" class="content-realizarPrestamo" id="realizarPrestamo">
+
+        <h2>Realizar Préstamo</h2>
+        <form action="/biblioteca/realizarPrestamo" method="post" onsubmit="return validateForm(this)">
+            <label for="isbn_prestamo">ISBN del Título:</label>
+            <input type="text" id="isbn_prestamo" name="isbn_prestamo" required>
+            <br>
+            <label for="idEjemplar_prestamo">ID del Ejemplar:</label>
+            <input type="text" id="idEjemplar_prestamo" name="idEjemplar_prestamo" required>
+            <br>
+            <label for="idUsuario_prestamo">ID del Usuario:</label>
+            <input type="text" id="idUsuario_prestamo" name="idUsuario_prestamo" required>
+            <br>
+            <input type="submit" value="Realizar Préstamo">
+        </form>
+</div>
+
+<div  th:fragment="realizarDevolucionFragment" class="content-realizarDevolucion" id="realizarDevolucion">
+        <h2>Realizar Devolución</h2>
+        <form action="/biblioteca/realizarDevolucion" method="post" onsubmit="return validateForm(this)">
+            <label for="isbn_devolucion">ISBN del Título:</label>
+            <input type="text" id="isbn_devolucion" name="isbn_devolucion" required>
+            <br>
+            <label for="idUsuario_devolucion">ID del Usuario:</label>
+            <input type="text" id="idUsuario_devolucion" name="idUsuario_devolucion" required>
+            <br>
+            <input type="submit" value="Realizar Devolución">
+        </form>
+</div>
+
+<div  th:fragment="realizarReservaFragment" class="content-realizarReserva" id="realizarReserva">
+        <h2>Realizar Reserva</h2>
+        <form action="/biblioteca/realizarReserva" method="post" onsubmit="return validateForm(this)">
+            <label for="isbn_reserva">ISBN del Título:</label>
+            <input type="text" id="isbn_reserva" name="isbn_reserva" required>
+            <br>
+            <label for="idUsuario_reserva">ID del Usuario:</label>
+            <input type="text" id="idUsuario_reserva" name="idUsuario_reserva" required>
+            <br>
+            <input type="submit" value="Realizar Reserva">
+        </form>
+</div>
+<script>
+    function showForm(formId) {
+        var forms = document.querySelectorAll('.content-realizarPrestamo, .content-realizarDevolucion, .content-realizarReserva');
+        for (var i = 0; i < forms.length; i++) {
+            var form = forms[i];
+            if (form.id === formId) {
+                // Si es el formulario clicado, se agrega la clase active
+                form.classList.add('active');
+            } else {
+                // Si no es el formulario clicado, se quita la clase active
+                form.classList.remove('active');
+            }
+        }
+    }
+
+    function validateForm(form) {
+        var inputs = form.querySelectorAll('input[required]');
+        for (var i = 0; i < inputs.length; i++) {
+            if (!inputs[i].value) {
+                alert('Por favor, complete todos los campos obligatorios.');
+                return false;
+            }
+        }
+        return true;
+    }
+</script>
+<script th:if="${error}" th:inline="javascript">
+    /* <![CDATA[*/
+    alert([[${error}]]);
+    /* ]]>*/
+</script>
+<script th:if="${success}" th:inline="javascript">
+    /* <![CDATA[*/
+    alert([[${success}]]);
+    /* ]]>*/
+</script>
+</body>
+</html>

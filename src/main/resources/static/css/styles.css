@@ -1,0 +1,269 @@
+body {
+    margin: 5px;
+    font-family: Helvetica;
+    font-size: 11px;
+    text-transform: uppercase;
+    box-sizing: border-box; /* Incluye el padding y el borde en el ancho y alto del elemento */
+    background-color: #dcdcdc;
+}
+#bar, #bar2, #bar3, #bar4 {
+    font-weight: bold;
+
+}
+.content {
+    display: none;
+}
+.content-altaTitulo,
+.content-actualizarTitulo,
+.content-borrarTitulo {
+    display: none;
+}
+
+.active {
+    display: block; !important;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch; /* Cambiado de center a stretch */
+    background-color: #333;
+    padding: 10px;
+    color: white; /* Cambiado el color del texto en la barra de navegación */
+}
+
+.header > * {
+    flex-grow: 1; /* Añadido para que los elementos del encabezado se expandan de manera uniforme */
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
+body {
+    margin: 0;
+    font-family: Helvetica;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+header {
+    margin-top: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+header ul.navigation-menu {
+    display: flex;
+    background-color: #131517;
+    color: white;
+    height: 50px;
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px 3px rgba(0, 0, 0, 0.1);
+    margin: 0; /* Añadido para asegurarse de que no hay margen */
+    padding: 0;/* Añadido para asegurarse de que no hay relleno */
+    box-sizing: border-box;
+}
+
+header ul.navigation-menu li {
+    flex: 1;
+}
+
+header ul.navigation-menu li a {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header  ul.navigation-menu li ul {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    border-radius: 0px;
+    background-color: transparent;
+    flex-direction: column;
+    perspective: 500px;
+    box-shadow: none;
+}
+
+header ul.navigation-menu li ul li {
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+    display: none;
+    opacity: 0;
+}
+
+header ul.navigation-menu li ul li ul {
+    position: absolute;
+    top: 0px;
+    left: 100%;
+    width: 200px;
+}
+
+header ul.navigation-menu li ul li ul li {
+    display: none;
+}
+
+header ul.navigation-menu li ul li {
+    background-color: #690c0c;
+}
+
+header ul.navigation-menu li ul li ul li {
+    background-color: #3f0404;
+}
+
+header ul.navigation-menu li {
+    transition: all 0.3s ease-in-out;
+}
+
+header ul.navigation-menu li:hover {
+    background-color: #8a0f0f;
+}
+
+header ul.navigation-menu li:hover ul li {
+    display: block;
+    transition: all 0.3s ease-in-out;
+}
+
+header ul.navigation-menu li:hover ul li:hover {
+    background-color: #be0f0f;
+}
+
+header ul.navigation-menu li:hover ul li ul li {
+    display: none;
+}
+
+header ul.navigation-menu li:hover ul li:hover ul li {
+    display: block;
+}
+
+header ul.navigation-menu li:hover ul li:nth-child(1) {
+    animation-name: menu-1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 300ms;
+    animation-delay: 100ms;
+    animation-fill-mode: forwards;
+}
+
+header ul.navigation-menu li:hover ul li:nth-child(2) {
+    animation-name: menu-1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 300ms;
+    animation-delay: 200ms;
+    animation-fill-mode: forwards;
+}
+
+header ul.navigation-menu li:hover ul li:nth-child(3) {
+    animation-name: menu-1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 300ms;
+    animation-delay: 300ms;
+    animation-fill-mode: forwards;
+}
+
+header ul.navigation-menu li:hover ul li:nth-child(4) {
+    animation-name: menu-1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 300ms;
+    animation-delay: 400ms;
+    animation-fill-mode: forwards;
+}
+header ul.navigation-menu li:hover ul li:nth-child(5) {
+    animation-name: menu-1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 300ms;
+    animation-delay: 500ms;
+    animation-fill-mode: forwards;
+}
+header ul.navigation-menu li:hover ul li:nth-child(6) {
+    animation-name: menu-1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 300ms;
+    animation-delay: 600ms;
+    animation-fill-mode: forwards;
+}
+header ul.navigation-menu li:hover ul li:nth-child(7) {
+    animation-name: menu-1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 300ms;
+    animation-delay: 700ms;
+    animation-fill-mode: forwards;
+}
+header ul.navigation-menu li:hover ul li:nth-child(8) {
+    animation-name: menu-1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 300ms;
+    animation-delay: 800ms;
+    animation-fill-mode: forwards;
+}
+nav ul.navigation-menu li:hover ul li:nth-child(9) {
+    animation-name: menu-1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 300ms;
+    animation-delay: 900ms;
+    animation-fill-mode: forwards;
+}
+header ul.navigation-menu li:hover ul li:nth-child(10) {
+    animation-name: menu-1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 300ms;
+    animation-delay: 1000ms;
+    animation-fill-mode: forwards;
+}
+
+@keyframes menu-1 {
+    0% {
+        transform: translateY(20px) rotateY(90deg);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0px) rotateY(0deg);
+        opacity: 1;
+    }
+}
