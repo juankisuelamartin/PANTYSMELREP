@@ -25,8 +25,8 @@
 
 <div class="content-altaTitulo" id="altaTitulo">
     <h2>Alta de Título</h2>
-    <form action="/biblioteca/altaTitulo" method="post" onsubmit="return validateForm(this)">
-        <label for="titulo">Título:</label>
+    <form th:action="@{/biblioteca/altaTitulo}" method="post" onsubmit="return validateForm(this)">
+    <label for="titulo">Título:</label>
         <input type="text" id="titulo" name="titulo" required>
         <br>
         <label for="isbn">ISBN:</label>

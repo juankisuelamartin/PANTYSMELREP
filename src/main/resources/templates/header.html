@@ -13,12 +13,12 @@
   <nav>
     <h1>Admin - Biblioteca</h1>
     <ul class="navigation-menu">
-      <li><a href="home.html">Home</a></li>
-      <li><a href="Titulos.html">Gestión Titulos</a>
+      <li><a th:href="@{/home}">Home</a></li>
+      <li><a th:href="@{/Titulos}">Gestión Titulos</a>
         <ul>
-          <li><a href="Titulos.html#altaTitulo" onclick="showForm('altaTitulo')">Alta Título</a></li>
-          <li><a href="Titulos.html#actualizarTitulo" onclick="showForm('actualizarTitulo')">Actualizar Título</a></li>
-          <li><a href="Titulos.html#borrarTitulo" onclick="showForm('borrarTitulo')">Borrar Título</a></li>
+          <li><a th:href="@{/Titulos}" onclick="showForm('altaTitulo')">Alta Título</a></li>
+          <li><a th:href="@{/Titulos}" onclick="showForm('actualizarTitulo')">Actualizar Título</a></li>
+          <li><a th:href="@{/Titulos}" onclick="showForm('borrarTitulo')">Borrar Título</a></li>
         </ul>
       </li>
       <li><a href="Ejemplares.html">GESTIÓN EJEMPLARES</a>
