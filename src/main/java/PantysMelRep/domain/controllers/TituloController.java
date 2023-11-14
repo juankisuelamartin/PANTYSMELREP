@@ -16,7 +16,7 @@ import java.util.*;
 
 @Controller
 @Transactional
-@RequestMapping("/biblioteca")
+@RequestMapping("/titulos")
 public class TituloController {
 
     private static final Logger logTitulo = LoggerFactory.getLogger(TituloController.class);
@@ -251,5 +251,34 @@ public class TituloController {
         }
 
         return "redirect:/home"; // Redirige a la página principal
+    }
+    @GetMapping("/altaTitulo")
+    public String mostrarFormularioAltaTitulo() {
+        // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
+        return "Titulos :: altaTituloFragment";
+    }
+
+    @GetMapping("/actualizarTitulo")
+    public String mostrarFormularioActualizarTitulo(Model model) {
+        // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
+        return "Titulos :: actualizarTituloFragment";
+    }
+
+    @GetMapping("/borrarTitulo")
+    public String mostrarFormularioBorrarTitulo(Model model) {
+        // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
+        return "Titulos :: borrarTituloFragment";
+    }
+
+    @GetMapping("/altaEjemplar")
+    public String mostrarFormularioAltaEjemplar(Model model) {
+        // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
+        return "Ejemplares :: altaEjemplarFragment";
+    }
+
+    @GetMapping("/bajaEjemplar")
+    public String mostrarFormularioBajaEjemplar(Model model) {
+        // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
+        return "Ejemplares :: bajaEjemplarFragment";
     }
 }

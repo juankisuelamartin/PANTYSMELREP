@@ -23,7 +23,7 @@
     <div th:replace="header :: header"></div>
 </div>
 
-<div class="content-realizarPrestamo" id="realizarPrestamo">
+<div th:fragment="realizarPrestamoFragment" class="content-realizarPrestamo" id="realizarPrestamo">
 
         <h2>Realizar Préstamo</h2>
         <form action="/biblioteca/realizarPrestamo" method="post" onsubmit="return validateForm(this)">
@@ -40,7 +40,7 @@
         </form>
 </div>
 
-<div class="content-realizarDevolucion" id="realizarDevolucion">
+<div  th:fragment="realizarDevolucionFragment" class="content-realizarDevolucion" id="realizarDevolucion">
         <h2>Realizar Devolución</h2>
         <form action="/biblioteca/realizarDevolucion" method="post" onsubmit="return validateForm(this)">
             <label for="isbn_devolucion">ISBN del Título:</label>
@@ -53,7 +53,7 @@
         </form>
 </div>
 
-<div class="content-realizarReserva" id="realizarReserva">
+<div  th:fragment="realizarReservaFragment" class="content-realizarReserva" id="realizarReserva">
         <h2>Realizar Reserva</h2>
         <form action="/biblioteca/realizarReserva" method="post" onsubmit="return validateForm(this)">
             <label for="isbn_reserva">ISBN del Título:</label>

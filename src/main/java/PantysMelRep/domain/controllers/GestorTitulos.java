@@ -79,20 +79,28 @@ public class GestorTitulos {
 	@Transactional
 	public void altaEjemplar(String isbn, RedirectAttributes redirectAttributes) {
 
-		// Buscar el título en la base de datos
-		Titulo titulo = tituloDAO.findById(isbn).orElseThrow(() -> new RuntimeException("Título no encontrado"));
+		try {
+			// Buscar el título en la base de datos
+			Titulo titulo = tituloDAO.findById(isbn)
+					.orElseThrow(() -> new RuntimeException("Título no encontrado"));
 
-		// Generar un nuevo ID automáticamente para el nuevo ejemplar
-		Long nuevoId = generarNuevoIdParaEjemplar();
-		// Crear un nuevo ejemplar
-		Ejemplar ejemplar = new Ejemplar();
-		ejemplar.setId(nuevoId);
-		ejemplar.setTitulo(titulo);
+			// Generar un nuevo ID automáticamente para el nuevo ejemplar
+			Long nuevoId = generarNuevoIdParaEjemplar();
+			// Crear un nuevo ejemplar
+			Ejemplar ejemplar = new Ejemplar();
+			ejemplar.setId(nuevoId);
+			ejemplar.setTitulo(titulo);
 
-		// Añadir el nuevo ejemplar a la lista de ejemplares del título
-		ejemplarDAO.save(ejemplar);
-		logTitulo.info("Ejemplar añadido: " +ejemplar.toString());
-		redirectAttributes.addFlashAttribute("success", "Ejemplar añadido: " +ejemplar.toString());
+			// Añadir el nuevo ejemplar a la lista de ejemplares del título
+			ejemplarDAO.save(ejemplar);
+			logTitulo.info("Ejemplar dado de alta con éxito.");
+			redirectAttributes.addFlashAttribute("success", "Ejemplar dado de alta con éxito");
+
+		} catch (RuntimeException e) {
+			logTitulo.error("ERROR: Título del ejemplar no encontrado", e);
+			redirectAttributes.addFlashAttribute("error", "ERROR: Título del ejemplar no encontrado");
+		}
+
 	}
 	private Long generarNuevoIdParaEjemplar() {
 		// Buscar el ID máximo actual en los ejemplares existentes

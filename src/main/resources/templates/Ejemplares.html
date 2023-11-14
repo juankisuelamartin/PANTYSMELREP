@@ -21,9 +21,9 @@
     <div th:replace="header :: header"></div>
 </div>
 
-<div class="content-altaEjemplar" id="altaEjemplar">
+<div th:fragment="altaEjemplarFragment" class="content-altaEjemplar" id="altaEjemplar">
     <h2>Alta de Ejemplar</h2>
-    <form action="/biblioteca/altaEjemplar" method="post" onsubmit="return validateForm(this)">
+    <form action="/titulos/altaEjemplar" method="post" onsubmit="return validateForm(this)">
         <label for="isbn_ejemplar">ISBN del Título:</label>
         <input type="text" id="isbn_ejemplar" name="isbn_ejemplar" required>
         <br>
@@ -31,14 +31,15 @@
     </form>
 </div>
 
-<div class="content-bajaEjemplar" id="bajaEjemplar" >
+<div th:fragment="bajaEjemplarFragment" class="content-bajaEjemplar" id="bajaEjemplar" >
         <h2>Baja de Ejemplar</h2>
-        <form action="/biblioteca/bajaEjemplar" method="post" onsubmit="return validateForm(this)">
+        <form action="/titulos/bajaEjemplar" method="post" onsubmit="return validateForm(this)">
             <label for="id_baja">ID del Ejemplar a Borrar:</label>
             <input type="text" id="id_baja" name="id_baja" required>
             <br>
             <input type="submit" value="Borrar Ejemplar">
         </form>
+
 </div>
 <script>
     function showForm(formId) {

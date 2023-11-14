@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/biblioteca")
+@RequestMapping("/prestamos")
 public class PrestamoController {
 
     private static final Logger logPrestamo = LoggerFactory.getLogger(PrestamoController.class);
@@ -61,5 +61,23 @@ public class PrestamoController {
         redirectAttributes.addFlashAttribute("success", "Reserva realizada con éxito");
         // Redirigir a la página principal o a donde desees
         return "redirect:/home";
+    }
+
+    @GetMapping("/realizarPrestamo")
+    public String mostrarFormulariorealizarPrestamo(Model model) {
+        // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
+        return "Prestamos :: realizarPrestamoFragment";
+    }
+
+    @GetMapping("/realizarDevolucion")
+    public String mostrarFormulariorealizarDevolucion(Model model) {
+        // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
+        return "Prestamos :: realizarDevolucionFragment";
+    }
+
+    @GetMapping("/realizarReserva")
+    public String mostrarFormulariorealizarReserva(Model model) {
+        // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
+        return "Prestamos :: realizarReservaFragment";
     }
 }
