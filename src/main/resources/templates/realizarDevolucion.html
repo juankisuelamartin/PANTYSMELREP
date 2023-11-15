@@ -20,7 +20,7 @@
 
 <div  th:fragment="realizarDevolucionFragment" class="content-realizarDevolucion" id="realizarDevolucion">
     <h2>Realizar Devolución</h2>
-    <form action="/biblioteca/realizarDevolucion" method="post" onsubmit="return validateForm(this)">
+    <form action="/prestamos/realizarDevolucion" method="post" onsubmit="return validateForm(this)">
         <label for="isbn_devolucion">ISBN del Título:</label>
         <input type="text" id="isbn_devolucion" name="isbn_devolucion" required>
         <br>

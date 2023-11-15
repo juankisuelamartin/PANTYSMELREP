@@ -59,7 +59,6 @@ public class GestorTitulos {
 			return nuevoTitulo;
 		} catch (DataIntegrityViolationException e) {
 			// Manejar la excepción aquí...
-			e.printStackTrace();
 			return null;
 		}
 	}
