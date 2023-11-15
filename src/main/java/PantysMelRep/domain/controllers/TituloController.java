@@ -89,7 +89,7 @@ public class TituloController {
             // Puedes redirigir a una página de error o mostrar un mensaje al usuario
             logTitulo.info("ERROR: No se ha podido dar de alta el título.");
             redirectAttributes.addFlashAttribute("error", "ERROR: No se ha podido dar de alta el título.");
-            return "error"; // Cambia "error" al nombre de tu vista de error
+            return "redirect:/home"; // Cambia "error" al nombre de tu vista de error
         }
     }
 
@@ -108,7 +108,7 @@ public class TituloController {
             // Manejar el caso en el que el título no existe
             logTitulo.info("ERROR: El título no existe.");
             redirectAttributes.addFlashAttribute("error", "ERROR: El título no existe.");
-            return "error"; // Puedes redirigir a una página de error o mostrar un mensaje al usuario
+            return "redirect:/home"; // Puedes redirigir a una página de error o mostrar un mensaje al usuario
         }
 
         Titulo tituloExistente = optionalTitulo.get();
@@ -195,7 +195,7 @@ public class TituloController {
             // Manejar el caso en el que el título no existe
             logTitulo.info("ERROR: El título no existe.");
             redirectAttributes.addFlashAttribute("error", "ERROR: El título no existe.");
-            return "error"; // Puedes redirigir a una página de error o mostrar un mensaje al usuario
+            return "redirect:/home"; // Puedes redirigir a una página de error o mostrar un mensaje al usuario
         } else {
             Titulo titulo = optionalTitulo.get(); // Obtener el valor del Optional
 
