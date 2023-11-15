@@ -17,7 +17,6 @@ public class AgenteBBDD {
             entityManager = entityManagerFactory.createEntityManager();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -28,7 +27,6 @@ public class AgenteBBDD {
             entityManagerFactory.close();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -46,7 +44,6 @@ public class AgenteBBDD {
             entityManager.getTransaction().commit();
             return rowCount;
         } catch (Exception e) {
-            e.printStackTrace();
             entityManager.getTransaction().rollback();
             return -1;
         }
@@ -60,7 +57,6 @@ public class AgenteBBDD {
             entityManager.getTransaction().commit();
             // Ahora puedes trabajar con los resultados en la lista.
         } catch (Exception e) {
-            e.printStackTrace();
             entityManager.getTransaction().rollback();
         }
         return null; // Debes adaptar esto según tus necesidades.
@@ -74,7 +70,6 @@ public class AgenteBBDD {
             entityManager.getTransaction().commit();
             return rowCount;
         } catch (Exception e) {
-            e.printStackTrace();
             entityManager.getTransaction().rollback();
             return -1;
         }
@@ -88,7 +83,6 @@ public class AgenteBBDD {
             entityManager.getTransaction().commit();
             return rowCount;
         } catch (Exception e) {
-            e.printStackTrace();
             entityManager.getTransaction().rollback();
             return -1;
         }

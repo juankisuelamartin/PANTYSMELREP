@@ -3,6 +3,7 @@ package PantysMelRep.domain.entities;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "ejemplar")
 public class Ejemplar {
 
 
