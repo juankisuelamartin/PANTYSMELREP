@@ -21,7 +21,7 @@
 
     <h2>Alta de Título</h2>
 
-    <form action="/titulos/altaTitulo" method="post" onsubmit="return validateForm(this)">
+    <form action="/titulos/altaTitulo" method="post" onsubmit="return validateForm(this)" enctype="multipart/form-data">
         <label for="titulo">Título:</label>
         <input type="text" id="titulo" name="titulo" required><br>
 
@@ -37,6 +37,9 @@
             <option value="1">Libro</option>
             <option value="2">Revista</option>
         </select><br>
+        <!-- Botón para cargar la foto -->
+        <label for="foto">Foto Portada:</label>
+        <input type="file" id="foto" name="foto" accept="image/*" required><br>
 
         <input type="submit" value="Agregar Título">
     </form>

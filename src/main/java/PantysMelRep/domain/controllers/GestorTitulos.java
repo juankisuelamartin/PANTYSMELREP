@@ -34,22 +34,23 @@ public class GestorTitulos {
 		this.agente = agente;
 	}
 
-	public Titulo altaTitulo(String titulo, String isbn, Collection<Autor> autores, int DType) {
+	public Titulo altaTitulo(String titulo, String isbn, Collection<Autor> autores, int DType, byte[] fotoBytes) {
 		try {
+			// Crear un nuevo libro o revista según DType
 			Titulo nuevoTitulo;
 			if (DType == 1) {
-				// Crear un nuevo libro
 				Libro nuevolibro = new Libro();
 				nuevolibro.setAutores(autores);
 				nuevolibro.setTitulo(titulo);
 				nuevolibro.setIsbn(isbn);
+				nuevolibro.setFoto(fotoBytes);
 				nuevoTitulo = nuevolibro;
 			} else {
-				// Crear una nueva revista
 				Revista nuevaRevista = new Revista();
 				nuevaRevista.setAutores(autores);
 				nuevaRevista.setTitulo(titulo);
 				nuevaRevista.setIsbn(isbn);
+				nuevaRevista.setFoto(fotoBytes);
 				nuevoTitulo = nuevaRevista;
 			}
 
@@ -62,7 +63,6 @@ public class GestorTitulos {
 			return null;
 		}
 	}
-
 
 
 

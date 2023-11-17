@@ -79,6 +79,20 @@
             <artifactId>spring-security-crypto</artifactId>
             <version>6.1.5</version>
         </dependency>
+
+        <!-- Dependencia de Spring Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Dependencia de Spring Web para archivos (si es necesario) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>

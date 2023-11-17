@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
 import java.util.stream.Collectors;
 
 import java.util.*;
@@ -31,14 +34,28 @@ public class TituloController {
     @Autowired
     private AutorDAO autorDAO;
 // TODO AVISAR DE LOS ERRORES. ISBN YA EXISTE... ETC
+
+    @Transactional
     @PostMapping("/altaTitulo")
     public String altaTitulo(@RequestParam("titulo") String titulo,
                              @RequestParam("isbn") String isbn,
                              @RequestParam("autores") List<String> autores,
                              @RequestParam("DType") int DType,
+                             @RequestPart("foto") MultipartFile foto,
                              RedirectAttributes redirectAttributes) throws InterruptedException {
 
+        System.out.println("Received parameters:");
+        System.out.println("titulo: " + titulo);
+        System.out.println("isbn: " + isbn);
+        System.out.println("autores: " + autores);
+        System.out.println("DType: " + DType);
+        System.out.println("foto: " + foto);
 
+        // Verificar si el tipo de contenido del archivo es una imagen
+        if (!Objects.requireNonNull(foto.getContentType()).startsWith("image/")) {
+            redirectAttributes.addFlashAttribute("error", "Error: El archivo no es una imagen válida.");
+            return "redirect:/home";
+        }
 
         // Comprobar si el ISBN ya existe en la base de datos
         if (tituloDAO.findById(isbn).isPresent()) {
@@ -72,9 +89,17 @@ public class TituloController {
                 }
             }
         }
-
+        byte[] fotoBytes;
+        try {
+        // Convertir la foto a un array de bytes
+        fotoBytes = foto.getBytes();
+        } catch (IOException e) {
+            //log.error("Error al leer los bytes de la foto", e);
+            redirectAttributes.addFlashAttribute("error", "Error al leer la foto. Por favor, inténtalo de nuevo.");
+            return "redirect:/home";
+        }
         // Utilizar el gestorTitulos para dar de alta el título
-        Titulo nuevoTitulo = gestorTitulos.altaTitulo(titulo, isbn, listaAutores, DType);
+        Titulo nuevoTitulo = gestorTitulos.altaTitulo(titulo, isbn, listaAutores, DType, fotoBytes);
 
         if (nuevoTitulo != null) {
 
@@ -82,18 +107,18 @@ public class TituloController {
             logTitulo.info("El título ha sido dado de alta con éxito.");
             redirectAttributes.addFlashAttribute("success", "El título ha sido dado de alta con éxito");
             // El título se dio de alta exitosamente en la base de datos
-            return "redirect:/home"; // Redirige a la página principal o a donde desees
         } else {
 
             // Hubo un error al dar de alta el título
             // Puedes redirigir a una página de error o mostrar un mensaje al usuario
             logTitulo.info("ERROR: No se ha podido dar de alta el título.");
             redirectAttributes.addFlashAttribute("error", "ERROR: No se ha podido dar de alta el título.");
-            return "redirect:/home"; // Cambia "error" al nombre de tu vista de error
         }
+        return "redirect:/home"; // Redirige a la página principal o a donde desees
     }
 
 
+/*
     @Transactional
     @PostMapping("/actualizarTitulo")
     public String actualizarTitulo(@RequestParam("isbn_actualizar") String isbn,
@@ -150,6 +175,7 @@ public class TituloController {
         return "redirect:/home"; // Redirige a la página principal
 
     }
+*/
 
 
     private List<Autor> procesarAutores(String nuevosAutores) {

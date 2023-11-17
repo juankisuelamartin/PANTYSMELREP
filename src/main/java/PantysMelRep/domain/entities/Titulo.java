@@ -12,6 +12,11 @@ public class Titulo {
 	@Id
 	protected String isbn;
 
+	@Lob
+	@Column(name = "foto", columnDefinition = "MEDIUMBLOB")
+	private byte[] foto;  // Nuevo atributo para almacenar la foto
+
+
 	@OneToMany(mappedBy = "titulo", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<Ejemplar> ejemplares = new ArrayList<>(); // Inicializa la colección
 
@@ -37,10 +42,11 @@ public class Titulo {
 		// Constructor vacío requerido por JPA
 	}
 
-	public Titulo(String isbn, String titulo, String numReserva) {
+	public Titulo(String isbn, String titulo, String numReserva, byte[] foto) {
 		this.isbn = isbn;
 		this.titulo = titulo;
 		this.numReserva = numReserva;
+		this.foto = foto;
 	}
 
 	public Collection<Autor> getAutores() {
@@ -57,6 +63,14 @@ public class Titulo {
 
 	public void setEjemplares(Collection<Ejemplar> ejemplares) {
 		this.ejemplares = ejemplares;
+	}
+
+	public byte[] getFoto() {
+		return foto;
+	}
+
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
 	}
 
 	public Collection<Prestamo> getPrestamos() {
