@@ -3,13 +3,7 @@ spring:
     url: jdbc:mysql://34.175.85.243:3306/db_proyecto_iso2
     username: dbproyectoiso2
     password: eDl~%f*#TipAJlzc
-
-  servlet:
-    multipart:
-      enabled: true
-      file-size-threshold: 2KB
-      max-file-size: 6MB
-      max-request-size: 6MB
   jpa:
     hibernate:
         ddl-auto: update
+
