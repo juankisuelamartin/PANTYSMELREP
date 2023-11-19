@@ -61,10 +61,18 @@ public class LoginController {
         if (usuario != null && verificarContrasena(contrasena,usuario.getContrasena())) {
             // Aquí puedes realizar la autenticación del usuario
             // Por ejemplo, establecer una sesión de usuario
-
-            // Redirigir a la página principal o a donde desees después del inicio de sesión
-            logLogin.info("Credenciales correctas");
-            return "redirect:/home";
+            // Comprobar el rol del usuario
+            String rol = usuario.getRol();
+            if (rol.equals("ADMIN")) {
+                logLogin.info("Credenciales correctas - Administrador");
+                return "redirect:/home";
+            } else if (rol.equals("USUARIO")) {
+                logLogin.info("Credenciales correctas - Usuario");
+                return "redirect:/homeUsuario";
+            } else {
+                logLogin.info("Rol no reconocido");
+                return "redirect:/error";
+            }
         } else {
             // Si el inicio de sesión falla, puedes agregar un mensaje de error y redirigir nuevamente a la página de inicio de sesión
             redirectAttributes.addFlashAttribute("error", "Credenciales de inicio de sesión incorrectas");
@@ -77,7 +85,8 @@ public class LoginController {
     public String registrarUsuario(@RequestParam("dni")String dni,
                                    @RequestParam("nombre")String nombre,
                                    @RequestParam("apellidos")String apellidos,
-                                   @RequestParam("contrasena")String contrasena) {
+                                   @RequestParam("contrasena")String contrasena
+                                   ) {
         // Verificar si ya existe un usuario con el mismo DNI en la base de datos
         Usuario usuarioExistente = usuarioDAO.findById(dni).orElse(null);
         if (usuarioExistente != null) {
@@ -94,6 +103,7 @@ public class LoginController {
             nuevoUsuario.setNombre(nombre);
             nuevoUsuario.setApellidos(apellidos);
             nuevoUsuario.setContrasena(contrasenaHasheada);
+            nuevoUsuario.setRol("USUARIO");
 
             // Guardar el nuevo usuario en la base de datos
             usuarioDAO.save(nuevoUsuario);

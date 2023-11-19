@@ -118,7 +118,7 @@ public class TituloController {
     }
 
 
-/*
+
     @Transactional
     @PostMapping("/actualizarTitulo")
     public String actualizarTitulo(@RequestParam("isbn_actualizar") String isbn,
@@ -141,10 +141,10 @@ public class TituloController {
         // Recoge todos los ejemplares asociados al título existente
         Collection<Ejemplar> ejemplares = tituloExistente.getEjemplares();
 
-// Recoge los IDs de los ejemplares existentes
+        // Recoge los IDs de los ejemplares existentes
         List<Long> ejemplarIds = ejemplares.stream().map(Ejemplar::getId).collect(Collectors.toList());
 
-// Elimina los ejemplares asociados al título
+        // Elimina los ejemplares asociados al título
         for (Ejemplar ejemplar : ejemplares) {
             ejemplarDAO.delete(ejemplar);
         }
@@ -175,7 +175,7 @@ public class TituloController {
         return "redirect:/home"; // Redirige a la página principal
 
     }
-*/
+
 
 
     private List<Autor> procesarAutores(String nuevosAutores) {
