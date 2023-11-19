@@ -40,6 +40,11 @@ public class LoginController {
         return "home"; // Nombre de la vista de tu página principal
     }
 
+    @GetMapping("/homeUsuario")
+    public String homeUserPage() {
+        return "homeUsuario"; // Nombre de la vista de tu página principal
+    }
+
     @GetMapping("/login")
     public String showLoginForm() {
         return "login"; // Nombre de la vista de tu formulario de inicio de sesión

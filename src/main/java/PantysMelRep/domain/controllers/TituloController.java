@@ -125,6 +125,7 @@ public class TituloController {
                                    @RequestParam("titulo_actualizar") String nuevoTitulo,
                                    @RequestParam("autores_actualizar") String nuevosAutores,
                                    @RequestParam("DType_actualizar") int DType,
+                                   @RequestPart("foto") MultipartFile foto,
                                    RedirectAttributes redirectAttributes) throws InterruptedException {
 
         // Recuperar el título existente de la base de datos
@@ -151,8 +152,17 @@ public class TituloController {
         // Elimina el título existente
         tituloDAO.delete(tituloExistente);
 
+        byte[] fotoBytes;
+        try {
+            // Convertir la foto a un array de bytes
+            fotoBytes = foto.getBytes();
+        } catch (IOException e) {
+            //log.error("Error al leer los bytes de la foto", e);
+            redirectAttributes.addFlashAttribute("error", "Error al leer la foto. Por favor, inténtalo de nuevo.");
+            return "redirect:/home";
+        }
         // Crea un nuevo título con la información actualizada
-        Titulo tituloActualizado = gestorTitulos.altaTitulo(nuevoTitulo, isbn,null, DType);
+        Titulo tituloActualizado = gestorTitulos.altaTitulo(nuevoTitulo, isbn,null, DType,fotoBytes);
         tituloActualizado.setIsbn(isbn);
         tituloActualizado.setTitulo(nuevoTitulo);
 
@@ -166,12 +176,13 @@ public class TituloController {
             ejemplar.setTitulo(tituloActualizado); // Asocia el ejemplar al nuevo título
             tituloActualizado.getEjemplares().add(ejemplar); // Agrega el ejemplar a la lista de ejemplares del título
         }
+
         // Guarda el título actualizado en la base de datos
         tituloDAO.save(tituloActualizado);
         logTitulo.info("Título actualizado con éxito.");
         redirectAttributes.addFlashAttribute("success", "Título actualizado con éxito.");
-        // Agrega los ejemplares al nuevo título
 
+        // Agrega los ejemplares al nuevo título
         return "redirect:/home"; // Redirige a la página principal
 
     }
