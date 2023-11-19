@@ -34,7 +34,7 @@ public class PrestamoController {
         redirectAttributes.addFlashAttribute("success", "Prestamo realizado con éxito");
 
         // Redirigir a la página principal o a donde desees
-        return "redirect:/home";
+        return "redirect:/homeUsuario";
     }
 
     @PostMapping("/realizarDevolucion")
@@ -47,7 +47,7 @@ public class PrestamoController {
         logPrestamo.info("Devolución realizada con éxito");
         redirectAttributes.addFlashAttribute("success", "Devolución realizada con éxito");
         // Redirigir a la página principal o a donde desees
-        return "redirect:/home";
+        return "redirect:/homeUsuario";
     }
 
     @PostMapping("/realizarReserva")
@@ -60,7 +60,7 @@ public class PrestamoController {
         logPrestamo.info("Reserva realizada con éxito");
         redirectAttributes.addFlashAttribute("success", "Reserva realizada con éxito");
         // Redirigir a la página principal o a donde desees
-        return "redirect:/home";
+        return "redirect:/homeUsuario";
     }
 
     @GetMapping("/realizarPrestamo")
