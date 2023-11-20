@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://gamepedia.cursecdn.com/minecraft_de_gamepedia/3/35/Buch.png?v">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/content.css}">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://static.wikia.nocookie.net/minecraft_gamepedia/images/e/e9/Book_and_Quill_JE2_BE2.png">
     <title>Gestión Titulos</title>
     <style>
         .content-actualizarTitulo{
@@ -17,26 +18,35 @@
 <div class = "navbar">
     <div th:replace="~{header :: header}"></div>
 </div>
-<div th:fragment="actualizarTituloFragment" class="content-actualizarTitulo" id="actualizarTitulo">
+<div class="form-container">
+<div class="form-content" id="actualizarTitulo">
     <h2>Actualizar Título</h2>
     <form action="/titulos/actualizarTitulo" method="post" onsubmit="return validateForm(this)">
         <label for="isbn_actualizar">ISBN del Título a Actualizar:</label>
         <input type="text" id="isbn_actualizar" name="isbn_actualizar" required>
-        <br>
+        <br><br>
         <label for= "titulo_actualizar">Nuevo Título:</label>
         <input type="text" id="titulo_actualizar" name="titulo_actualizar" required>
-        <br>
+        <br><br>
         <label for="autores_actualizar">Nuevos Autores (separados por comas):</label>
         <input type="text" id="autores_actualizar" name="autores_actualizar" required>
-        <br>
-        <label for="DType_actualizar">Nuevo Tipo:</label>
-        <select id="DType_actualizar" name="DType_actualizar">
+        <br><br>
+        <label for="DType" style="float: left; clear: left; width: 50%;">NUEVO TIPO:</label>
+        <select id="DType" name="DType" style="float: left; width: 30%;">
             <option value="1">Libro</option>
             <option value="2">Revista</option>
-        </select>
+        </select><br><br>
+
         <br>
+
+        <label for="foto" style="float: left; clear: left; width: 50%;">NUEVA FOTO PORTADA:</label>
+        <input type="file" id="foto" name="foto" accept="image/*" required style="float: left; width: 50%;"><br>
+
+        <br><br><br>
+
         <input type="submit" value="Actualizar Título">
     </form>
+</div>
 </div>
 <script>
     function showForm(formId) {
