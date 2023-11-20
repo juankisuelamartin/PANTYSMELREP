@@ -112,7 +112,7 @@ public class LoginController {
 
             // Guardar el nuevo usuario en la base de datos
             usuarioDAO.save(nuevoUsuario);
-            System.out.println("Usuario registrado");
+            logLogin.info("Usuario registrado con éxito");
 
             // Redirigir al usuario al inicio de sesión después de registrarse
             return "redirect:/login";

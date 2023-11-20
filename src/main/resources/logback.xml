@@ -1,0 +1,24 @@
+<configuration>
+
+    <!-- Define el nivel de log para tu aplicación -->
+    <root level="info">
+        <appender-ref ref="FILE" />
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+    <!-- Define el appender de archivo -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/app.log</file> <!-- Ruta del archivo de log -->
+        <encoder>
+            <pattern>%date{HH:mm:ss.SSS} [%-5level] [%logger{35}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Define el appender de consola -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{HH:mm:ss.SSS} [%-5level] [%logger{35}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+</configuration>

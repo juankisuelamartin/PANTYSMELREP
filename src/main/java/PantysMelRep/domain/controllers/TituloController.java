@@ -44,12 +44,12 @@ public class TituloController {
                              @RequestPart("foto") MultipartFile foto,
                              RedirectAttributes redirectAttributes) throws InterruptedException {
 
-        System.out.println("Received parameters:");
-        System.out.println("titulo: " + titulo);
-        System.out.println("isbn: " + isbn);
-        System.out.println("autores: " + autores);
-        System.out.println("DType: " + DType);
-        System.out.println("foto: " + foto);
+        logTitulo.info("Received parameters:");
+        logTitulo.info("titulo: " + titulo);
+        logTitulo.info("isbn: " + isbn);
+        logTitulo.info("autores: " + autores);
+        logTitulo.info("DType: " + DType);
+        logTitulo.info("foto: " + foto);
 
         // Verificar si el tipo de contenido del archivo es una imagen
         if (!Objects.requireNonNull(foto.getContentType()).startsWith("image/")) {
