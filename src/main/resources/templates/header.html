@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../static/css/styles.css">
+  <link rel="stylesheet" href="../static/css/navbar.css">
   <link rel="icon" type="image/png" sizes="16x16" href="https://gamepedia.cursecdn.com/minecraft_de_gamepedia/3/35/Buch.png?v">
   <title>BIBLIOTECA PANTYSMEL</title>
 </head>
@@ -13,21 +13,21 @@
   <nav>
     <h1>Admin - Biblioteca</h1>
     <ul class="navigation-menu">
-      <li><a th:href="@{/home}">Home</a></li>
-      <li><p id="bar">Gestión Títulos</p>
+      <li><a id="nav1"th:href="@{/home}">Home</a></li>
+      <li><p id="nav2">Gestión Títulos</p>
         <ul>
           <li><a href="/titulos/altaTitulo" onclick="showForm('altaTitulo')">Alta Título</a></li>
           <li><a href="/titulos/actualizarTitulo" onclick="showForm('actualizarTitulo')">Actualizar Título</a></li>
           <li><a href="/titulos/borrarTitulo" onclick="showForm('borrarTitulo')">Borrar Título</a></li>
         </ul>
       </li>
-      <li><p id="bar2">Gestión Ejemplares</p>
+      <li><p id="nav3">Gestión Ejemplares</p>
         <ul>
           <li><a href="/titulos/altaEjemplar" onclick="showForm('altaEjemplar')">ALTA EJEMPLAR</a></li>
           <li><a href="/titulos/bajaEjemplar" onclick="showForm('bajaEjemplar')">BAJA EJEMPLAR</a></li>
         </ul>
       </li>
-      <li><a href="AboutUS.html">About Us</a>
+      <li><a id="nav4" href="AboutUS.html">About Us</a>
         <ul>
           <li><a href="#">Our Team</a></li>
           <li><a href="#">Contact Us</a></li>

@@ -316,6 +316,6 @@ public class TituloController {
     @GetMapping("/bajaEjemplar")
     public String mostrarFormularioBajaEjemplar(Model model) {
         // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
-        return "Ejemplares :: bajaEjemplarFragment";
+        return "bajaEjemplar";
     }
 }

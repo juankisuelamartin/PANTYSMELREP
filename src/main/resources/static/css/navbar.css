@@ -1,12 +1,9 @@
 body {
-    margin: 5px;
-    font-family: Helvetica;
+    margin: 0;
     font-size: 11px;
     text-transform: uppercase;
-    box-sizing: border-box; /* Incluye el padding y el borde en el ancho y alto del elemento */
-    background-color: #dcdcdc;
 }
-#bar, #bar2, #bar3, #bar4 {
+#nav1, #nav2, #nav3, #nav4 {
     font-weight: bold;
 
 }
@@ -69,12 +66,7 @@ body {
     background-color: #3e8e41;
 }
 
-body {
-    margin: 0;
-    font-family: Helvetica;
-    font-size: 11px;
-    text-transform: uppercase;
-}
+
 
 ul {
     list-style-type: none;

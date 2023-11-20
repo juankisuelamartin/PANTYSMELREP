@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/content.css}">
+
+
     <link rel="icon" type="image/png" sizes="16x16"
           href="https://gamepedia.cursecdn.com/minecraft_de_gamepedia/3/35/Buch.png?v">
     <title>Gestión Prestamos</title>
@@ -12,6 +15,7 @@
         .content-realizarPrestamo{
             display: block;
         }
+
     </style>
 </head>
 
@@ -19,8 +23,8 @@
 <div class="navbar">
     <div th:replace="~{headerUsuario :: headerUsuario}"></div>
 </div>
-
-<div class="content-realizarPrestamo active" id="realizarPrestamo">
+<div class="form-container">
+<div class="form-content" id="realizarPrestamo">
     <h2>Realizar Préstamo</h2>
     <form action="/prestamos/realizarPrestamo" method="post" onsubmit="return validateForm(this)">
         <label for="isbn_prestamo">ISBN del Título:</label>
@@ -31,7 +35,9 @@
         <br>
         <label for="idUsuario_prestamo">ID del Usuario:</label>
         <input type="text" id="idUsuario_prestamo" name="idUsuario_prestamo" required>
-        <br>
+
+        <br><br><br>
+
         <input type="submit" value="Realizar Préstamo">
     </form>
 </div>
