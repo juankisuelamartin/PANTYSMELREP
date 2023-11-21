@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.stream.Collectors;
 
 import java.util.*;
@@ -39,7 +40,7 @@ public class TituloController {
     @PostMapping("/altaTitulo")
     public String altaTitulo(@RequestParam("titulo") String titulo,
                              @RequestParam("isbn") String isbn,
-                             @RequestParam("autores") List<String> autores,
+                             @RequestParam("autores") String nuevosAutores,
                              @RequestParam("DType") int DType,
                              @RequestPart("foto") MultipartFile foto,
                              RedirectAttributes redirectAttributes) throws InterruptedException {
@@ -47,15 +48,9 @@ public class TituloController {
         logTitulo.info("Received parameters:");
         logTitulo.info("titulo: " + titulo);
         logTitulo.info("isbn: " + isbn);
-        logTitulo.info("autores: " + autores);
+        logTitulo.info("autores: " + nuevosAutores);
         logTitulo.info("DType: " + DType);
         logTitulo.info("foto: " + foto);
-
-        // Verificar si el tipo de contenido del archivo es una imagen
-        if (!Objects.requireNonNull(foto.getContentType()).startsWith("image/")) {
-            redirectAttributes.addFlashAttribute("error", "Error: El archivo no es una imagen válida.");
-            return "redirect:/home";
-        }
 
         // Comprobar si el ISBN ya existe en la base de datos
         if (tituloDAO.findById(isbn).isPresent()) {
@@ -65,50 +60,25 @@ public class TituloController {
             return "redirect:/home"; // Redirige a la página principal o a donde desees
         }
 
-        // Procesar la lista de autores
-        List<Autor> listaAutores = new ArrayList<>();
-        for (String autorNombre : autores) {
-            // Separar el nombre y el apellido del autor
-            String[] nombreApellido = autorNombre.split(" ");
-            if (nombreApellido.length == 2) {
-                // Comprobar si el autor ya existe en la base de datos
-                AutorId autorId = new AutorId(nombreApellido[0], nombreApellido[1]);
-                Autor autorExistente = (Autor) autorDAO.findById(autorId).orElse(null);
+        // Procesar la lista de autores usando el método procesarAutores
+        List<Autor> listaAutores = procesarAutores(nuevosAutores, redirectAttributes);
 
-                if (autorExistente != null) {
-                    // El autor ya existe, usar el autor existente en lugar de crear uno nuevo
-                    logTitulo.info("El autor: " + nombreApellido[0] + " " + nombreApellido[1] + " ya existe en la base de datos.");
-                    listaAutores.add(autorExistente);
-                } else {
-                    // Crear un nuevo autor y guardarlo en la base de datos
-                    Autor nuevoAutor = new Autor();
-                    nuevoAutor.setId(autorId);
-                    listaAutores.add(nuevoAutor);
-                    logTitulo.info("Autor creado con éxito.");
-                    redirectAttributes.addFlashAttribute("success", "Autor creado con éxito.");
-                }
-            }
-        }
-        byte[] fotoBytes;
-        try {
-        // Convertir la foto a un array de bytes
-        fotoBytes = foto.getBytes();
-        } catch (IOException e) {
-            //log.error("Error al leer los bytes de la foto", e);
-            redirectAttributes.addFlashAttribute("error", "Error al leer la foto. Por favor, inténtalo de nuevo.");
+        if (listaAutores == null) {
+            // Ocurrió un error al procesar los autores
             return "redirect:/home";
         }
+
+        byte[] fotoBytes = anadirFoto(foto, redirectAttributes);
+
         // Utilizar el gestorTitulos para dar de alta el título
         Titulo nuevoTitulo = gestorTitulos.altaTitulo(titulo, isbn, listaAutores, DType, fotoBytes);
 
         if (nuevoTitulo != null) {
-
             gestorTitulos.altaEjemplar(nuevoTitulo.getIsbn(), redirectAttributes);
             logTitulo.info("El título ha sido dado de alta con éxito.");
             redirectAttributes.addFlashAttribute("success", "El título ha sido dado de alta con éxito");
             // El título se dio de alta exitosamente en la base de datos
         } else {
-
             // Hubo un error al dar de alta el título
             // Puedes redirigir a una página de error o mostrar un mensaje al usuario
             logTitulo.info("ERROR: No se ha podido dar de alta el título.");
@@ -116,7 +86,6 @@ public class TituloController {
         }
         return "redirect:/home"; // Redirige a la página principal o a donde desees
     }
-
 
 
     @Transactional
@@ -152,24 +121,20 @@ public class TituloController {
         // Elimina el título existente
         tituloDAO.delete(tituloExistente);
 
-        byte[] fotoBytes;
-        try {
-            // Convertir la foto a un array de bytes
-            fotoBytes = foto.getBytes();
-        } catch (IOException e) {
-            //log.error("Error al leer los bytes de la foto", e);
-            redirectAttributes.addFlashAttribute("error", "Error al leer la foto. Por favor, inténtalo de nuevo.");
-            return "redirect:/home";
-        }
+        byte[] fotoBytes=anadirFoto(foto, redirectAttributes);
+
         // Crea un nuevo título con la información actualizada
         Titulo tituloActualizado = gestorTitulos.altaTitulo(nuevoTitulo, isbn,null, DType,fotoBytes);
-        tituloActualizado.setIsbn(isbn);
-        tituloActualizado.setTitulo(nuevoTitulo);
+
 
         if (!nuevosAutores.isEmpty()) {
             // Procesa los autores y actualiza la lista de autores del título actualizado
-            List<Autor> listaAutoresActualizados = procesarAutores(nuevosAutores);
+            List<Autor> listaAutoresActualizados = procesarAutores(nuevosAutores,redirectAttributes);
+            if (listaAutoresActualizados != null){
             tituloActualizado.setAutores(listaAutoresActualizados);
+            }else{
+                return "redirect:/home";
+            }
         }
 
         for (Ejemplar ejemplar : ejemplares) {
@@ -189,7 +154,7 @@ public class TituloController {
 
 
 
-    private List<Autor> procesarAutores(String nuevosAutores) {
+    private List<Autor> procesarAutores(String nuevosAutores, RedirectAttributes redirectAttributes) {
 
         // Separar los nombres de los autores
         String[] nombresAutores = nuevosAutores.split(",");
@@ -199,9 +164,18 @@ public class TituloController {
 
         for (String nombreAutor : nombresAutores) {
             String[] nombres = nombreAutor.trim().split(" ");
+            AutorId autorId;
+            if (nombres.length >= 2) {
+                String apellido = String.join(" ", Arrays.copyOfRange(nombres, 1, nombres.length));
+                autorId = new AutorId(nombres[0], apellido);
+                // Rest of your code for processing the author
+            } else {
+                // Handle the case where there are not enough elements in the array
+                logTitulo.error("Error: Nombre de autor no válido - " + nombreAutor);
+                redirectAttributes.addFlashAttribute("error", "Error: Nombre de autor no válido - " + nombreAutor);
+                return null;
+            }
 
-            // Crear un nuevo AutorId con nombre y apellido
-            AutorId autorId = new AutorId(nombres[0], nombres[1]);
 
             Autor autor;
             Optional<Autor> optionalAutor = autorDAO.findById(autorId);
@@ -209,8 +183,9 @@ public class TituloController {
                 // Obtener el autor existente
                 autor = optionalAutor.get();
             } else {
+                String apellido = String.join(" ", Arrays.copyOfRange(nombres, 1, nombres.length));
                 // Crear un nuevo autor y guardarlo en la base de datos
-                autor = new Autor(nombres[0], nombres[1]);
+                autor = new Autor(nombres[0], apellido);
                 autorDAO.save(autor);
             }
             // Agregar el autor a la lista de autores actualizados
@@ -318,4 +293,35 @@ public class TituloController {
         // Aquí puedes realizar lógica si es necesario antes de mostrar el formulario
         return "bajaEjemplar";
     }
+
+    public byte[] anadirFoto(MultipartFile foto, RedirectAttributes redirectAttributes) {
+        byte[] fotoBytes;
+
+        if (foto != null && !foto.isEmpty()) {
+            // Se proporcionó una imagen, usar sus bytes
+            try {
+                fotoBytes = foto.getBytes();
+            } catch (IOException e) {
+                // Manejar el error al leer los bytes de la imagen
+                redirectAttributes.addFlashAttribute("error", "Error al leer la foto. Por favor, inténtalo de nuevo.");
+                return null; // Otra opción puede ser lanzar una excepción
+            }
+        } else {
+            // No se proporcionó ninguna imagen, usar una imagen por defecto (debes tener una imagen por defecto en tu proyecto)
+
+            try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("static/images/default_Portada.jpg")) {
+                fotoBytes = inputStream.readAllBytes();
+            } catch (IOException e) {
+                // Manejar el error al cargar la imagen por defecto
+                redirectAttributes.addFlashAttribute("error", "Error al cargar la imagen por defecto.");
+                return null; // Otra opción puede ser lanzar una excepción
+            }
+        }
+
+        // Hacer algo con fotoBytes si es necesario
+        return fotoBytes;
+    }
+
+
 }
+
