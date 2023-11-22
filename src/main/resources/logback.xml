@@ -8,10 +8,12 @@
 
     <!-- Define el appender de archivo -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs/app.log</file> <!-- Ruta del archivo de log -->
+        <file>logs/applogger.log</file> <!-- Ruta del archivo de log -->
+        <append>false</append>
         <encoder>
             <pattern>%date{HH:mm:ss.SSS} [%-5level] [%logger{35}] - %msg%n</pattern>
         </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.OnStartupTriggeringPolicy"/>
     </appender>
 
     <!-- Define el appender de consola -->
