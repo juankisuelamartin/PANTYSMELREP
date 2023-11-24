@@ -3,9 +3,12 @@ package PantysMelRep.domain.controllers;
 import PantysMelRep.domain.entities.*;
 import PantysMelRep.persistencia.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -25,8 +28,10 @@ public class GestorPrestamos {
 	@Autowired
 	private EjemplarDAO ejemplarDAO;
 
+	private static final Logger logPrestamo = LoggerFactory.getLogger(TituloController.class);
+
 	@Transactional
-	public void realizarPrestamo(String isbn, String idEjemplar, String idUsuario) {
+	public void realizarPrestamo(String isbn, String idEjemplar, String idUsuario, RedirectAttributes redirectAttributes) {
 		// Recuperar el título y el usuario a partir de los IDs
 		Titulo titulo = tituloDAO.findById(isbn)
 				.orElseThrow(() -> new RuntimeException("Título no encontrado"));
@@ -55,7 +60,8 @@ public class GestorPrestamos {
 				prestamoExistente.setFechaInicio(fechaActual);
 				prestamoExistente.setFechaFin(calendar.getTime());
 				prestamoDAO.save(prestamoExistente);
-				System.out.println("Prestamo realizado");
+				redirectAttributes.addFlashAttribute("error", "ERROR: No se ha podido realizar el prestamo");
+				logPrestamo.info("ERROR: No se ha podido realizar el prestamo");
 			}
 		}
 		else{
@@ -71,7 +77,8 @@ public class GestorPrestamos {
 				prestamo.setActivo(true);
 
 				prestamoDAO.save(prestamo);
-				System.out.println("Prestamo realizado");
+			redirectAttributes.addFlashAttribute("success", "Prestamo realizado con éxito");
+			logPrestamo.info("Prestamo realizado con éxito");
 			}
 
 
@@ -85,27 +92,31 @@ public class GestorPrestamos {
 	 * @param isbn
 	 * @param idUsuario
 	 */
-	public void realizarDevolucion(String isbn, String idUsuario) {
+	public void realizarDevolucion(String isbn, String idUsuario, RedirectAttributes redirectAttributes) {
 		PrestamoId prestamoId = new PrestamoId(idUsuario, isbn);
 		Prestamo prestamoExistente = (Prestamo) prestamoDAO.findById(prestamoId).orElse(null);
 		if (prestamoExistente != null) {
 			if (prestamoExistente.isActivo()) {
 				if(prestamoExistente.getFechaFin().before(new Date())){
-					System.out.println("El usuario ha devuelto el libro fuera de plazo.");
+					redirectAttributes.addFlashAttribute("error", "El libro ha sido devuelto fuera de plazo");
+					logPrestamo.info("El libro ha sido devuelto fuera de plazo");
 
 					//TODO: Penalizar al usuario
 				}
 				else{
-					System.out.println("El usuario ha devuelto el libro a tiempo.");
+					redirectAttributes.addFlashAttribute("success", "El libro ha sido devuelto a tiempo");
+					logPrestamo.info("El libro ha sido devuelto a tiempo");
 
 				}
 				prestamoExistente.setActivo(false);
 				prestamoDAO.save(prestamoExistente);
 			} else {
-				System.out.println("El usuario no tiene un préstamo activo de este título.");
+				redirectAttributes.addFlashAttribute("error", "El usuario no tiene un prestamo activo de este libro");
+				logPrestamo.info("El usuario no tiene un prestamo activo de este libro");
 			}
 		} else {
-			System.out.println("El usuario no tiene un préstamo activo de este título.");
+			redirectAttributes.addFlashAttribute("error", "El usuario no tiene un prestamo activo de este libro");
+			logPrestamo.info("El usuario no tiene un prestamo activo de este libro");
 		}
 	}
 
@@ -114,13 +125,15 @@ public class GestorPrestamos {
 	 * @param idUsuario
 	 * @param isbn
 	 */
-	public void realizarReserva(String idUsuario, String isbn) {
+	public void realizarReserva(String idUsuario, String isbn, RedirectAttributes redirectAttributes) {
 		// Verificar si el usuario ya tiene un préstamo activo del título
 		PrestamoId prestamoId = new PrestamoId(idUsuario, isbn);
 		Prestamo prestamoExistente = prestamoDAO.findById(prestamoId).orElse(null);
 
 		if (prestamoExistente != null && prestamoExistente.isActivo()) {
 			System.out.println("El usuario ya tiene un préstamo activo de este título. No se puede realizar una reserva.");
+			redirectAttributes.addFlashAttribute("error", "El usuario ya tiene un préstamo activo de este título. No se puede realizar una reserva.");
+			logPrestamo.info("El usuario ya tiene un préstamo activo de este título. No se puede realizar una reserva.");
 		} else {
 			// Comprobar si ya existe una reserva para este usuario y título
 			ReservaId reservaId = new ReservaId(idUsuario, isbn);

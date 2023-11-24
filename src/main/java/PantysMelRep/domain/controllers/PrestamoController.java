@@ -29,7 +29,7 @@ public class PrestamoController {
                                    RedirectAttributes redirectAttributes) {
 
         // Realizar el préstamo usando el Gestor de Préstamos
-        gestorPrestamos.realizarPrestamo(isbn, idEjemplar, idUsuario);
+        gestorPrestamos.realizarPrestamo(isbn, idEjemplar, idUsuario, redirectAttributes);
         logPrestamo.info("Prestamo realizado con éxito");
         redirectAttributes.addFlashAttribute("success", "Prestamo realizado con éxito");
 
@@ -43,7 +43,7 @@ public class PrestamoController {
                                      RedirectAttributes redirectAttributes) {
 
         // Realizar la devolución usando el Gestor de Préstamos
-        gestorPrestamos.realizarDevolucion(isbn, idUsuario);
+        gestorPrestamos.realizarDevolucion(isbn, idUsuario, redirectAttributes);
         logPrestamo.info("Devolución realizada con éxito");
         redirectAttributes.addFlashAttribute("success", "Devolución realizada con éxito");
         // Redirigir a la página principal o a donde desees
@@ -56,7 +56,7 @@ public class PrestamoController {
                                   RedirectAttributes redirectAttributes) {
 
         // Realizar la reserva usando el Gestor de Préstamos
-        gestorPrestamos.realizarReserva(idUsuario, isbn);
+        gestorPrestamos.realizarReserva(idUsuario, isbn, redirectAttributes);
         logPrestamo.info("Reserva realizada con éxito");
         redirectAttributes.addFlashAttribute("success", "Reserva realizada con éxito");
         // Redirigir a la página principal o a donde desees
