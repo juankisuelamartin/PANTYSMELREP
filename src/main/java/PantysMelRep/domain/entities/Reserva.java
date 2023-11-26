@@ -17,14 +17,13 @@ public class Reserva {
 	@Column(name = "titulo_id")
 	private String tituloId;
 
-	@MapsId("usuarioId")
 	@ManyToOne
-	@JoinColumn(name = "usuario_id")
+	@JoinColumn(name = "usuario_id", insertable = false, updatable = false)
 	private Usuario usuario;
 
 
 	@ManyToOne
-	@JoinColumn(name = "titulo_id")
+	@JoinColumn(name = "titulo_id", insertable = false, updatable = false)
 	private Titulo titulo;
 
 	@Temporal(TemporalType.DATE)
