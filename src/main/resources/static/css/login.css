@@ -1,0 +1,172 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f1f1;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin-top: 0;
+}
+
+form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+input[type="submit"] {
+    margin-top: 20px;
+    background-color: #4285f4;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #2d70e9;
+}
+
+/* Estilos para la barra de navegación */
+/* Estilos para la barra de navegación */
+.navbar {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centra verticalmente */
+    height: 20px;
+}
+
+.navbar h1{
+    margin-top: 20px;
+}
+
+
+
+
+.menu-content {
+    background-color: #f9f9f9;
+    min-width: 160px;
+
+    z-index: 2;
+    white-space: nowrap;
+    width: 100%;
+    height: 30px;
+
+    margin-left: 20px;
+    margin-right: 20px;
+
+    display: flex; /* Cambiado a flex */
+    justify-content: center;
+    align-items: center;
+    font-weight: normal;
+}
+
+.menu-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    margin-right: 20px; /* Ajusta el margen entre elementos según tus necesidades */
+}
+
+.menu-content a:last-child {
+    margin-right: 0; /* Elimina el margen del último elemento para evitar espacios innecesarios */
+}
+
+
+
+
+.menu-content a.active {
+    font-weight: bold;
+}
+
+.menu-content a:hover {
+    background-color: #f1f1f1;
+    max-height: 10px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+
+
+
+
+/* Estilos comunes para los formularios */
+.form-container {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column; /* Cambiado de 'row' a 'column' */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+
+}
+
+/* Estilos para las secciones de inicio de sesión y registro */
+.login-seccion,
+.registro-seccion {
+    background-color: white;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    min-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.login-seccion h1,
+.registro-seccion h1 {
+    color: #4285f4;
+    margin-bottom: 20px;
+}
+
+.login-seccion input[type="text"],
+.login-seccion input[type="password"],
+.registro-seccion input[type="text"],
+.registro-seccion input[type="password"] {
+    width: 80%;
+    max-width: 300px;
+
+}
+
+.form-container input[type="submit"],
+.form-container input[type="submit"] {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+/* Estilos adicionales para elementos de la interfaz de Google */
+/* Puedes agregar más estilos según tus necesidades */

@@ -11,7 +11,7 @@
 
 <header th:fragment="header">
   <nav>
-    <h1>Admin - Biblioteca</h1>
+    <h1 id="Cabecera">Admin - Biblioteca</h1>
     <ul class="navigation-menu">
       <li><a id="nav1"th:href="@{/home}">Home</a></li>
       <li><p id="nav2">Gestión Títulos</p>
@@ -27,12 +27,7 @@
           <li><a href="/titulos/bajaEjemplar" onclick="showForm('bajaEjemplar')">BAJA EJEMPLAR</a></li>
         </ul>
       </li>
-      <li><a id="nav4" href="AboutUS.html">About Us</a>
-        <ul>
-          <li><a href="#">Our Team</a></li>
-          <li><a href="#">Contact Us</a></li>
-        </ul>
-      </li>
+      <li><a href="/login">Cerrar Sesión</a></li>
     </ul>
   </nav>
 </header>
