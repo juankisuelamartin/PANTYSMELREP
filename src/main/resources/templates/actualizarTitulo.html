@@ -19,8 +19,12 @@
     <div th:replace="~{header :: header}"></div>
 </div>
 <div class="form-container">
-<div class="form-content" id="actualizarTitulo">
+
+    <div class="form-content" id="actualizarTitulo">
+
+
     <h2>Actualizar Título</h2>
+
     <form action="/titulos/actualizarTitulo" method="post" onsubmit="return validateForm(this)" enctype="multipart/form-data">
         <label for="isbn_actualizar">ISBN del Título a Actualizar:</label>
         <input type="text" id="isbn_actualizar" name="isbn_actualizar" required>
@@ -46,7 +50,8 @@
 
         <input type="submit" value="Actualizar Título">
     </form>
-</div>
+    </div>
+
 </div>
 <script>
     function showForm(formId) {

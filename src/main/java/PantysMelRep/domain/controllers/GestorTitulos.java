@@ -117,35 +117,37 @@ public class GestorTitulos {
 
 	@Transactional
 	public void bajaEjemplar(String id, RedirectAttributes redirectAttributes) {
+
 		// Buscar el ejemplar en la base de datos
 		Ejemplar ejemplar = ejemplarDAO.findById(id).orElseThrow(() -> new RuntimeException("Ejemplar no encontrado"));
-		if (ejemplar != null) {
-			if(prestamoDAO.findByejemplarId(Long.parseLong(id)).isPresent()){
-				Prestamo prestamo = prestamoDAO.findByejemplarId(Long.parseLong(id)).orElseThrow(() -> new RuntimeException("Prestamo no encontrado"));
-				if(prestamo!= null){
-					if (prestamo.isActivo()){
-						logTitulo.error("El ejemplar no se puede borrar porque está prestado");
-						redirectAttributes.addFlashAttribute("error", "El ejemplar no se puede borrar porque está prestado");
+
+			if (ejemplar != null) {
+				if (prestamoDAO.findByejemplarId(Long.parseLong(id)).isPresent()) {
+					Prestamo prestamo = prestamoDAO.findByejemplarId(Long.parseLong(id)).orElseThrow(() -> new RuntimeException("Prestamo no encontrado"));
+					if (prestamo != null) {
+						if (prestamo.isActivo()) {
+							logTitulo.error("El ejemplar no se puede borrar porque está prestado");
+							redirectAttributes.addFlashAttribute("error", "El ejemplar no se puede borrar porque está prestado");
+						} else {
+							prestamoDAO.delete(prestamo);
+							ejemplarDAO.delete(ejemplar);
+							logTitulo.info("Ejemplar borrado. y prestamo inactivo borrado.");
+							redirectAttributes.addFlashAttribute("success", "Ejemplar borrado. y prestamo inactivo borrado.");
+						}
 					}
-					else{
-						prestamoDAO.delete(prestamo);
-						ejemplarDAO.delete(ejemplar);
-						logTitulo.info("Ejemplar borrado. y prestamo inactivo borrado.");
-						redirectAttributes.addFlashAttribute("success", "Ejemplar borrado. y prestamo inactivo borrado.");
-					}
+				} else {
+					ejemplarDAO.delete(ejemplar);
+					logTitulo.info("Ejemplar borrado.");
+					redirectAttributes.addFlashAttribute("success", "Ejemplar borrado.");
+
+
+				}
 			}
-			}else{
-				ejemplarDAO.delete(ejemplar);
-				logTitulo.info("Ejemplar borrado.");
-				redirectAttributes.addFlashAttribute("success", "Ejemplar borrado.");
 
-
-		}
 	}
 
 
 
-}
 
 
 }

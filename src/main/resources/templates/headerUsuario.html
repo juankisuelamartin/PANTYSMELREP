@@ -11,7 +11,7 @@
 
 <header th:fragment="headerUsuario">
     <nav>
-        <h1>Biblioteca</h1>
+        <h1 id="Cabecera">Biblioteca</h1>
         <ul class="navigation-menu">
             <li><a id="nav1" th:href="@{/homeUsuario}">Home</a></li>
             <li><p id="nav2">Gestión Prestamos</p>
@@ -21,18 +21,13 @@
                     <li><a href="/prestamos/realizarReserva" onclick="showForm('realizarReserva')">Realizar Reserva</a></li>
                 </ul>
             </li>
-            <li><p id="nav3">Gestión Penalizaciones</p>
-                <ul>
-                    <li><a href="#" onclick="showForm('altaEjemplar')">ALTA EJEMPLAR</a></li>
-                    <li><a href="#" onclick="showForm('bajaEjemplar')">BAJA EJEMPLAR</a></li>
-                </ul>
-            </li>
             <li><a id="nav4" href="AboutUS.html">About Us</a>
                 <ul>
                     <li><a href="#">Our Team</a></li>
                     <li><a href="#">Contact Us</a></li>
                 </ul>
             </li>
+            <li><a href="/login">Cerrar Sesión</a></li>
         </ul>
     </nav>
 </header>

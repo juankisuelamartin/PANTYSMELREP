@@ -234,8 +234,8 @@ public class TituloController {
                                RedirectAttributes redirectAttributes) throws InterruptedException {
 
             gestorTitulos.altaEjemplar(isbn, redirectAttributes);
-        logTitulo.info("Ejemplar dado de alta con éxito.");
-        redirectAttributes.addFlashAttribute("success", "Ejemplar dado de alta con éxito");
+
+
         return "redirect:/home"; // Redirige a la página principal
     }
 
@@ -247,21 +247,26 @@ public class TituloController {
 
         // Obtener el ID del formulario y enviarlo al servicio GestorTitulos
         // Contar cuántos ejemplares existen con el mismo Titulo_Id
-        Titulo tituloId = ejemplarDAO.findById(id).orElseThrow(() -> new RuntimeException("Ejemplar no encontrado")).getTitulo();
-        long countEjemplares = ejemplarDAO.contarEjemplaresConMismoTitulo(tituloId);;
-        if (countEjemplares > 1) {
-            // Permitir la eliminación del ejemplar
-            gestorTitulos.bajaEjemplar(id, redirectAttributes);
-            countEjemplares -= 1;
-            logTitulo.info("Ejemplar con ID de ejemplar: "+id+ " y ISBN: " +tituloId.getIsbn()+ " borrado. Numero de ejemplares: " +countEjemplares);
-            redirectAttributes.addFlashAttribute("success", "Ejemplar con ID de ejemplar: "+id+ " y ISBN: " +tituloId.getIsbn()+ " borrado. Numero de ejemplares: " +countEjemplares);
-        } else {
-           logTitulo.info("ERROR: Ejemplar con ID de ejemplar: "+id+ " y ISBN: " +tituloId.getIsbn()+ " no ha sido borrado. Numero de ejemplares: " +countEjemplares);
-            redirectAttributes.addFlashAttribute("error", "ERROR: Ejemplar con ID de ejemplar: "+id+ " y ISBN: " +tituloId.getIsbn()+ " no ha sido borrado. Numero de ejemplares: " +countEjemplares);
-            // No permitir la eliminación y mostrar un mensaje de error o redirigir a una página de error
-            // Puedes agregar un mensaje de error o redirigir a una página apropiada aquí.
+        try {
+            Titulo tituloId = ejemplarDAO.findById(id).orElseThrow(() -> new RuntimeException("Ejemplar no encontrado")).getTitulo();
+            long countEjemplares = ejemplarDAO.contarEjemplaresConMismoTitulo(tituloId);
+            ;
+            if (countEjemplares > 1) {
+                // Permitir la eliminación del ejemplar
+                gestorTitulos.bajaEjemplar(id, redirectAttributes);
+                countEjemplares -= 1;
+                logTitulo.info("Ejemplar con ID de ejemplar: " + id + " y ISBN: " + tituloId.getIsbn() + " borrado. Numero de ejemplares: " + countEjemplares);
+                redirectAttributes.addFlashAttribute("success", "Ejemplar con ID de ejemplar: " + id + " y ISBN: " + tituloId.getIsbn() + " borrado. Numero de ejemplares: " + countEjemplares);
+            } else {
+                logTitulo.info("ERROR: Ejemplar con ID de ejemplar: " + id + " y ISBN: " + tituloId.getIsbn() + " no ha sido borrado. Numero de ejemplares: " + countEjemplares);
+                redirectAttributes.addFlashAttribute("error", "ERROR: Ejemplar con ID de ejemplar: " + id + " y ISBN: " + tituloId.getIsbn() + " no ha sido borrado. Numero de ejemplares: " + countEjemplares);
+                // No permitir la eliminación y mostrar un mensaje de error o redirigir a una página de error
+                // Puedes agregar un mensaje de error o redirigir a una página apropiada aquí.
+            }
+        } catch (RuntimeException e) {
+            logTitulo.error("ERROR: Título del ejemplar no encontrado", e);
+            redirectAttributes.addFlashAttribute("error", "ERROR: Título del ejemplar no encontrado");
         }
-
         return "redirect:/home"; // Redirige a la página principal
     }
     @GetMapping("/altaTitulo")
