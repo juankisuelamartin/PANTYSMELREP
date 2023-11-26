@@ -24,6 +24,8 @@ public class GestorPrestamos {
 	private UsuarioDAO usuarioDAO;
 	@Autowired
 	private EjemplarDAO ejemplarDAO;
+	@Autowired
+	private GestorPenalizaciones gestorPenalizaciones;
 
 	@Transactional
 	public void realizarPrestamo(String isbn, String idEjemplar, String idUsuario) {
@@ -137,11 +139,14 @@ public class GestorPrestamos {
 						.orElseThrow(() -> new RuntimeException("Título no encontrado"));
 
 				Reserva reserva = new Reserva();
+				reserva.setTituloId(titulo.getIsbn());
 				reserva.setUsuario(usuario);
 				reserva.setTitulo(titulo);
+				reserva.setUsuarioId(usuario.getId());
 				reserva.setFecha(new Date());
 
 				reservaDAO.save(reserva);
+
 				System.out.println("Reserva realizada con éxito.");
 			}
 		}
