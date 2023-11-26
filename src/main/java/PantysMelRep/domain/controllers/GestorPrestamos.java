@@ -45,20 +45,24 @@ public class GestorPrestamos {
 		calendar.setTime(fechaActual);
 		calendar.add(Calendar.DAY_OF_MONTH, 30);
 
-		if (prestamoExistente != null) {
-			if (prestamoExistente.isActivo()) {
-				System.out.println("El usuario ya tiene un préstamo activo de este título.");
-			} else {
-				prestamoExistente.setActivo(true);
-				prestamoExistente.setEjemplar(ejemplar);
-				prestamoExistente.setEjemplarId(ejemplar.getId());
-				prestamoExistente.setFechaInicio(fechaActual);
-				prestamoExistente.setFechaFin(calendar.getTime());
-				prestamoDAO.save(prestamoExistente);
-				System.out.println("Prestamo realizado");
-			}
-		}
+		if(gestorPenalizaciones.comprobarPenalizacion(usuario)){
+			System.out.println("El usuario tiene una penalización activa.");
+        }
 		else{
+			if (prestamoExistente != null) {
+				if (prestamoExistente.isActivo()) {
+					System.out.println("El usuario ya tiene un préstamo activo de este título.");
+				} else {
+					prestamoExistente.setActivo(true);
+					prestamoExistente.setEjemplar(ejemplar);
+					prestamoExistente.setEjemplarId(ejemplar.getId());
+					prestamoExistente.setFechaInicio(fechaActual);
+					prestamoExistente.setFechaFin(calendar.getTime());
+					prestamoDAO.save(prestamoExistente);
+					System.out.println("Prestamo realizado");
+				}
+			}
+			else{
 				Prestamo prestamo = new Prestamo();
 				prestamo.setUsuario(usuario);
 				prestamo.setTitulo(titulo);
@@ -73,10 +77,7 @@ public class GestorPrestamos {
 				prestamoDAO.save(prestamo);
 				System.out.println("Prestamo realizado");
 			}
-
-
-
-
+		}
 
 		}
 
@@ -93,7 +94,7 @@ public class GestorPrestamos {
 				if(prestamoExistente.getFechaFin().before(new Date())){
 					System.out.println("El usuario ha devuelto el libro fuera de plazo.");
 
-					//TODO: Penalizar al usuario
+					gestorPenalizaciones.aplicarPenalizacion(prestamoExistente.getUsuario(), prestamoExistente.getFechaFin());
 				}
 				else{
 					System.out.println("El usuario ha devuelto el libro a tiempo.");
