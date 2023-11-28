@@ -50,48 +50,47 @@ public class GestorPrestamos {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(fechaActual);
 		calendar.add(Calendar.DAY_OF_MONTH, 30);
+			if(gestorPenalizaciones.comprobarPenalizacion(usuario)){
 
-		if(gestorPenalizaciones.comprobarPenalizacion(usuario)){
+				redirectAttributes.addFlashAttribute("success", "El usuario tiene una penalización activa.");
+				logPrestamo.info("El usuario tiene una penalización activa.");
+			}
+			else{
+				if (prestamoExistente != null) {
+					if (prestamoExistente.isActivo()) {
 
-			redirectAttributes.addFlashAttribute("success", "El usuario tiene una penalización activa.");
-			logPrestamo.info("El usuario tiene una penalización activa.");
-        }
-		else{
-			if (prestamoExistente != null) {
-				if (prestamoExistente.isActivo()) {
+						redirectAttributes.addFlashAttribute("error", "El usuario ya tiene un préstamo activo de este título.");
+						logPrestamo.info("El usuario ya tiene un préstamo activo de este título.");
+					} else {
+						prestamoExistente.setActivo(true);
+						prestamoExistente.setEjemplar(ejemplar);
+						prestamoExistente.setEjemplarId(ejemplar.getId());
+						prestamoExistente.setFechaInicio(fechaActual);
+						prestamoExistente.setFechaFin(calendar.getTime());
+						prestamoDAO.save(prestamoExistente);
 
-					redirectAttributes.addFlashAttribute("error", "El usuario ya tiene un préstamo activo de este título.");
-					logPrestamo.info("El usuario ya tiene un préstamo activo de este título.");
-				} else {
-					prestamoExistente.setActivo(true);
-					prestamoExistente.setEjemplar(ejemplar);
-					prestamoExistente.setEjemplarId(ejemplar.getId());
-					prestamoExistente.setFechaInicio(fechaActual);
-					prestamoExistente.setFechaFin(calendar.getTime());
-					prestamoDAO.save(prestamoExistente);
+						redirectAttributes.addFlashAttribute("success", "Prestamo realizado");
+						logPrestamo.info("Prestamo realizado");
+					}
+				}
+				else{
+					Prestamo prestamo = new Prestamo();
+					prestamo.setUsuario(usuario);
+					prestamo.setTitulo(titulo);
+					prestamo.setTituloId((titulo.getIsbn()));
+					prestamo.setUsuarioId(usuario.getId());
+					prestamo.setEjemplar(ejemplar);
+					prestamo.setEjemplarId(ejemplar.getId());
+					prestamo.setFechaInicio(fechaActual);
+					prestamo.setFechaFin(calendar.getTime());
+					prestamo.setActivo(true);
+
+					prestamoDAO.save(prestamo);
 
 					redirectAttributes.addFlashAttribute("success", "Prestamo realizado");
 					logPrestamo.info("Prestamo realizado");
 				}
 			}
-			else{
-				Prestamo prestamo = new Prestamo();
-				prestamo.setUsuario(usuario);
-				prestamo.setTitulo(titulo);
-				prestamo.setTituloId((titulo.getIsbn()));
-				prestamo.setUsuarioId(usuario.getId());
-				prestamo.setEjemplar(ejemplar);
-				prestamo.setEjemplarId(ejemplar.getId());
-				prestamo.setFechaInicio(fechaActual);
-				prestamo.setFechaFin(calendar.getTime());
-				prestamo.setActivo(true);
-
-				prestamoDAO.save(prestamo);
-
-				redirectAttributes.addFlashAttribute("success", "Prestamo realizado");
-				logPrestamo.info("Prestamo realizado");
-			}
-		}
 
 		}
 

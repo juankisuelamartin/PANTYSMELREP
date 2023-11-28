@@ -31,21 +31,22 @@ public class GestorPenalizaciones {
     }
 
 
-
     @Transactional
     public boolean comprobarPenalizacion(Usuario u) {
         Date fechaActual = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(fechaActual);
         calendar.add(Calendar.DAY_OF_MONTH, 30);
-        if (u.getFechaFinPenalizacion().before(fechaActual)) {
-            u.setFechaFinPenalizacion(null);
-            usuarioDAO.save(u);
-            return false;
-        } else {
+        if (u.getFechaFinPenalizacion() == null) {
             return true;
+        } else {
+            if (u.getFechaFinPenalizacion().before(fechaActual)) {
+                u.setFechaFinPenalizacion(null);
+                usuarioDAO.save(u);
+                return false;
+            }
         }
-
+    return true;
     }
 
 }
