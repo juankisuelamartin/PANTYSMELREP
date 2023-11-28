@@ -44,13 +44,8 @@ public class TituloController {
                              @RequestParam("DType") int DType,
                              @RequestPart("foto") MultipartFile foto,
                              RedirectAttributes redirectAttributes) throws InterruptedException {
-
-        logTitulo.info("Received parameters:");
-        logTitulo.info("titulo: " + titulo);
-        logTitulo.info("isbn: " + isbn);
-        logTitulo.info("autores: " + nuevosAutores);
-        logTitulo.info("DType: " + DType);
-        logTitulo.info("foto: " + foto);
+        
+        logTitulo.info("Received Parameters.");
 
         // Comprobar si el ISBN ya existe en la base de datos
         if (tituloDAO.findById(isbn).isPresent()) {
@@ -314,7 +309,7 @@ public class TituloController {
         } else {
             // No se proporcionó ninguna imagen, usar una imagen por defecto (debes tener una imagen por defecto en tu proyecto)
 
-            try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("static/images/default_Portada.jpg")) {
+            try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("static/images/default_Portada.jpg")) {
                 fotoBytes = inputStream.readAllBytes();
             } catch (IOException e) {
                 // Manejar el error al cargar la imagen por defecto
