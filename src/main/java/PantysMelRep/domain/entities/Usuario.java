@@ -1,3 +1,9 @@
+/*
+ * Nombre del archivo: Autor.java
+ * Descripción: Clase Autor de la aplicación PantysMelRep.
+ * Autor: Pan TyS Mel SA
+ */
+
 package PantysMelRep.domain.entities;
 
 import jakarta.persistence.*;

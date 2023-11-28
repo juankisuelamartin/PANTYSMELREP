@@ -1,7 +1,22 @@
+/*
+ * Nombre del archivo: GestorPrestamos.java
+ * Descripción: Clase GestorPrestamos de la aplicación PantysMelRep.
+ * Autor: Pan TyS Mel SA
+ */
 package PantysMelRep.domain.controllers;
 
-import PantysMelRep.domain.entities.*;
-import PantysMelRep.persistencia.*;
+import PantysMelRep.domain.entities.Ejemplar;
+import PantysMelRep.domain.entities.Titulo;
+import PantysMelRep.domain.entities.Usuario;
+import PantysMelRep.domain.entities.PrestamoId;
+import PantysMelRep.domain.entities.Prestamo;
+import PantysMelRep.domain.entities.Reserva;
+import PantysMelRep.domain.entities.ReservaId;
+import PantysMelRep.persistencia.PrestamoDAO;
+import PantysMelRep.persistencia.ReservaDAO;
+import PantysMelRep.persistencia.TituloDAO;
+import PantysMelRep.persistencia.UsuarioDAO;
+import PantysMelRep.persistencia.EjemplarDAO;
 
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -42,7 +57,7 @@ public class GestorPrestamos {
 
 		Ejemplar ejemplar = ejemplarDAO.findById(idEjemplar)
 				.orElseThrow(() -> new RuntimeException("Ejemplar no encontrado"));
-		//TODO LOG4J
+
 		PrestamoId prestamoId = new PrestamoId(usuario.getId(), titulo.getIsbn());
 		Prestamo prestamoExistente = (Prestamo) prestamoDAO.findById(prestamoId).orElse(null);
 

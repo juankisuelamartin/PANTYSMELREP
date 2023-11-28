@@ -1,3 +1,8 @@
+/*
+ * Nombre del archivo: GestorPrestamos.java
+ * Descripción: Clase GestorPrestamos de la aplicación PantysMelRep.
+ * Autor: Pan TyS Mel SA
+ */
 package PantysMelRep.domain.controllers;
 import PantysMelRep.domain.entities.Usuario;
 import PantysMelRep.persistencia.UsuarioDAO;

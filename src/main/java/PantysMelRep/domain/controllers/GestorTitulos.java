@@ -1,7 +1,21 @@
+/*
+ * Nombre del archivo: GestorTitulos.java
+ * Descripción: Clase GestorTitulos de la aplicación PantysMelRep.
+ * Autor: Pan TyS Mel SA
+ */
 package PantysMelRep.domain.controllers;
 
-import PantysMelRep.domain.entities.*;
-import PantysMelRep.persistencia.*;
+import PantysMelRep.domain.entities.Titulo;
+import PantysMelRep.domain.entities.Revista;
+import PantysMelRep.domain.entities.Libro;
+import PantysMelRep.domain.entities.Autor;
+import PantysMelRep.domain.entities.Prestamo;
+import PantysMelRep.domain.entities.Ejemplar;
+import PantysMelRep.persistencia.TituloDAO;
+import PantysMelRep.persistencia.EjemplarDAO;
+import PantysMelRep.persistencia.AutorDAO;
+import PantysMelRep.persistencia.PrestamoDAO;
+
 
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -13,7 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.Collection;
-import java.util.Optional;
+
 
 @Service
 public class GestorTitulos {
@@ -26,13 +40,11 @@ public class GestorTitulos {
 	AutorDAO autorDAO;
 	@Autowired
 	PrestamoDAO prestamoDAO;
-	private AgenteBBDD agente;
+
 	private static final Logger logTitulo = LoggerFactory.getLogger(TituloController.class);
 
 
-	public void setAgenteBBDD(AgenteBBDD agente) {
-		this.agente = agente;
-	}
+
 
 	public Titulo altaTitulo(String titulo, String isbn, Collection<Autor> autores, int DType, byte[] fotoBytes) {
 		try {

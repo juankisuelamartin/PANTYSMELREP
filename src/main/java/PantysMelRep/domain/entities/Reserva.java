@@ -1,3 +1,8 @@
+/*
+ * Nombre del archivo: Reserva.java
+ * Descripción: Clase Reserva de la aplicación PantysMelRep.
+ * Autor: Pan TyS Mel SA
+ */
 package PantysMelRep.domain.entities;
 
 import jakarta.persistence.*;

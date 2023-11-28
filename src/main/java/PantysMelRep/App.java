@@ -1,6 +1,9 @@
+/*
+ * Nombre del archivo: App.java
+ * Descripción: Clase principal de la aplicación PantysMelRep.
+ * Autor: Pan TyS Mel SA
+ */
 package PantysMelRep;
-import java.sql.SQLException;
-import java.util.Arrays;
 
 import PantysMelRep.domain.controllers.GestorPrestamos;
 import PantysMelRep.domain.controllers.GestorTitulos;
@@ -16,15 +19,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
-/**
- * Hello world!
- *
- *
- *
- */
+
 @SpringBootApplication
 public class App {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args){
         ConfigurableApplicationContext context = SpringApplication.run(App.class, args);
         AgenteBBDD agenteBBDD = AgenteBBDD.getAgente();
         agenteBBDD.conectar();
