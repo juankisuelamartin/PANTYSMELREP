@@ -5,8 +5,13 @@
  */
 package PantysMelRep.domain.controllers;
 
-import PantysMelRep.domain.entities.*;
-import PantysMelRep.persistencia.*;
+import PantysMelRep.domain.entities.Ejemplar;
+import PantysMelRep.domain.entities.Autor;
+import PantysMelRep.domain.entities.Titulo;
+import PantysMelRep.domain.entities.AutorId;
+import PantysMelRep.persistencia.TituloDAO;
+import PantysMelRep.persistencia.AutorDAO;
+import PantysMelRep.persistencia.EjemplarDAO;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

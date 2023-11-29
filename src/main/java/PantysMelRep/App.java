@@ -26,8 +26,6 @@ public class App {
         ConfigurableApplicationContext context = SpringApplication.run(App.class, args);
         AgenteBBDD agenteBBDD = AgenteBBDD.getAgente();
         agenteBBDD.conectar();
-        GestorTitulos gestorTitulos = context.getBean(GestorTitulos.class);
-        gestorTitulos.setAgenteBBDD(agenteBBDD);
 
          System.out.println("Conectado.");
     }

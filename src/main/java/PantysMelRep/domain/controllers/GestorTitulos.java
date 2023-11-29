@@ -11,10 +11,7 @@ import PantysMelRep.domain.entities.Libro;
 import PantysMelRep.domain.entities.Autor;
 import PantysMelRep.domain.entities.Prestamo;
 import PantysMelRep.domain.entities.Ejemplar;
-import PantysMelRep.persistencia.TituloDAO;
-import PantysMelRep.persistencia.EjemplarDAO;
-import PantysMelRep.persistencia.AutorDAO;
-import PantysMelRep.persistencia.PrestamoDAO;
+import PantysMelRep.persistencia.*;
 
 
 import jakarta.transaction.Transactional;
@@ -41,8 +38,8 @@ public class GestorTitulos {
 	@Autowired
 	PrestamoDAO prestamoDAO;
 
-	private static final Logger logTitulo = LoggerFactory.getLogger(TituloController.class);
 
+	private static final Logger logTitulo = LoggerFactory.getLogger(TituloController.class);
 
 
 
