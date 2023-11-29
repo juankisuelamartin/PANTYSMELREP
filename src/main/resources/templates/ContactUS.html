@@ -19,23 +19,34 @@
             height: auto; /* Altura automática para mantener la proporción */
         }
     </style>
-    <title>About Us</title>
+    <title>Contact Us</title>
 </head>
 <body>
 
 <div class="navbar">
     <div th:replace="~{headerUsuario :: headerUsuario}"></div>
 </div>
+
 <div class="header-image">
     <img src="https://11defebrero.files.wordpress.com/2017/02/socio-universidad-de-castilla-la-mancha.png" alt="Imagen de Encabezado">
 </div>
 
 <div class="form-container">
-    <div class="form-content" id="aboutUs">
-        <h2>Sobre Nosotros</h2>
-        <p>Bienvenido a la Biblioteca Pantysmel, donde puedes explorar un mundo de conocimiento e historias.</p>
-        <p>Nuestra misión es proporcionar una colección diversa de títulos, desde libros hasta revistas, para satisfacer los gustos de cada lector.</p>
-        <p>No dudes en contactarnos si tienes alguna pregunta o sugerencia. ¡Valoramos tu opinión!</p>
+    <div class="form-content" id="contactUs">
+        <h2>Contact Us</h2>
+        <p>¿Tienes alguna pregunta o sugerencia? ¡Escribenos!</p>
+        <form action="/submit-contact" method="post" id="contactForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
     </div>
 </div>
 
