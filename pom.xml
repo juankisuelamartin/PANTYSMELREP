@@ -10,6 +10,13 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+    </repositories>
+
     <groupId>es.uclm</groupId>
     <artifactId>library</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -100,6 +107,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.11</version>
                 <executions>
                     <execution>
                         <id>jacoco-initialize</id>
@@ -123,7 +131,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.1.2</version>
                 <configuration>
                     <skipEmptyReport>false</skipEmptyReport>
                 </configuration>
@@ -132,6 +140,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.11</version>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -143,7 +152,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.4.2</version>
             </plugin>
+
         </plugins>
     </reporting>
 </project>
