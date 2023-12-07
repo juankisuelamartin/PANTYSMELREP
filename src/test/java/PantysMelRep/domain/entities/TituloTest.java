@@ -45,7 +45,19 @@ class TituloTest {
         byte[] foto= new byte[6767];
         titulo.setFoto(foto);
 
-        //titulo.setPrestamos(2);
+        Prestamo prestamo1 = new Prestamo();
+        prestamo1.setTitulo(titulo);
+
+        Prestamo prestamo2 = new Prestamo();
+        prestamo2.setTitulo(titulo);
+
+        Collection<Prestamo> prestamos= new ArrayList<>();
+        prestamos.add(prestamo1);
+        prestamos.add(prestamo2);
+
+        titulo.setPrestamos(prestamos);
+
+
         //titulo.setReservas(1);
         titulo.setTitulo("Título de prueba");
         titulo.setIsbn("123-456-789");
@@ -56,67 +68,138 @@ class TituloTest {
     void tearDown() {
     }
 
+
     @Test
-    void getAutores() {
+    void testGetAutores() {
+        Collection<Autor> autores = titulo.getAutores();
+        assertNotNull(autores);
+        assertEquals(2, autores.size());
     }
 
     @Test
-    void setAutores() {
+    void testSetAutores() {
+        Autor autor3 = new Autor();
+        autor3.getId().setNombre("Autor 3");
+
+        Collection<Autor> autores = new ArrayList<>();
+        autores.add(autor3);
+
+        titulo.setAutores(autores);
+
+        assertEquals(autores, titulo.getAutores());
     }
 
     @Test
-    void getEjemplares() {
+    void testGetEjemplares() {
+        Collection<Ejemplar> ejemplares = titulo.getEjemplares();
+        assertNotNull(ejemplares);
+        assertEquals(2, ejemplares.size());
     }
 
     @Test
-    void setEjemplares() {
+    void testSetEjemplares() {
+        Ejemplar ejemplar3 = new Ejemplar();
+        ejemplar3.setId(10L);
+
+        Collection<Ejemplar> ejemplares = new ArrayList<>();
+        ejemplares.add(ejemplar3);
+
+        titulo.setEjemplares(ejemplares);
+
+        assertEquals(ejemplares, titulo.getEjemplares());
     }
 
     @Test
-    void getFoto() {
+    void testGetFoto() {
+        byte[] foto = titulo.getFoto();
+        assertNotNull(foto);
+        assertEquals(6767, foto.length);
     }
 
     @Test
-    void setFoto() {
+    void testSetFoto() {
+        byte[] newFoto = new byte[10000];
+        titulo.setFoto(newFoto);
+
+        assertEquals(newFoto, titulo.getFoto());
     }
 
     @Test
-    void getPrestamos() {
+    void testGetPrestamos() {
+        Collection<Prestamo> prestamos = titulo.getPrestamos();
+        assertNotNull(prestamos);
+        assertEquals(2, prestamos.size());
     }
 
     @Test
-    void setPrestamos() {
+    void testSetPrestamos() {
+        Prestamo prestamo3 = new Prestamo();
+        prestamo3.setTitulo(titulo);
+
+        Collection<Prestamo> prestamos = new ArrayList<>();
+        prestamos.add(prestamo3);
+
+        titulo.setPrestamos(prestamos);
+
+        assertEquals(prestamos, titulo.getPrestamos());
     }
 
     @Test
-    void getReservas() {
+    void testGetReservas() {
+        Collection<Reserva> reservas = titulo.getReservas();
+        assertNotNull(reservas);
+        assertEquals(0, reservas.size()); // Assuming the initial value is 0
     }
 
     @Test
-    void setReservas() {
+    void testSetReservas() {
+        Reserva reserva3 = new Reserva();
+        reserva3.setTitulo(titulo);
+
+        Collection<Reserva> reservas= new ArrayList<>();
+        reservas.add(reserva3);
+
+        titulo.setReservas(reservas);
+
+        assertEquals(reservas, titulo.getReservas());
     }
 
     @Test
-    void getTitulo() {
+    void testGetTitulo() {
+        String tituloStr = titulo.getTitulo();
+        assertEquals("Título de prueba", tituloStr);
     }
 
     @Test
-    void setTitulo() {
+    void testSetTitulo() {
+        titulo.setTitulo("Nuevo Título");
+
+        assertEquals("Nuevo Título", titulo.getTitulo());
     }
 
     @Test
-    void getIsbn() {
+    void testGetIsbn() {
+        String isbn = titulo.getIsbn();
+        assertEquals("123-456-789", isbn);
     }
 
     @Test
-    void setIsbn() {
+    void testSetIsbn() {
+        titulo.setIsbn("987-654-321");
+
+        assertEquals("987-654-321", titulo.getIsbn());
     }
 
     @Test
-    void getNumReserva() {
+    void testGetNumReserva() {
+        String numReserva = titulo.getNumReserva();
+        assertEquals("3", numReserva);
     }
 
     @Test
-    void setNumReserva() {
+    void testSetNumReserva() {
+        titulo.setNumReserva("10");
+
+        assertEquals("10", titulo.getNumReserva());
     }
 }
