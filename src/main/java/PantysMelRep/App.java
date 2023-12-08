@@ -7,6 +7,8 @@ package PantysMelRep;
 import PantysMelRep.persistencia.AgenteBBDD;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /***************************************************************
@@ -37,14 +39,17 @@ import org.springframework.context.ConfigurableApplicationContext;
  *
  * @see [https://github.com/juankisuelamartin/PANTYSMELREP]
  */
-@SpringBootApplication
-public class App {
-    public static void main(String[] args){
-        ConfigurableApplicationContext context = SpringApplication.run(App.class, args);
-        AgenteBBDD agenteBBDD = AgenteBBDD.getAgente();
-        agenteBBDD.conectar();
 
-         System.out.println("Conectado.");
-    }
+@SpringBootApplication
+public class App //Clase principal
+{
+  public static void main(String[] args){ //Método principal
+    SpringApplication.run(App.class, args);
+    AgenteBBDD var = AgenteBBDD.getAgente();
+    var.conectar(); //Conexión con el AgenteBBDD
+
+    System.out.println("Conectado.");
+  }
 }
+
 
