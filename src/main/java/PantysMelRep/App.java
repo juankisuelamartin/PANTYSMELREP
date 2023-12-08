@@ -38,12 +38,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @SpringBootApplication
-public class App //Clase principal
+//Clase principal
+public class App
 {
-  public static void main(String[] args){ //Método principal
+    //Método principal
+  public static void main(String[] args)
+  {
     SpringApplication.run(App.class, args);
-    AgenteBBDD var = AgenteBBDD.getAgente();
-    var.conectar(); //Conexión con el AgenteBBDD
+    AgenteBBDD agente = AgenteBBDD.getAgente();
+    agente.conectar();
 
     System.out.println("Conectado.");
   }
