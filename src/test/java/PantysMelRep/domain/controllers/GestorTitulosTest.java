@@ -62,7 +62,7 @@ class GestorTitulosTest {
         String titulo = "Nuevo Libro";
         String nuevosAutores = "Autor 1, Autor 2";
         int DType = 1;
-        MultipartFile foto = new MockMultipartFile("foto", new byte[0]);
+        byte[] fotoBytes = new byte[0];
 
         // Convertir la cadena de texto en una Collection<Autor>
         String[] nombresAutores = nuevosAutores.split(", ");
@@ -74,28 +74,29 @@ class GestorTitulosTest {
             autores.add(new Autor(nombre, apellido));
         }
 
-        // Mock behavior
-        when(tituloDAO.findById(isbn)).thenReturn(java.util.Optional.empty());
-        when(gestorTitulos.altaTitulo(anyString(), anyString(), anyList(), anyInt(), any(byte[].class), any(RedirectAttributes.class))).thenReturn(new Libro());
+        // Crear un mock de RedirectAttributes
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
 
-        // Crear un mock de TituloController
-        TituloController tituloController = mock(TituloController.class);
+        // Mock behavior
+        when(tituloDAO.findById(isbn)).thenReturn(Optional.empty());
+        when(tituloDAO.save(any(Titulo.class))).thenReturn(new Libro());
 
         // Test
-        try {
-            tituloController.altaTitulo(titulo, isbn, nuevosAutores, DType, foto, redirectAttributes);
-        } catch (RuntimeException e) {
-            // Handle the exception
-            System.out.println("Caught unexpected exception: " + e.getMessage());
-            fail("Unexpected exception thrown");
+        Titulo result = gestorTitulos.altaTitulo(titulo, isbn, autores, DType, fotoBytes, redirectAttributes);
+
+        // Simular redireccion para que el comportamiento de los atributos flash sea el esperado.
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        for (Map.Entry<String, ?> entry : redirectAttributes.getFlashAttributes().entrySet()) {
+            response.addCookie(new Cookie(entry.getKey(), entry.getValue().toString()));
         }
 
         // Verify
+        assertTrue(response.getCookie("success").getValue().equals("El título ha sido dado de alta con éxito"));
+        verify(tituloDAO, times(1)).findById(isbn);
         verify(tituloDAO, times(1)).save(any(Titulo.class));
-        verify(gestorTitulos, times(1)).altaEjemplar(anyString(), any(RedirectAttributes.class));
-        assertTrue(redirectAttributes.getFlashAttributes().containsKey("success"));
-        assertEquals("El título ha sido dado de alta con éxito", redirectAttributes.getFlashAttributes().get("success"));
     }
+
+
 
 
 

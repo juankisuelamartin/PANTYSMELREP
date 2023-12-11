@@ -60,21 +60,8 @@ public class TituloController {
 
         logTitulo.info("Received Parameters.");
 
-        // Comprobar si el ISBN ya existe en la base de datos
-        if (tituloDAO.findById(isbn).isPresent()) {
-            // El ISBN ya existe, mostrar un mensaje de error
-            logTitulo.info("El ISBN ya existe en la Base de Datos.");
-            redirectAttributes.addFlashAttribute("error", "Error: El ISBN ya existe en la Base de Datos.");
-            return "redirect:/home"; // Redirige a la página principal o a donde desees
-        }
-
         // Procesar la lista de autores usando el método procesarAutores
         List<Autor> listaAutores = procesarAutores(nuevosAutores, redirectAttributes);
-
-        if (listaAutores == null) {
-            // Ocurrió un error al procesar los autores
-            return "redirect:/home";
-        }
 
         byte[] fotoBytes = anadirFoto(foto, redirectAttributes);
 
@@ -85,16 +72,11 @@ public class TituloController {
             gestorTitulos.altaEjemplar(nuevoTitulo.getIsbn(), redirectAttributes);
             logTitulo.info("El título ha sido dado de alta con éxito.");
             redirectAttributes.addFlashAttribute("success", "El título ha sido dado de alta con éxito");
-            // El título se dio de alta exitosamente en la base de datos
+            return "redirect:/home"; // Redirige a la página principal o a donde desees
         } else {
-            // Hubo un error al dar de alta el título
-            // Puedes redirigir a una página de error o mostrar un mensaje al usuario
-            logTitulo.info("ERROR: No se ha podido dar de alta el título.");
-            redirectAttributes.addFlashAttribute("error", "ERROR: No se ha podido dar de alta el título.");
+            return "redirect:/home";
         }
-        return "redirect:/home"; // Redirige a la página principal o a donde desees
     }
-
 
     @Transactional
     @PostMapping("/actualizarTitulo")
