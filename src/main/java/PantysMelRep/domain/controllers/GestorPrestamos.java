@@ -67,7 +67,7 @@ public class GestorPrestamos {
 		calendar.add(Calendar.DAY_OF_MONTH, 30);
 			if(gestorPenalizaciones.comprobarPenalizacion(usuario)){
 
-				redirectAttributes.addFlashAttribute("success", "El usuario tiene una penalización activa.");
+				redirectAttributes.addFlashAttribute("error", "El usuario tiene una penalización activa.");
 				logPrestamo.info("El usuario tiene una penalización activa.");
 			}
 			else{

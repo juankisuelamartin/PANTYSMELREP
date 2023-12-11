@@ -2,7 +2,12 @@
 package PantysMelRep.domain.controllers;
 
 
-import PantysMelRep.domain.entities.*;
+import PantysMelRep.domain.entities.Autor;
+import PantysMelRep.domain.entities.Titulo;
+import PantysMelRep.domain.entities.Libro;
+import PantysMelRep.domain.entities.Ejemplar;
+import PantysMelRep.domain.entities.Prestamo;
+
 import PantysMelRep.persistencia.EjemplarDAO;
 import PantysMelRep.persistencia.PrestamoDAO;
 import PantysMelRep.persistencia.TituloDAO;
@@ -21,10 +26,19 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.never;
 
 
 class GestorTitulosTest {
