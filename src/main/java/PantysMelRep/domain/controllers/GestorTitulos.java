@@ -43,7 +43,7 @@ public class GestorTitulos {
 
 
 
-	public Titulo altaTitulo(String titulo, String isbn, Collection<Autor> autores, int DType, byte[] fotoBytes) {
+	public Titulo altaTitulo(String titulo, String isbn, Collection<Autor> autores, int DType, byte[] fotoBytes, RedirectAttributes redirectAttributes) {
 		try {
 			// Crear un nuevo libro o revista según DType
 			Titulo nuevoTitulo;
@@ -80,13 +80,12 @@ public class GestorTitulos {
 
 
 
-	public void borrarTitulo(String isbn) {
+	public void borrarTitulo(String isbn, RedirectAttributes redirectAttributes) {
 		Titulo titulo = tituloDAO.findById(isbn).orElseThrow(() -> new RuntimeException("Título no encontrado"));
 		tituloDAO.delete(titulo);
 	}
 	@Transactional
 	public void altaEjemplar(String isbn, RedirectAttributes redirectAttributes) {
-
 		try {
 			// Buscar el título en la base de datos
 			Titulo titulo = tituloDAO.findById(isbn)
@@ -107,9 +106,10 @@ public class GestorTitulos {
 		} catch (RuntimeException e) {
 			logTitulo.error("ERROR: Título del ejemplar no encontrado", e);
 			redirectAttributes.addFlashAttribute("error", "ERROR: Título del ejemplar no encontrado");
+			throw e; // Lanza la excepción para que pueda ser manejada o registrada por el código que llama a este método
 		}
-
 	}
+
 	private Long generarNuevoIdParaEjemplar() {
 		// Buscar el ID máximo actual en los ejemplares existentes
 		Long maxId = ejemplarDAO.findMaxId();

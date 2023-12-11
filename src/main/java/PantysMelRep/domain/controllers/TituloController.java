@@ -47,7 +47,7 @@ public class TituloController {
     private EjemplarDAO ejemplarDAO;
     @Autowired
     private AutorDAO autorDAO;
-// TODO AVISAR DE LOS ERRORES. ISBN YA EXISTE... ETC
+
 
     @Transactional
     @PostMapping("/altaTitulo")
@@ -79,7 +79,7 @@ public class TituloController {
         byte[] fotoBytes = anadirFoto(foto, redirectAttributes);
 
         // Utilizar el gestorTitulos para dar de alta el título
-        Titulo nuevoTitulo = gestorTitulos.altaTitulo(titulo, isbn, listaAutores, DType, fotoBytes);
+        Titulo nuevoTitulo = gestorTitulos.altaTitulo(titulo, isbn, listaAutores, DType, fotoBytes, redirectAttributes);
 
         if (nuevoTitulo != null) {
             gestorTitulos.altaEjemplar(nuevoTitulo.getIsbn(), redirectAttributes);
@@ -132,7 +132,7 @@ public class TituloController {
         byte[] fotoBytes=anadirFoto(foto, redirectAttributes);
 
         // Crea un nuevo título con la información actualizada
-        Titulo tituloActualizado = gestorTitulos.altaTitulo(nuevoTitulo, isbn,null, DType,fotoBytes);
+        Titulo tituloActualizado = gestorTitulos.altaTitulo(nuevoTitulo, isbn,null, DType,fotoBytes, redirectAttributes);
 
 
         if (!nuevosAutores.isEmpty()) {
@@ -227,7 +227,7 @@ public class TituloController {
             }
 
             // Después de eliminar los ejemplares, puedes eliminar el título
-            gestorTitulos.borrarTitulo(isbn);
+            gestorTitulos.borrarTitulo(isbn, redirectAttributes);
             logTitulo.info("Título eliminado con éxito");
             redirectAttributes.addFlashAttribute("success", "Título eliminado con éxito");
         }
