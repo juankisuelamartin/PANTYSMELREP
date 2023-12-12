@@ -8,8 +8,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import java.util.Date;
 import java.util.Optional;
@@ -99,47 +102,28 @@ class GestorPrestamosTest {
         String idUsuario = "admin";
 
         // Mock behavior
-        when(prestamoDAO.findById(any())).thenReturn(Optional.of(new Prestamo()));
+        Prestamo prestamo = new Prestamo();
+        prestamo.setActivo(true);
+        when(prestamoDAO.findById(any())).thenReturn(Optional.of(prestamo));
         doNothing().when(gestorPenalizaciones).aplicarPenalizacion(any(), any());
 
         // Test
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
         gestorPrestamos.realizarDevolucion(isbn, idUsuario, redirectAttributes);
 
         // Verify
         verify(prestamoDAO, times(1)).save(any());
 
+        // Verificar si se llama a findById antes de save
+        verify(prestamoDAO, times(1)).findById(any());
+
+        // Verificar si se aplica la penalización
+        verify(gestorPenalizaciones, times(1)).aplicarPenalizacion(any(), any());
+
+        // Verificar si no se llama a delete (simulando la parte de "bajaEjemplar")
+        verify(prestamoDAO, never()).delete(any(Prestamo.class));
+        verify(ejemplarDAO, never()).delete(any(Ejemplar.class));
     }
-
-    @Test
-    void realizarDevolucion_UserHasPenalty() {
-        // Mock data
-        String isbn = "6678";
-        String idUsuario = "PENALTY";
-
-        // Mock behavior
-        Prestamo prestamo = new Prestamo();
-        prestamo.setFechaFin(new Date()); // Assuming the fechaFin is in the past
-        when(prestamoDAO.findById(any())).thenReturn(Optional.of(prestamo));
-
-        Usuario usuario = new Usuario();
-        usuario.setFechaFinPenalizacion(null); // Assuming the user has no active penalty
-        doAnswer(invocation -> {
-            Usuario u = invocation.getArgument(0);
-            Date fechaFin = invocation.getArgument(1);
-            gestorPenalizaciones.aplicarPenalizacion(u, fechaFin); // Call the actual method
-            usuarioDAO.save(u); // Save the user after applying the penalty
-            return null;
-        }).when(gestorPenalizaciones).aplicarPenalizacion(any(), any());
-
-        // Test
-        gestorPrestamos.realizarDevolucion(isbn, idUsuario, redirectAttributes);
-
-        // Verify
-        verify(usuarioDAO, times(1)).save(any()); // Check that save method is invoked
-        verify(gestorPenalizaciones, times(1)).aplicarPenalizacion(any(), any()); // Verify other interactions
-        // Add more verification as needed
-    }
-
 
 
     @Test
@@ -165,7 +149,7 @@ class GestorPrestamosTest {
     @Test
     void realizarReserva_UserHasActiveLoan() {
         // Mock data
-        String isbn = "123";
+        String isbn = "235";
         String idUsuario = "user";
 
         // Mock behavior
