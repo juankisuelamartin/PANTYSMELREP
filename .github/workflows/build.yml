@@ -4,11 +4,13 @@ on:
     branches:
       - main
       - DEVELOP
+      - Mantenimiento
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
       - main
       - DEVELOP
+      - Mantenimiento
 
 jobs:
   build:
