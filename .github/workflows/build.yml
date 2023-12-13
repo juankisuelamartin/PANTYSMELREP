@@ -3,12 +3,14 @@ on:
   push:
     branches:
       - main
-      - DEVELOP  # Agregar la rama develop
+      - DEVELOP # Agregar la rama develop
+      - Mantenimiento
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
       - main
       - DEVELOP  # Agregar la rama develop
+      - Mantenimiento
 jobs:
   build:
     name: Build and analyze
