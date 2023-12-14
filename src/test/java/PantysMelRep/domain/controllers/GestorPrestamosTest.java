@@ -6,20 +6,24 @@ import PantysMelRep.domain.entities.*;
 import PantysMelRep.persistencia.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class GestorPrestamosTest {
 
     @InjectMocks
@@ -54,7 +58,7 @@ class GestorPrestamosTest {
     @Test
     void realizarPrestamo_Success() {
         // Mock data
-        String isbn = "123";
+        String isbn = "193";
         String idEjemplar = "7";
         String idUsuario = "admin";
 
@@ -70,6 +74,7 @@ class GestorPrestamosTest {
 
         // Verify
         verify(prestamoDAO, times(1)).save(any());
+        verify(redirectAttributes, times(1)).addFlashAttribute(any(), eq("Prestamo realizado"));
         // Add more verification as needed
     }
 
@@ -78,7 +83,7 @@ class GestorPrestamosTest {
         // Mock data
         String isbn = "123";
         String idEjemplar = "7";
-        String idUsuario = "PENALTY";
+        String idUsuario = "admin";
 
         // Mock behavior
         when(tituloDAO.findById(isbn)).thenReturn(Optional.of(new Titulo()));
@@ -91,39 +96,68 @@ class GestorPrestamosTest {
         gestorPrestamos.realizarPrestamo(isbn, idEjemplar, idUsuario, redirectAttributes);
 
         // Verify
-        verify(redirectAttributes, times(1)).addFlashAttribute(eq("error"), any());
+        verify(redirectAttributes, times(1)).addFlashAttribute(any(), eq("El usuario tiene una penalización activa."));
         // Add more verification as needed
     }
 
+
+
     @Test
-    void realizarDevolucion_Success() {
+    void testRealizarDevolucion() {
         // Mock data
-        String isbn = "120603";
-        String idUsuario = "admin";
+        String isbn = "prueba";
+
+        //Crear Prestamo prueba activo
+        String idUsuario = "user123";
+        Date fecha = new Date(2033 - 1900, Calendar.JANUARY,1);
+        Prestamo prestamoExistente = new Prestamo();
+        prestamoExistente.setActivo(true);
+        prestamoExistente.setFechaFin(fecha);
+
 
         // Mock behavior
-        Prestamo prestamo = new Prestamo();
-        prestamo.setActivo(true);
-        when(prestamoDAO.findById(any())).thenReturn(Optional.of(prestamo));
-        doNothing().when(gestorPenalizaciones).aplicarPenalizacion(any(), any());
+        when(prestamoDAO.findById(any()))
+                .thenReturn(Optional.of(prestamoExistente));
 
-        // Test
-        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+
         gestorPrestamos.realizarDevolucion(isbn, idUsuario, redirectAttributes);
 
-        // Verify
-        verify(prestamoDAO, times(1)).save(any());
+        verify(prestamoDAO, times(1)).save(any(Prestamo.class));
+        verify(gestorPenalizaciones, never()).aplicarPenalizacion(any(Usuario.class), any(Date.class));
 
-        // Verificar si se llama a findById antes de save
-        verify(prestamoDAO, times(1)).findById(any());
+        verify(redirectAttributes, times(1)).addFlashAttribute(any(), eq("El usuario ha devuelto el libro a tiempo."));
 
-        // Verificar si se aplica la penalización
-        verify(gestorPenalizaciones, times(1)).aplicarPenalizacion(any(), any());
 
-        // Verificar si no se llama a delete (simulando la parte de "bajaEjemplar")
-        verify(prestamoDAO, never()).delete(any(Prestamo.class));
-        verify(ejemplarDAO, never()).delete(any(Ejemplar.class));
     }
+
+    @Test
+    void testRealizarDevolucionTarde() {
+        // Mock data
+        String isbn = "prueba";
+
+        //Crear Prestamo prueba activo
+        String idUsuario = "user123";
+        Date fecha = new Date(2000 - 1900, Calendar.JANUARY,1);
+        Prestamo prestamoExistente = new Prestamo();
+        prestamoExistente.setActivo(true);
+        prestamoExistente.setFechaFin(fecha);
+
+
+        // Mock behavior
+        when(prestamoDAO.findById(any()))
+                .thenReturn(Optional.of(prestamoExistente));
+
+
+        gestorPrestamos.realizarDevolucion(isbn, idUsuario, redirectAttributes);
+
+        verify(prestamoDAO, times(1)).save(any(Prestamo.class));
+        verify(gestorPenalizaciones, never()).aplicarPenalizacion(any(Usuario.class), any(Date.class));
+
+        verify(redirectAttributes, times(1)).addFlashAttribute(any(), eq("El usuario ha devuelto el libro fuera de plazo."));
+
+
+    }
+
 
 
     @Test
@@ -143,7 +177,7 @@ class GestorPrestamosTest {
 
         // Verify
         verify(reservaDAO, times(1)).save(any());
-        // Add more verification as needed
+        verify(redirectAttributes, times(1)).addFlashAttribute(any(), eq("Reserva realizada con éxito."));
     }
 
     @Test
@@ -152,18 +186,17 @@ class GestorPrestamosTest {
         String isbn = "235";
         String idUsuario = "user";
 
+        Prestamo prestamo= new Prestamo();
+        prestamo.setActivo(true);
         // Mock behavior
-        when(prestamoDAO.findById(any())).thenReturn(Optional.of(new Prestamo()));
-        when(reservaDAO.findById(any())).thenReturn(Optional.empty());
-        when(usuarioDAO.findById(idUsuario)).thenReturn(Optional.of(new Usuario()));
-        when(tituloDAO.findById(isbn)).thenReturn(Optional.of(new Titulo()));
+        when(prestamoDAO.findById(any())).thenReturn(Optional.of(prestamo));
+
 
         // Test
         gestorPrestamos.realizarReserva(idUsuario, isbn, redirectAttributes);
 
         // Verify
-        verify(redirectAttributes, times(1)).addFlashAttribute(eq("error"), any());
-        // Add more verification as needed
+        verify(redirectAttributes, times(1)).addFlashAttribute(any(), eq("El usuario ya tiene un préstamo activo de este título. No se puede realizar una reserva."));
     }
 
     @Test
@@ -175,14 +208,13 @@ class GestorPrestamosTest {
         // Mock behavior
         when(prestamoDAO.findById(any())).thenReturn(Optional.empty());
         when(reservaDAO.findById(any())).thenReturn(Optional.of(new Reserva()));
-        when(usuarioDAO.findById(idUsuario)).thenReturn(Optional.of(new Usuario()));
-        when(tituloDAO.findById(isbn)).thenReturn(Optional.of(new Titulo()));
+
 
         // Test
         gestorPrestamos.realizarReserva(idUsuario, isbn, redirectAttributes);
 
         // Verify
-        verify(redirectAttributes, times(1)).addFlashAttribute(eq("error"), any());
-        // Add more verification as needed
+        verify(redirectAttributes, times(1)).addFlashAttribute(any(), eq("El usuario ya tiene una reserva activa de este título."));
+
     }
 }

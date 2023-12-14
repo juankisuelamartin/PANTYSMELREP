@@ -119,7 +119,9 @@ public class GestorPrestamos {
 		Prestamo prestamoExistente = (Prestamo) prestamoDAO.findById(prestamoId).orElse(null);
 		if (prestamoExistente != null) {
 			if (prestamoExistente.isActivo()) {
-				if(prestamoExistente.getFechaFin().before(new Date())){
+				Date fechaFin= prestamoExistente.getFechaFin();
+
+				if(fechaFin != null && fechaFin.before(new Date())){
 
 					redirectAttributes.addFlashAttribute("error", "El usuario ha devuelto el libro fuera de plazo.");
 					logPrestamo.info("El usuario ha devuelto el libro fuera de plazo.");
