@@ -5,12 +5,14 @@ on:
       - main
       - DEVELOP # Agregar la rama develop
       - Mantenimiento
+      - Testing
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
       - main
       - DEVELOP  # Agregar la rama develop
       - Mantenimiento
+      - Testing
 jobs:
   build:
     name: Build and analyze
