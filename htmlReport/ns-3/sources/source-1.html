@@ -1,0 +1,152 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Autor</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">PantysMelRep.domain.entities</a>
+</div>
+
+<h1>Coverage Summary for Class: Autor (PantysMelRep.domain.entities)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Autor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14,3%
+  </span>
+  <span class="absValue">
+    (1/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (2/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Nombre del archivo: Autor.java
+&nbsp; * Descripción: Clase Autor de la aplicación PantysMelRep.
+&nbsp; * Autor: Pan TyS Mel SA
+&nbsp; */
+&nbsp;package PantysMelRep.domain.entities;
+&nbsp;
+&nbsp;import jakarta.persistence.*;
+&nbsp;import java.util.Collection;
+&nbsp;
+&nbsp;@Entity
+&nbsp;@Table(name = &quot;autores&quot;)
+&nbsp;public class Autor {
+&nbsp;	@ManyToMany(mappedBy = &quot;autores&quot;)
+&nbsp;	private Collection&lt;Titulo&gt; titulos;
+&nbsp;
+&nbsp;	@EmbeddedId
+&nbsp;	private AutorId id;
+&nbsp;
+<b class="nc">&nbsp;	public Autor() {</b>
+&nbsp;		// Constructor por defecto requerido por JPA
+&nbsp;	}
+&nbsp;
+<b class="fc">&nbsp;	public Autor(String nombre, String apellido) {</b>
+<b class="fc">&nbsp;		this.id = new AutorId(nombre, apellido);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public Collection&lt;Titulo&gt; getTitulos() {
+<b class="nc">&nbsp;		return titulos;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setTitulos(Collection&lt;Titulo&gt; titulos) {
+<b class="nc">&nbsp;		this.titulos = titulos;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public AutorId getId() {
+<b class="nc">&nbsp;		return id;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setId(AutorId id) {
+<b class="nc">&nbsp;		this.id = id;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public String toString() {
+<b class="nc">&nbsp;		return String.format(&quot;Autor [nombre=%s, apellido=%s]&quot;, id.getNombre(), id.getApellido());</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-15 20:39</div>
+</div>
+</body>
+</html>

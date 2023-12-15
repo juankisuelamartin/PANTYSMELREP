@@ -1,0 +1,166 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ReservaId</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">PantysMelRep.domain.entities</a>
+</div>
+
+<h1>Coverage Summary for Class: ReservaId (PantysMelRep.domain.entities)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ReservaId</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Nombre del archivo: Autor.java
+&nbsp; * Descripción: Clase Autor de la aplicación PantysMelRep.
+&nbsp; * Autor: Pan TyS Mel SA
+&nbsp; */
+&nbsp;package PantysMelRep.domain.entities;
+&nbsp;
+&nbsp;import jakarta.persistence.Column;
+&nbsp;import jakarta.persistence.Embeddable;
+&nbsp;import jakarta.persistence.JoinColumn;
+&nbsp;import jakarta.persistence.MapsId;
+&nbsp;
+&nbsp;import java.io.Serializable;
+&nbsp;import java.util.Objects;
+&nbsp;
+&nbsp;@Embeddable
+&nbsp;public class ReservaId implements Serializable {
+&nbsp;
+&nbsp;    @Column(name=&quot;usuario_id&quot;)
+&nbsp;    private String usuarioId;
+&nbsp;
+&nbsp;    @Column(name=&quot;titulo_id&quot;)
+&nbsp;    private String tituloId;
+&nbsp;
+<b class="nc">&nbsp;    public ReservaId() {</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public ReservaId(String usuarioId, String tituloId) {</b>
+<b class="nc">&nbsp;        this.usuarioId = usuarioId;</b>
+<b class="nc">&nbsp;        this.tituloId = tituloId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getUsuarioId() {
+<b class="nc">&nbsp;        return usuarioId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setUsuarioId(String usuarioId) {
+<b class="nc">&nbsp;        this.usuarioId = usuarioId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getTituloId() {
+<b class="nc">&nbsp;        return tituloId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setTituloId(String tituloId) {
+<b class="nc">&nbsp;        this.tituloId = tituloId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean equals(Object o) {
+<b class="nc">&nbsp;        if (this == o) return true;</b>
+<b class="nc">&nbsp;        if (o == null || getClass() != o.getClass()) return false;</b>
+<b class="nc">&nbsp;        ReservaId reservaId = (ReservaId) o;</b>
+<b class="nc">&nbsp;        return Objects.equals(usuarioId, reservaId.usuarioId) &amp;&amp;</b>
+<b class="nc">&nbsp;                Objects.equals(tituloId, reservaId.tituloId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int hashCode() {
+<b class="nc">&nbsp;        return Objects.hash(usuarioId, tituloId);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-15 20:39</div>
+</div>
+</body>
+</html>
