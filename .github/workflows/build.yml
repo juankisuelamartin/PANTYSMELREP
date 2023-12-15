@@ -6,6 +6,7 @@ on:
       - DEVELOP
       - Mantenimiento
       - Testing
+
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
