@@ -46,7 +46,7 @@ public class GestorPrestamos {
 	@Autowired
 	private GestorPenalizaciones gestorPenalizaciones;
 
-	
+
 	@Transactional
 	public void realizarPrestamo(String isbn, String idEjemplar, String idUsuario, RedirectAttributes redirectAttributes) {
 		// Recuperar el título y el usuario a partir de los IDs
