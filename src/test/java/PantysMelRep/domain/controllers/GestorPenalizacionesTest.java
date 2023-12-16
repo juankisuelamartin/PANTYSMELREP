@@ -54,8 +54,18 @@ class GestorPenalizacionesTest {
         // Asegúrate de que el resultado es el esperado cuando no hay penalización
     }
 
+    //Cuando la penalización esta null, es decir ya se quitó en su momento
     @Test
     void comprobarPenalizacion_sinPenalizacion() {
+        Usuario usuario = new Usuario();
+        assertFalse(gestorPenalizaciones.comprobarPenalizacion(usuario));
+        // Asegúrate de que el resultado es el esperado cuando no hay penalización
+    }
+
+
+    //Cuando acaba la penalización, comprueba que se haya quitado la penalización
+    @Test
+    void comprobarPenalizacion_AcabadaPenalizacion() {
         Usuario usuario = new Usuario();
         Date fecha = new Date(2010 - 1900, Calendar.JANUARY,1);
         usuario.setFechaFinPenalizacion(fecha);
