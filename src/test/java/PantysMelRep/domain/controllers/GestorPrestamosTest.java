@@ -91,7 +91,6 @@ class GestorPrestamosTest {
         when(ejemplarDAO.findById(idEjemplar)).thenReturn(Optional.of(new Ejemplar()));
         when(prestamoDAO.findById(any())).thenReturn(Optional.empty());
         when(gestorPenalizaciones.comprobarPenalizacion(any())).thenReturn(true);
-
         // Test
         gestorPrestamos.realizarPrestamo(isbn, idEjemplar, idUsuario, redirectAttributes);
 
