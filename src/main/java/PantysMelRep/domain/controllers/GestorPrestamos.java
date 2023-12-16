@@ -67,7 +67,7 @@ public class GestorPrestamos {
 		calendar.add(Calendar.DAY_OF_MONTH, 30);
 			if(gestorPenalizaciones.comprobarPenalizacion(usuario)){
 
-				redirectAttributes.addFlashAttribute("success", "El usuario tiene una penalización activa.");
+				redirectAttributes.addFlashAttribute("error", "El usuario tiene una penalización activa.");
 				logPrestamo.info("El usuario tiene una penalización activa.");
 			}
 			else{
@@ -119,7 +119,9 @@ public class GestorPrestamos {
 		Prestamo prestamoExistente = (Prestamo) prestamoDAO.findById(prestamoId).orElse(null);
 		if (prestamoExistente != null) {
 			if (prestamoExistente.isActivo()) {
-				if(prestamoExistente.getFechaFin().before(new Date())){
+				Date fechaFin= prestamoExistente.getFechaFin();
+
+				if(fechaFin != null && fechaFin.before(new Date())){
 
 					redirectAttributes.addFlashAttribute("error", "El usuario ha devuelto el libro fuera de plazo.");
 					logPrestamo.info("El usuario ha devuelto el libro fuera de plazo.");

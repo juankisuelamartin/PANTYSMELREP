@@ -1,0 +1,224 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Titulo</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">PantysMelRep.domain.entities</a>
+</div>
+
+<h1>Coverage Summary for Class: Titulo (PantysMelRep.domain.entities)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Titulo</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    27,8%
+  </span>
+  <span class="absValue">
+    (5/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    34,6%
+  </span>
+  <span class="absValue">
+    (9/26)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Nombre del archivo: Autor.java
+&nbsp; * Descripción: Clase Autor de la aplicación PantysMelRep.
+&nbsp; * Autor: Pan TyS Mel SA
+&nbsp; */
+&nbsp;package PantysMelRep.domain.entities;
+&nbsp;
+&nbsp;import jakarta.persistence.*;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Collection;
+&nbsp;
+&nbsp;@Entity
+&nbsp;@Table(name = &quot;titulos&quot;)
+&nbsp;public class Titulo {
+&nbsp;
+&nbsp;	@Id
+&nbsp;	protected String isbn;
+&nbsp;
+&nbsp;	@Lob
+&nbsp;	@Column(name = &quot;foto&quot;, columnDefinition = &quot;MEDIUMBLOB&quot;)
+&nbsp;	private byte[] foto;  // Nuevo atributo para almacenar la foto
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;	@OneToMany(mappedBy = &quot;titulo&quot;, cascade = CascadeType.ALL, orphanRemoval = true)</b>
+&nbsp;	private Collection&lt;Ejemplar&gt; ejemplares = new ArrayList&lt;&gt;(); // Inicializa la colección
+&nbsp;
+<b class="fc">&nbsp;	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})</b>
+&nbsp;	@JoinTable(name = &quot;autor_titulo&quot;,
+&nbsp;			joinColumns = @JoinColumn(name = &quot;ISBN&quot;),
+&nbsp;			inverseJoinColumns = {@JoinColumn(name = &quot;autor_nombre&quot;), @JoinColumn(name = &quot;autor_apellido&quot;)})
+&nbsp;	private Collection&lt;Autor&gt; autores = new ArrayList&lt;&gt;(); // Inicializa la colección
+&nbsp;
+<b class="fc">&nbsp;	@OneToMany(mappedBy = &quot;titulo&quot;)</b>
+&nbsp;	private Collection&lt;Prestamo&gt; prestamos = new ArrayList&lt;&gt;(); // Inicializa la colección
+&nbsp;
+<b class="fc">&nbsp;	@OneToMany(mappedBy = &quot;titulo&quot;, cascade = CascadeType.ALL, orphanRemoval = true)</b>
+&nbsp;	private Collection&lt;Reserva&gt; reservas = new ArrayList&lt;&gt;(); // Inicializa la colección
+&nbsp;
+&nbsp;	@Column(name = &quot;titulo&quot;)
+&nbsp;	private String titulo;
+&nbsp;
+&nbsp;	@Column(name = &quot;num_reserva&quot;)
+&nbsp;	private String numReserva;
+&nbsp;
+<b class="fc">&nbsp;	public Titulo() {</b>
+&nbsp;		// Constructor vacío requerido por JPA
+&nbsp;	}
+&nbsp;
+<b class="nc">&nbsp;	public Titulo(String isbn, String titulo, String numReserva, byte[] foto) {</b>
+<b class="nc">&nbsp;		this.isbn = isbn;</b>
+<b class="nc">&nbsp;		this.titulo = titulo;</b>
+<b class="nc">&nbsp;		this.numReserva = numReserva;</b>
+<b class="nc">&nbsp;		this.foto = foto;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public Collection&lt;Autor&gt; getAutores() {
+<b class="nc">&nbsp;		return autores;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setAutores(Collection&lt;Autor&gt; autores) {
+<b class="fc">&nbsp;		this.autores = autores;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public Collection&lt;Ejemplar&gt; getEjemplares() {
+<b class="nc">&nbsp;		return ejemplares;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setEjemplares(Collection&lt;Ejemplar&gt; ejemplares) {
+<b class="nc">&nbsp;		this.ejemplares = ejemplares;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public byte[] getFoto() {
+<b class="nc">&nbsp;		return foto;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setFoto(byte[] foto) {
+<b class="fc">&nbsp;		this.foto = foto;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public Collection&lt;Prestamo&gt; getPrestamos() {
+<b class="nc">&nbsp;		return prestamos;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setPrestamos(Collection&lt;Prestamo&gt; prestamos) {
+<b class="nc">&nbsp;		this.prestamos = prestamos;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public Collection&lt;Reserva&gt; getReservas() {
+<b class="nc">&nbsp;		return reservas;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setReservas(Collection&lt;Reserva&gt; reservas) {
+<b class="nc">&nbsp;		this.reservas = reservas;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public String getTitulo() {
+<b class="nc">&nbsp;		return titulo;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setTitulo(String titulo) {
+<b class="fc">&nbsp;		this.titulo = titulo;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public String getIsbn() {
+<b class="nc">&nbsp;		return isbn;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setIsbn(String isbn) {
+<b class="fc">&nbsp;		this.isbn = isbn;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public String getNumReserva() {
+<b class="nc">&nbsp;		return numReserva;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setNumReserva(String numReserva) {
+<b class="nc">&nbsp;		this.numReserva = numReserva;</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-15 20:39</div>
+</div>
+</body>
+</html>

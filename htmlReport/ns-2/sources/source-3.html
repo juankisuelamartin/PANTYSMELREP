@@ -1,0 +1,298 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > GestorPrestamos</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">PantysMelRep.domain.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: GestorPrestamos (PantysMelRep.domain.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GestorPrestamos</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/83)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Nombre del archivo: GestorPrestamos.java
+&nbsp; * Descripción: Clase GestorPrestamos de la aplicación PantysMelRep.
+&nbsp; * Autor: Pan TyS Mel SA
+&nbsp; */
+&nbsp;package PantysMelRep.domain.controllers;
+&nbsp;
+&nbsp;import PantysMelRep.domain.entities.Ejemplar;
+&nbsp;import PantysMelRep.domain.entities.Titulo;
+&nbsp;import PantysMelRep.domain.entities.Usuario;
+&nbsp;import PantysMelRep.domain.entities.PrestamoId;
+&nbsp;import PantysMelRep.domain.entities.Prestamo;
+&nbsp;import PantysMelRep.domain.entities.Reserva;
+&nbsp;import PantysMelRep.domain.entities.ReservaId;
+&nbsp;import PantysMelRep.persistencia.PrestamoDAO;
+&nbsp;import PantysMelRep.persistencia.ReservaDAO;
+&nbsp;import PantysMelRep.persistencia.TituloDAO;
+&nbsp;import PantysMelRep.persistencia.UsuarioDAO;
+&nbsp;import PantysMelRep.persistencia.EjemplarDAO;
+&nbsp;
+&nbsp;import jakarta.transaction.Transactional;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+&nbsp;
+&nbsp;import java.util.Calendar;
+&nbsp;import java.util.Date;
+&nbsp;
+&nbsp;@Service
+<b class="nc">&nbsp;public class GestorPrestamos {</b>
+&nbsp;
+<b class="nc">&nbsp;	private static final Logger logPrestamo = LoggerFactory.getLogger(PrestamoController.class);</b>
+&nbsp;
+&nbsp;	@Autowired
+&nbsp;	private PrestamoDAO prestamoDAO;
+&nbsp;	@Autowired
+&nbsp;	private ReservaDAO reservaDAO;
+&nbsp;	@Autowired
+&nbsp;	private TituloDAO tituloDAO;
+&nbsp;	@Autowired
+&nbsp;	private UsuarioDAO usuarioDAO;
+&nbsp;	@Autowired
+&nbsp;	private EjemplarDAO ejemplarDAO;
+&nbsp;	@Autowired
+&nbsp;	private GestorPenalizaciones gestorPenalizaciones;
+&nbsp;
+&nbsp;	@Transactional
+&nbsp;	public void realizarPrestamo(String isbn, String idEjemplar, String idUsuario, RedirectAttributes redirectAttributes) {
+&nbsp;		// Recuperar el título y el usuario a partir de los IDs
+<b class="nc">&nbsp;		Titulo titulo = tituloDAO.findById(isbn)</b>
+<b class="nc">&nbsp;				.orElseThrow(() -&gt; new RuntimeException(&quot;Título no encontrado&quot;));</b>
+&nbsp;
+<b class="nc">&nbsp;		Usuario usuario = usuarioDAO.findById(idUsuario)</b>
+<b class="nc">&nbsp;				.orElseThrow(() -&gt; new RuntimeException(&quot;Usuario no encontrado&quot;));</b>
+&nbsp;
+<b class="nc">&nbsp;		Ejemplar ejemplar = ejemplarDAO.findById(idEjemplar)</b>
+<b class="nc">&nbsp;				.orElseThrow(() -&gt; new RuntimeException(&quot;Ejemplar no encontrado&quot;));</b>
+&nbsp;
+<b class="nc">&nbsp;		PrestamoId prestamoId = new PrestamoId(usuario.getId(), titulo.getIsbn());</b>
+<b class="nc">&nbsp;		Prestamo prestamoExistente = (Prestamo) prestamoDAO.findById(prestamoId).orElse(null);</b>
+&nbsp;
+<b class="nc">&nbsp;		Date fechaActual = new Date();</b>
+<b class="nc">&nbsp;		Calendar calendar = Calendar.getInstance();</b>
+<b class="nc">&nbsp;		calendar.setTime(fechaActual);</b>
+<b class="nc">&nbsp;		calendar.add(Calendar.DAY_OF_MONTH, 30);</b>
+<b class="nc">&nbsp;			if(gestorPenalizaciones.comprobarPenalizacion(usuario)){</b>
+&nbsp;
+<b class="nc">&nbsp;				redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;El usuario tiene una penalización activa.&quot;);</b>
+<b class="nc">&nbsp;				logPrestamo.info(&quot;El usuario tiene una penalización activa.&quot;);</b>
+&nbsp;			}
+&nbsp;			else{
+<b class="nc">&nbsp;				if (prestamoExistente != null) {</b>
+<b class="nc">&nbsp;					if (prestamoExistente.isActivo()) {</b>
+&nbsp;
+<b class="nc">&nbsp;						redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;El usuario ya tiene un préstamo activo de este título.&quot;);</b>
+<b class="nc">&nbsp;						logPrestamo.info(&quot;El usuario ya tiene un préstamo activo de este título.&quot;);</b>
+&nbsp;					} else {
+<b class="nc">&nbsp;						prestamoExistente.setActivo(true);</b>
+<b class="nc">&nbsp;						prestamoExistente.setEjemplar(ejemplar);</b>
+<b class="nc">&nbsp;						prestamoExistente.setEjemplarId(ejemplar.getId());</b>
+<b class="nc">&nbsp;						prestamoExistente.setFechaInicio(fechaActual);</b>
+<b class="nc">&nbsp;						prestamoExistente.setFechaFin(calendar.getTime());</b>
+<b class="nc">&nbsp;						prestamoDAO.save(prestamoExistente);</b>
+&nbsp;
+<b class="nc">&nbsp;						redirectAttributes.addFlashAttribute(&quot;success&quot;, &quot;Prestamo realizado&quot;);</b>
+<b class="nc">&nbsp;						logPrestamo.info(&quot;Prestamo realizado&quot;);</b>
+&nbsp;					}
+&nbsp;				}
+&nbsp;				else{
+<b class="nc">&nbsp;					Prestamo prestamo = new Prestamo();</b>
+<b class="nc">&nbsp;					prestamo.setUsuario(usuario);</b>
+<b class="nc">&nbsp;					prestamo.setTitulo(titulo);</b>
+<b class="nc">&nbsp;					prestamo.setTituloId((titulo.getIsbn()));</b>
+<b class="nc">&nbsp;					prestamo.setUsuarioId(usuario.getId());</b>
+<b class="nc">&nbsp;					prestamo.setEjemplar(ejemplar);</b>
+<b class="nc">&nbsp;					prestamo.setEjemplarId(ejemplar.getId());</b>
+<b class="nc">&nbsp;					prestamo.setFechaInicio(fechaActual);</b>
+<b class="nc">&nbsp;					prestamo.setFechaFin(calendar.getTime());</b>
+<b class="nc">&nbsp;					prestamo.setActivo(true);</b>
+&nbsp;
+<b class="nc">&nbsp;					prestamoDAO.save(prestamo);</b>
+&nbsp;
+<b class="nc">&nbsp;					redirectAttributes.addFlashAttribute(&quot;success&quot;, &quot;Prestamo realizado&quot;);</b>
+<b class="nc">&nbsp;					logPrestamo.info(&quot;Prestamo realizado&quot;);</b>
+&nbsp;				}
+&nbsp;			}
+&nbsp;
+&nbsp;		}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * @param isbn
+&nbsp;	 * @param idUsuario
+&nbsp;	 * @param redirectAttributes
+&nbsp;	 */
+&nbsp;	public void realizarDevolucion(String isbn, String idUsuario, RedirectAttributes redirectAttributes) {
+<b class="nc">&nbsp;		PrestamoId prestamoId = new PrestamoId(idUsuario, isbn);</b>
+<b class="nc">&nbsp;		Prestamo prestamoExistente = (Prestamo) prestamoDAO.findById(prestamoId).orElse(null);</b>
+<b class="nc">&nbsp;		if (prestamoExistente != null) {</b>
+<b class="nc">&nbsp;			if (prestamoExistente.isActivo()) {</b>
+<b class="nc">&nbsp;				Date fechaFin= prestamoExistente.getFechaFin();</b>
+&nbsp;
+<b class="nc">&nbsp;				if(fechaFin != null &amp;&amp; fechaFin.before(new Date())){</b>
+&nbsp;
+<b class="nc">&nbsp;					redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;El usuario ha devuelto el libro fuera de plazo.&quot;);</b>
+<b class="nc">&nbsp;					logPrestamo.info(&quot;El usuario ha devuelto el libro fuera de plazo.&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;					gestorPenalizaciones.aplicarPenalizacion(prestamoExistente.getUsuario(), prestamoExistente.getFechaFin());</b>
+&nbsp;				}
+&nbsp;				else{
+&nbsp;
+<b class="nc">&nbsp;					redirectAttributes.addFlashAttribute(&quot;success&quot;, &quot;El usuario ha devuelto el libro a tiempo.&quot;);</b>
+<b class="nc">&nbsp;					logPrestamo.info(&quot;El usuario ha devuelto el libro a tiempo.&quot;);</b>
+&nbsp;
+&nbsp;				}
+<b class="nc">&nbsp;				prestamoExistente.setActivo(false);</b>
+<b class="nc">&nbsp;				prestamoDAO.save(prestamoExistente);</b>
+<b class="nc">&nbsp;			} else {</b>
+&nbsp;
+<b class="nc">&nbsp;				redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;El usuario no tiene un préstamo activo de este título.&quot;);</b>
+<b class="nc">&nbsp;				logPrestamo.info(&quot;El usuario no tiene un préstamo activo de este título.&quot;);</b>
+&nbsp;			}
+&nbsp;		} else {
+<b class="nc">&nbsp;			redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;El usuario no tiene un préstamo activo de este título.&quot;);</b>
+<b class="nc">&nbsp;			logPrestamo.info(&quot;El usuario no tiene un préstamo activo de este título.&quot;);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * @param idUsuario
+&nbsp;	 * @param isbn
+&nbsp;	 * @param redirectAttributes
+&nbsp;	 */
+&nbsp;	public void realizarReserva(String idUsuario, String isbn, RedirectAttributes redirectAttributes) {
+&nbsp;		// Verificar si el usuario ya tiene un préstamo activo del título
+<b class="nc">&nbsp;		PrestamoId prestamoId = new PrestamoId(idUsuario, isbn);</b>
+<b class="nc">&nbsp;		Prestamo prestamoExistente = prestamoDAO.findById(prestamoId).orElse(null);</b>
+&nbsp;
+<b class="nc">&nbsp;		if (prestamoExistente != null &amp;&amp; prestamoExistente.isActivo()) {</b>
+<b class="nc">&nbsp;			redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;El usuario ya tiene un préstamo activo de este título. No se puede realizar una reserva.&quot;);</b>
+<b class="nc">&nbsp;			logPrestamo.info(&quot;El usuario ya tiene un préstamo activo de este título. No se puede realizar una reserva.&quot;);</b>
+&nbsp;		} else {
+&nbsp;			// Comprobar si ya existe una reserva para este usuario y título
+<b class="nc">&nbsp;			ReservaId reservaId = new ReservaId(idUsuario, isbn);</b>
+<b class="nc">&nbsp;			Reserva reservaExistente = (Reserva) reservaDAO.findById(reservaId).orElse(null);;</b>
+&nbsp;
+<b class="nc">&nbsp;			if (reservaExistente != null) {</b>
+<b class="nc">&nbsp;				redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;El usuario ya tiene una reserva activa de este título.&quot;);</b>
+<b class="nc">&nbsp;				logPrestamo.info(&quot;El usuario ya tiene una reserva activa de este título.&quot;);</b>
+&nbsp;			} else {
+&nbsp;				// Crear una nueva reserva
+<b class="nc">&nbsp;				Usuario usuario = usuarioDAO.findById(idUsuario)</b>
+<b class="nc">&nbsp;						.orElseThrow(() -&gt; new RuntimeException(&quot;Usuario no encontrado&quot;));</b>
+<b class="nc">&nbsp;				Titulo titulo = tituloDAO.findById(isbn)</b>
+<b class="nc">&nbsp;						.orElseThrow(() -&gt; new RuntimeException(&quot;Título no encontrado&quot;));</b>
+&nbsp;
+<b class="nc">&nbsp;				Reserva reserva = new Reserva();</b>
+<b class="nc">&nbsp;				reserva.setTituloId(titulo.getIsbn());</b>
+<b class="nc">&nbsp;				reserva.setUsuario(usuario);</b>
+<b class="nc">&nbsp;				reserva.setTitulo(titulo);</b>
+<b class="nc">&nbsp;				reserva.setUsuarioId(usuario.getId());</b>
+<b class="nc">&nbsp;				reserva.setFecha(new Date());</b>
+&nbsp;
+<b class="nc">&nbsp;				reservaDAO.save(reserva);</b>
+&nbsp;
+<b class="nc">&nbsp;				redirectAttributes.addFlashAttribute(&quot;success&quot;, &quot;Reserva realizada con éxito.&quot;);</b>
+<b class="nc">&nbsp;				logPrestamo.info(&quot;Reserva realizada con éxito.&quot;);</b>
+&nbsp;			}
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-15 20:39</div>
+</div>
+</body>
+</html>

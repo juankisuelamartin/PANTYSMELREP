@@ -43,7 +43,7 @@ public class GestorPenalizaciones {
         calendar.setTime(fechaActual);
         calendar.add(Calendar.DAY_OF_MONTH, 30);
         if (u.getFechaFinPenalizacion() == null) {
-            return true;
+            return false;
         } else {
             if (u.getFechaFinPenalizacion().before(fechaActual)) {
                 u.setFechaFinPenalizacion(null);
