@@ -61,6 +61,7 @@ public class GestorPrestamos {
 		PrestamoId prestamoId = new PrestamoId(usuario.getId(), titulo.getIsbn());
 		Prestamo prestamoExistente = (Prestamo) prestamoDAO.findById(prestamoId).orElse(null);
 
+		
 		Date fechaActual = new Date();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(fechaActual);
