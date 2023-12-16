@@ -5,12 +5,14 @@ on:
       - main
       - DEVELOP
       - Mantenimiento
+      - Testing
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
       - main
       - DEVELOP
       - Mantenimiento
+      - Testing
 
 jobs:
   build:
