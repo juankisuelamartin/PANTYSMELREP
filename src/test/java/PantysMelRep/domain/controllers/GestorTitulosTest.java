@@ -8,6 +8,7 @@ import PantysMelRep.domain.entities.Libro;
 import PantysMelRep.domain.entities.Ejemplar;
 import PantysMelRep.domain.entities.Prestamo;
 
+import PantysMelRep.persistencia.AutorDAO;
 import PantysMelRep.persistencia.EjemplarDAO;
 import PantysMelRep.persistencia.PrestamoDAO;
 import PantysMelRep.persistencia.TituloDAO;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -26,11 +28,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Map;
+import java.util.*;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -53,6 +53,9 @@ class GestorTitulosTest {
 
     @Mock
     private TituloDAO tituloDAO;
+
+    @Mock
+    private AutorDAO autorDAO;
 
     @Mock
     private EjemplarDAO ejemplarDAO;
@@ -111,7 +114,37 @@ class GestorTitulosTest {
     }
 
 
+    @Test
+    void procesarAutores_CasoValido() {
+        // Arrange
+        String nuevosAutores = "John Doe, Jane Smith";
+        RedirectAttributes redirectAttributes = Mockito.mock(RedirectAttributes.class);
 
+        // Configurar el comportamiento simulado del autorDAO
+        Autor autor1 = new Autor("John", "Doe");
+        Autor autor2 = new Autor("Jane", "Smith");
+        when(autorDAO.findById(any())).thenReturn(Optional.of(autor1), Optional.of(autor2));
+        // Act
+        List<Autor> listaAutores = tituloController.procesarAutores(nuevosAutores, redirectAttributes);
+
+        // Assert
+        assertEquals(2, listaAutores.size());
+        // Agrega más aserciones según sea necesario para verificar que los autores se hayan procesado correctamente.
+    }
+
+    @Test
+    void procesarAutores_NombreAutorNoValido() {
+        // Arrange
+        String nuevosAutores = "John"; // Nombre sin apellido, lo cual debería generar un error
+        RedirectAttributes redirectAttributes = Mockito.mock(RedirectAttributes.class);
+
+        // Act
+        List<Autor> listaAutores = tituloController.procesarAutores(nuevosAutores, redirectAttributes);
+
+        // Assert
+        assertNull(listaAutores); // Esperamos que retorne null en caso de error
+        // Agrega aserciones adicionales para verificar que se haya registrado un error en RedirectAttributes.
+    }
 
 
 
