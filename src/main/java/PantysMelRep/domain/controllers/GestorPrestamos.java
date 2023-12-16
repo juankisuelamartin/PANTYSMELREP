@@ -46,6 +46,7 @@ public class GestorPrestamos {
 	@Autowired
 	private GestorPenalizaciones gestorPenalizaciones;
 
+	
 	@Transactional
 	public void realizarPrestamo(String isbn, String idEjemplar, String idUsuario, RedirectAttributes redirectAttributes) {
 		// Recuperar el título y el usuario a partir de los IDs
@@ -60,7 +61,7 @@ public class GestorPrestamos {
 
 		PrestamoId prestamoId = new PrestamoId(usuario.getId(), titulo.getIsbn());
 		Prestamo prestamoExistente = (Prestamo) prestamoDAO.findById(prestamoId).orElse(null);
-		
+
 		Date fechaActual = new Date();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(fechaActual);
