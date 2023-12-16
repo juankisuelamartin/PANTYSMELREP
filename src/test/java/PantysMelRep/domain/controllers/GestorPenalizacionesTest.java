@@ -58,11 +58,11 @@ class GestorPenalizacionesTest {
         Date fechaActual = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(fechaActual);
-        calendar.add(Calendar.DAY_OF_MONTH, 30);
+        calendar.add(Calendar.DAY_OF_MONTH, -30); // Configuramos la fecha de penalización para que esté vencida
         Date fechaFinPenalizacion = calendar.getTime();
         usuario.setFechaFinPenalizacion(fechaFinPenalizacion);
 
-        assertTrue(gestorPenalizaciones.comprobarPenalizacion(usuario));
-        // Asegúrate de que el resultado es el esperado cuando hay penalización
+        assertFalse(gestorPenalizaciones.comprobarPenalizacion(usuario));
+        assertNull(usuario.getFechaFinPenalizacion()); // Asegúrate de que la fecha de penalización se restablece a null
     }
 }
