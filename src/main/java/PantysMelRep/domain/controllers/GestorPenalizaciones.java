@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class GestorPenalizaciones {
 
 
+
     @Autowired
     private UsuarioDAO usuarioDAO;
 
