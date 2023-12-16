@@ -8,7 +8,6 @@ package PantysMelRep.domain.controllers;
 import PantysMelRep.domain.entities.Usuario;
 import PantysMelRep.persistencia.UsuarioDAO;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
@@ -18,9 +17,12 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class GestorPenalizaciones {
 
-    // Inyección de dependencia de UsuarioDAO para acceder a la base de datos y la información de los usuarios
-    @Autowired
-    private UsuarioDAO usuarioDAO;
+    private final UsuarioDAO usuarioDAO;
+
+    // Constructor que recibe UsuarioDAO como parámetro
+    public GestorPenalizaciones(UsuarioDAO usuarioDAO) {
+        this.usuarioDAO = usuarioDAO;
+    }
 
     // Método para aplicar una penalización a un usuario en función del retraso en la entrega de un ejemplar
     @Transactional
