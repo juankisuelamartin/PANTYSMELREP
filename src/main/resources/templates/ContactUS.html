@@ -11,7 +11,7 @@
         /* Estilos para centrar la imagen */
         .header-image {
             text-align: center;
-            margin-top: 100px; /* Espacio entre la imagen y el contenido siguiente */
+            margin-top: 5px; /* Espacio entre la imagen y el contenido siguiente */
         }
 
         .header-image img {
@@ -31,21 +31,21 @@
     <img src="https://11defebrero.files.wordpress.com/2017/02/socio-universidad-de-castilla-la-mancha.png" alt="Imagen de Encabezado">
 </div>
 
-<div class="form-container">
+<div class="form-container" id="contactUsContainer">
     <div class="form-content" id="contactUs">
         <h2>Contact Us</h2>
         <p>¿Tienes alguna pregunta o sugerencia? ¡Escribenos!</p>
         <form action="/submit-contact" method="post" id="contactForm">
             <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name" required><br><br>
 
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" required><br><br>
 
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" rows="4" required></textarea>
+            <label for="messageContact">Message:</label>
+            <textarea id="messageContact" name="message" placeholder="Escribe tu mensaje aquí..." rows="4" required></textarea><br>
 
-            <button type="submit">Submit</button>
+            <input type="submit" value="Enviar">
         </form>
     </div>
 </div>

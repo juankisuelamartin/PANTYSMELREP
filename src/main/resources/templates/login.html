@@ -61,8 +61,6 @@
 
 
 </div>
-
-
 <script>
     // Esta función muestra la sección especificada y oculta la otra
     function showSection(sectionId) {
@@ -84,12 +82,20 @@
         activeLink.classList.add('active');
 
     }
-
-
-
-
     // Mostrar la sección de inicio de sesión por defecto
     showSection('login');
+</script>
+
+<script th:if="${error}" th:inline="javascript">
+    /* <![CDATA[*/
+    alert([[${error}]]);
+    /* ]]>*/
+</script>
+
+<script th:if="${success}" th:inline="javascript">
+    /* <![CDATA[*/
+    alert([[${success}]]);
+    /* ]]>*/
 </script>
 
 </body>
