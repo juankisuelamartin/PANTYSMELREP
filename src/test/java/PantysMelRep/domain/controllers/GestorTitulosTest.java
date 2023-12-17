@@ -12,10 +12,12 @@ import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
@@ -32,9 +34,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
-
+@ExtendWith(MockitoExtension.class)
 class GestorTitulosTest {
 
+    @Mock
     RedirectAttributesModelMap redirectAttributes = new RedirectAttributesModelMap();
 
     @InjectMocks
@@ -187,9 +190,24 @@ class GestorTitulosTest {
         // Agrega aserciones adicionales para verificar que se haya registrado un error en RedirectAttributes.
     }
 
+    @Test
+    void testAltaTituloExistente() {
+        // Datos de prueba
+        String titulo = "Libro de Prueba";
+        String isbn = "123456789";
+        Collection<Autor> autores = new ArrayList<>();
+        byte[] fotoBytes = new byte[100];
 
+        // Comportamiento simulado del DAO
+        when(tituloDAO.findById(isbn)).thenReturn(Optional.of(new Titulo()));
 
+        // Test
+        Titulo resultado = gestorTitulos.altaTitulo(titulo, isbn, autores, 1, fotoBytes, redirectAttributes);
 
+        // Verificación
+        verify(redirectAttributes, times(1)).addFlashAttribute(any(), eq("Error: El ISBN ya existe en la Base de Datos."));
+
+    }
 
     @Test
     void testAltaTituloExceptionHandling() {

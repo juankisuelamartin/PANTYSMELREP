@@ -51,7 +51,9 @@ public class GestorTitulos {
 				// El ISBN ya existe, mostrar un mensaje de error
 				logTitulo.info("El ISBN ya existe en la Base de Datos.");
 				redirectAttributes.addFlashAttribute("error", "Error: El ISBN ya existe en la Base de Datos.");
+				return null;
 			}
+
 
 			// Crear un nuevo libro o revista según DType
 			Titulo nuevoTitulo;
