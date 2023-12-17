@@ -75,14 +75,14 @@ public class GestorTitulos {
 			tituloDAO.save(nuevoTitulo);
 			logTitulo.info("El título ha sido dado de alta con éxito.");
 			redirectAttributes.addFlashAttribute("success", "El título ha sido dado de alta con éxito");
-
+			return nuevoTitulo;
 		} catch (DataIntegrityViolationException e) {
 			// Manejar la excepción aquí...
 			logTitulo.info("ERROR: No se ha podido dar de alta el título.");
 			redirectAttributes.addFlashAttribute("error", "ERROR: No se ha podido dar de alta el título.");
-
+			return null;
 		}
-		return null;
+
 	}
 
 

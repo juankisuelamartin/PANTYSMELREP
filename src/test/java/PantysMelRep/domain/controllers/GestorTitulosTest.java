@@ -2,11 +2,7 @@
 package PantysMelRep.domain.controllers;
 
 
-import PantysMelRep.domain.entities.Autor;
-import PantysMelRep.domain.entities.Titulo;
-import PantysMelRep.domain.entities.Libro;
-import PantysMelRep.domain.entities.Ejemplar;
-import PantysMelRep.domain.entities.Prestamo;
+import PantysMelRep.domain.entities.*;
 
 import PantysMelRep.persistencia.AutorDAO;
 import PantysMelRep.persistencia.EjemplarDAO;
@@ -34,11 +30,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.*;
 
 
 class GestorTitulosTest {
@@ -73,7 +65,7 @@ class GestorTitulosTest {
     }
 
     @Test
-    void testAltaTitulo() throws Exception {
+    void testAltaTituloLibro() throws Exception {
         // Mock data
         String isbn = "12332567575";
         String titulo = "Nuevo Libro";
@@ -111,6 +103,55 @@ class GestorTitulosTest {
         assertTrue(response.getCookie("success").getValue().equals("El título ha sido dado de alta con éxito"));
         verify(tituloDAO, times(1)).findById(isbn);
         verify(tituloDAO, times(1)).save(any(Titulo.class));
+        assertTrue(result instanceof Libro);
+    }
+
+
+    @Test
+    void testAltaTituloRevista() throws Exception {
+        // Mock data
+        String isbn = "12332567575";
+        String titulo = "Nuevo Libro";
+        String nuevosAutores = "Autor 1, Autor 2";
+        int DType = 2;
+        byte[] fotoBytes = new byte[0];
+
+        // Convertir la cadena de texto en una Collection<Autor>
+        String[] nombresAutores = nuevosAutores.split(", ");
+        Collection<Autor> autores = new ArrayList<>();
+        for (String nombreCompleto : nombresAutores) {
+            String[] partes = nombreCompleto.split(" ");
+            String nombre = partes[0];
+            String apellido = partes[1];
+            autores.add(new Autor(nombre, apellido));
+        }
+
+        // Crear un mock de RedirectAttributes
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+
+        // Mock behavior
+        when(tituloDAO.findById(isbn)).thenReturn(Optional.empty());
+        when(tituloDAO.save(any(Titulo.class))).thenReturn(new Libro());
+
+
+
+
+        // Test
+        Titulo result = gestorTitulos.altaTitulo(titulo, isbn, autores, DType, fotoBytes, redirectAttributes);
+
+        // Simular redireccion para que el comportamiento de los atributos flash sea el esperado.
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        for (Map.Entry<String, ?> entry : redirectAttributes.getFlashAttributes().entrySet()) {
+            response.addCookie(new Cookie(entry.getKey(), entry.getValue().toString()));
+        }
+
+        // Verify
+        assertTrue(response.getCookie("success").getValue().equals("El título ha sido dado de alta con éxito"));
+        verify(tituloDAO, times(1)).findById(isbn);
+        verify(tituloDAO, times(1)).save(any(Titulo.class));
+        // Verificar específicamente que el resultado es una instancia de Libro
+        assertTrue(result instanceof Revista);
+
     }
 
 
@@ -118,7 +159,7 @@ class GestorTitulosTest {
     void procesarAutores_CasoValido() {
         // Arrange
         String nuevosAutores = "John Doe, Jane Smith";
-        RedirectAttributes redirectAttributes = Mockito.mock(RedirectAttributes.class);
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
 
         // Configurar el comportamiento simulado del autorDAO
         Autor autor1 = new Autor("John", "Doe");
@@ -135,8 +176,8 @@ class GestorTitulosTest {
     @Test
     void procesarAutores_NombreAutorNoValido() {
         // Arrange
-        String nuevosAutores = "John"; // Nombre sin apellido, lo cual debería generar un error
-        RedirectAttributes redirectAttributes = Mockito.mock(RedirectAttributes.class);
+        String nuevosAutores = ""; // Nombre sin apellido, lo cual debería generar un error
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
 
         // Act
         List<Autor> listaAutores = tituloController.procesarAutores(nuevosAutores, redirectAttributes);
@@ -274,6 +315,8 @@ class GestorTitulosTest {
 
 
 
+
+
     @Test
     void testBajaEjemplarEjemplarPrestado() throws Exception {
         // Mock data
@@ -307,10 +350,9 @@ class GestorTitulosTest {
     }
 
     @Test
-    void testBajaEjemplarEjemplarNotPrestado() throws Exception {
+    void testBajaEjemplarEjemplarNotPrestadoNunca() throws Exception {
         // Mock data
         String id = "5";
-
         // Mock behavior
         when(ejemplarDAO.findById(id)).thenReturn(java.util.Optional.of(new Ejemplar()));
         when(prestamoDAO.findByejemplarId(Long.parseLong(id))).thenReturn(java.util.Optional.empty());
@@ -335,6 +377,41 @@ class GestorTitulosTest {
         verify(prestamoDAO, never()).delete(any(Prestamo.class));
         verify(ejemplarDAO, times(1)).delete(any(Ejemplar.class));
     }
+
+
+    @Test
+    public void testBajaEjemplarConPrestamoInactivo() {
+        // Configurar el objeto de prueba
+        String ejemplarId = "1";
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+
+        // Configurar el ejemplar
+        Ejemplar ejemplar = new Ejemplar();
+        ejemplar.setId(Long.parseLong(ejemplarId));
+
+        // Configurar el préstamo inactivo
+        Prestamo prestamoInactivo = new Prestamo();
+        prestamoInactivo.setActivo(false);
+
+        // Configurar el resultado esperado cuando se busque el ejemplar por ID
+        when(ejemplarDAO.findById(ejemplarId)).thenReturn(Optional.of(ejemplar));
+
+        // Configurar el resultado esperado cuando se busque el préstamo por ID
+        when(prestamoDAO.findByejemplarId(Long.parseLong(ejemplarId))).thenReturn(Optional.of(prestamoInactivo));
+
+        // Llamar al método que se está probando
+        gestorTitulos.bajaEjemplar(ejemplarId, redirectAttributes);
+
+        // Verificar que se haya llamado el método delete del prestamoDAO
+        verify(prestamoDAO).delete(prestamoInactivo);
+
+        // Verificar que se haya llamado el método delete del ejemplarDAO
+        verify(ejemplarDAO).delete(ejemplar);
+
+        // Verificar el mensaje de éxito en los atributos de redirección
+        verify(redirectAttributes).addFlashAttribute("success", "Ejemplar borrado. y prestamo inactivo borrado.");
+    }
+
 
 
 
