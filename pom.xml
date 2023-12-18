@@ -32,9 +32,10 @@
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.coverage.exclusions>**/PantysMelRep/domain/entities/**</sonar.coverage.exclusions>
-        <sonar.coverage.exclusions>*/src/main/java/PantysMelRep/domain/controllers/AboutUsController.java</sonar.coverage.exclusions>
-        <sonar.coverage.exclusions>*/src/main/resources/script/script.js</sonar.coverage.exclusions>
+        <sonar.coverage.exclusions>**/PantysMelRep/domain/entities/**,
+                                */src/main/java/PantysMelRep/domain/controllers/AboutUsController.java,
+                                */src/main/resources/script/script.js
+        </sonar.coverage.exclusions>
 
     </properties>
 

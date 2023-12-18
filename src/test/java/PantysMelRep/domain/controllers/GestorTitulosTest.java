@@ -147,8 +147,6 @@ class GestorTitulosTest {
         when(tituloDAO.save(any(Titulo.class))).thenReturn(new Libro());
 
 
-
-
         // Test
         Titulo result = gestorTitulos.altaTitulo(titulo, isbn, autores, DType, fotoBytes, redirectAttributes);
 
@@ -260,7 +258,6 @@ class GestorTitulosTest {
     }
 
 
-
     @Test
     void testAltaEjemplarWithExistingIsbn() throws Exception {
         // Mock data
@@ -340,9 +337,6 @@ class GestorTitulosTest {
         verify(prestamoDAO, never()).delete(any(Prestamo.class));
         verify(ejemplarDAO, never()).delete(any(Ejemplar.class));
     }
-
-
-
 
 
     @Test
@@ -458,8 +452,6 @@ class GestorTitulosTest {
     }
 
 
-
-
     @Test
     void anadirFoto_ConErrorAlLeerFoto() throws IOException {
         // Subclase de MockMultipartFile que lanza IOException
@@ -479,20 +471,27 @@ class GestorTitulosTest {
         assertEquals("Error al leer la foto. Por favor, inténtalo de nuevo.", redirectAttributes.getFlashAttributes().get("error"));
     }
 
+
+
 /**
     @Test
-    public void anadirFoto_WhenDefaultImageNotFound_ShouldThrowException() {
+    public void anadirFoto_WhenDefaultImageNotFound_ShouldThrowException() throws IOException {
         // Arrange
-        TituloController tuClase = new TituloController();
-        MockMultipartFile foto = null; // Simulamos que no se proporciona una imagen
-        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+        MockMultipartFile foto = null;
+
+        // Mockear el comportamiento del getResourceAsStream para la imagen por defecto
+        // Configurar el mock para devolver null cuando se llame a getResourceAsStream
+        ClassLoader classLoaderMock = mock(ClassLoader.class);
+        Thread threadMock = mock(Thread.class);
+        when(threadMock.getContextClassLoader()).thenReturn(classLoaderMock);
+        when(classLoaderMock.getResourceAsStream("static/images/default_Portada.jpg")).thenReturn(null);
 
         // Act y Assert
         assertThrows(IOException.class, () -> {
-            tuClase.anadirFoto(foto, redirectAttributes);
+            tituloController.anadirFoto(foto, redirectAttributes);
         });
 
         verify(redirectAttributes).addFlashAttribute(eq("error"), anyString());
     }
 **/
-    }
+}
