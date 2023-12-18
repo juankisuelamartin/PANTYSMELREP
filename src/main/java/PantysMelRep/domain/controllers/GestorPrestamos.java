@@ -33,6 +33,7 @@ public class GestorPrestamos {
 
 	private static final Logger logPrestamo = LoggerFactory.getLogger(PrestamoController.class);
 
+
 	@Autowired
 	private PrestamoDAO prestamoDAO;
 	@Autowired
