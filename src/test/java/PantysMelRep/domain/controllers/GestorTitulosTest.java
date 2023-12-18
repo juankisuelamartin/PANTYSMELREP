@@ -25,6 +25,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -38,6 +39,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -47,11 +49,15 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class GestorTitulosTest {
 
+
+    private Model mockModel;
     @Mock
     RedirectAttributesModelMap redirectAttributes = new RedirectAttributesModelMap();
 
     @InjectMocks
     private GestorTitulos gestorTitulos;
+    @Mock
+    private GestorTitulos gestorTituloMock;
 
     @InjectMocks
     private TituloController tituloController;
@@ -470,6 +476,85 @@ class GestorTitulosTest {
         assertNull(resultado);
         assertEquals("Error al leer la foto. Por favor, inténtalo de nuevo.", redirectAttributes.getFlashAttributes().get("error"));
     }
+    @Test
+    public void testMostrarFormularioAltaTitulo() {
+        String view = tituloController.mostrarFormularioAltaTitulo();
+        assertEquals("altaTitulo", view);
+    }
+
+    @Test
+    public void testMostrarFormularioActualizarTitulo() {
+        String view = tituloController.mostrarFormularioActualizarTitulo(mockModel);
+        assertEquals("actualizarTitulo", view);
+    }
+
+    @Test
+    public void testMostrarFormularioBorrarTitulo() {
+        String view = tituloController.mostrarFormularioBorrarTitulo(mockModel);
+        assertEquals("borrarTitulo", view);
+    }
+
+    @Test
+    public void testMostrarFormularioAltaEjemplar() {
+        String view = tituloController.mostrarFormularioAltaEjemplar(mockModel);
+        assertEquals("altaEjemplar", view);
+    }
+
+    @Test
+    public void testMostrarFormularioBajaEjemplar() {
+        String view = tituloController.mostrarFormularioBajaEjemplar(mockModel);
+        assertEquals("bajaEjemplar", view);
+    }
+    @Test
+    public void bajaEjemplarCasoExitoso() throws InterruptedException {
+        // Configura los mocks y datos de prueba
+        Titulo titulo = new Titulo(); // Asegúrate de crear un Titulo válido
+        titulo.setIsbn("isbn_test"); // Establece datos de prueba para el Titulo
+        Ejemplar ejemplar = new Ejemplar();
+        ejemplar.setTitulo(titulo);
+
+        when(ejemplarDAO.findById(anyString())).thenReturn(Optional.of(ejemplar));
+        when(ejemplarDAO.contarEjemplaresConMismoTitulo(any(Titulo.class))).thenReturn(2L);
+
+        // Llama al método
+        String resultado = tituloController.bajaEjemplar("id_ejemplar", redirectAttributes);
+
+        // Verifica comportamientos y resultados
+        verify(gestorTituloMock).bajaEjemplar("id_ejemplar", redirectAttributes);
+        assertEquals("redirect:/home", resultado);
+    }
+
+    @Test
+    public void bajaEjemplarCasoFracaso() throws InterruptedException {
+        // Configura los mocks y datos de prueba
+        Titulo titulo = new Titulo();
+        Ejemplar ejemplar = new Ejemplar();
+        ejemplar.setTitulo(titulo);
+
+        when(ejemplarDAO.findById(anyString())).thenReturn(Optional.of(ejemplar));
+        when(ejemplarDAO.contarEjemplaresConMismoTitulo(any(Titulo.class))).thenReturn(1L);
+
+        // Llama al método
+        String resultado = tituloController.bajaEjemplar("id_ejemplar", redirectAttributes);
+
+        // Verifica comportamientos y resultados
+        verify(gestorTituloMock, never()).bajaEjemplar(anyString(), any(RedirectAttributes.class));
+        assertEquals("redirect:/home", resultado);
+    }
+
+    @Test
+    public void bajaEjemplarCasoExcepcion() throws InterruptedException {
+        // Configura los mocks para lanzar una excepción
+        when(ejemplarDAO.findById(anyString())).thenThrow(new RuntimeException("Ejemplar no encontrado"));
+
+        // Llama al método
+        String resultado = tituloController.bajaEjemplar("id_ejemplar", redirectAttributes);
+
+        // Verifica comportamientos y resultados
+        verify(gestorTituloMock, never()).bajaEjemplar(anyString(), any(RedirectAttributes.class));
+        assertEquals("redirect:/home", resultado);
+    }
+
 
 
 
