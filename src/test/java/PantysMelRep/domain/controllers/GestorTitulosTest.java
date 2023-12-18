@@ -26,9 +26,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -430,7 +433,43 @@ class GestorTitulosTest {
         verify(redirectAttributes).addFlashAttribute("success", "Ejemplar borrado. y prestamo inactivo borrado.");
     }
 
+    @Test
+    void anadirFoto_ConFotoValida() throws IOException {
+        MockMultipartFile foto = new MockMultipartFile("foto", "foto.jpg", "image/jpeg", "test content".getBytes());
+        byte[] fotoBytes = tituloController.anadirFoto(foto, redirectAttributes);
+        assertNotNull(fotoBytes);
+        assertEquals("test content", new String(fotoBytes));
+    }
+
+    @Test
+    void anadirFoto_SinFotoYCargaImagenPorDefecto() {
+        MockMultipartFile foto = new MockMultipartFile("foto", "", "image/jpeg", new byte[0]);
+
+        byte[] fotoBytes = tituloController.anadirFoto(foto, redirectAttributes);
+        assertNotNull(fotoBytes);
+        assertTrue(fotoBytes.length > 0);
+    }
 
 
+
+
+    @Test
+    void anadirFoto_ConErrorAlLeerFoto() {
+        // Subclase de MockMultipartFile que lanza IOException
+        MockMultipartFile mockFoto = new MockMultipartFile("foto", "test.jpg", "image/jpeg", "test content".getBytes()) {
+            @Override
+            public byte[] getBytes() throws IOException {
+                throw new IOException("Simulated read error");
+            }
+        };
+
+        RedirectAttributesModelMap redirectAttributes = new RedirectAttributesModelMap();
+
+        byte[] resultado = tituloController.anadirFoto(mockFoto, redirectAttributes);
+
+        // Verificar que el resultado es null y se agregó un mensaje de error a redirectAttributes
+        assertNull(resultado);
+        assertEquals("Error al leer la foto. Por favor, inténtalo de nuevo.", redirectAttributes.getFlashAttributes().get("error"));
+    }
 
 }
