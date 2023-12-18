@@ -79,6 +79,31 @@ class LoginControllerTest {
         assertEquals("redirect:/homeUsuario", result);
     }
 
+    @Test
+    void iniciarS_RolNoReconocido() {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String rawPassword = "password";
+        String hashedPassword = encoder.encode(rawPassword);
+
+        Usuario mockUsuario = new Usuario();
+        mockUsuario.setContrasena(hashedPassword);
+        mockUsuario.setRol("ROL_NO_RECONOCIDO");  // Un rol no reconocido
+
+        when(usuarioDAO.findById("12345678")).thenReturn(java.util.Optional.of(mockUsuario));
+
+        String result = loginController.iniciarS("12345678", rawPassword, redirectAttributes);
+        assertEquals("redirect:/error", result);
+    }
+    @Test
+    void homeUserPage_ReturnsHomeUsuarioView() {
+        String viewName = loginController.homeUserPage();
+        assertEquals("homeUsuario", viewName);
+    }
+    @Test
+    void homePage_ReturnsHomeView() {
+        String viewName = loginController.homePage();
+        assertEquals("home", viewName);
+    }
 
 
 
