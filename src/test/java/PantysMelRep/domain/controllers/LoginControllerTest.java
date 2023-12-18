@@ -1,31 +1,23 @@
 package PantysMelRep.domain.controllers;
 
-import PantysMelRep.domain.entities.Prestamo;
+import PantysMelRep.domain.controllers.LoginController;
 import PantysMelRep.domain.entities.Usuario;
-import PantysMelRep.persistencia.AutorDAO;
 import PantysMelRep.persistencia.UsuarioDAO;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class LoginControllerTest {
-
-    @InjectMocks
-    private LoginController loginController;
 
     @Mock
     private UsuarioDAO usuarioDAO;
@@ -33,88 +25,115 @@ class LoginControllerTest {
     @Mock
     private RedirectAttributes redirectAttributes;
 
+    @Mock
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @InjectMocks
+    private LoginController loginController;
+
     @BeforeEach
     void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
-
-
-    @Test
-    void iniciarSIUsuarioNoexiste() {
-        String dni = "12345678";
-        String contrasena = "12345678";
-
-        when(usuarioDAO.findById(dni)).thenReturn(Optional.empty());
-
-        loginController.iniciarS(dni, contrasena, redirectAttributes);
-
-        verify(redirectAttributes, times(1)).addFlashAttribute(any(), eq("Credenciales de inicio de sesión incorrectas"));
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    void iniciarSContrasenaIncorrecta() {
-        String dni = "12345678";
-        String contrasena = "claveIncorrecta";
-
-        // Configuración del mock para indicar que el usuario existe
-        when(usuarioDAO.findById(dni)).thenReturn(Optional.of(new Usuario(dni, "nombre", "apellidos", "contrasenaCorrecta", "USUARIO")));
-
-        // Llamada al método que estás probando
-        loginController.iniciarS(dni, contrasena, redirectAttributes);
-
-        // Verificación de que se agregó el mensaje de error correspondiente
-        verify(redirectAttributes, times(1)).addFlashAttribute(eq("error"), eq("Credenciales de inicio de sesión incorrectas"));
+    void home_RedirectToLoginWhenFirstTimeIsNull() {
+        String result = loginController.home(null, redirectAttributes);
+        assertEquals("redirect:/login", result);
     }
 
     @Test
-    void iniciarSContrasenaAdmin() {
-        String dni = "12345678";
-        String contrasena = "claveCorrecta";
-
-        // Configuración del mock para indicar que el usuario existe
-        when(usuarioDAO.findById(dni)).thenReturn(Optional.of(new Usuario(dni, "nombre", "apellidos", contrasena, "ADMIN")));
-
-        // Llamada al método que estás probando
-        loginController.iniciarS(dni, contrasena, redirectAttributes);
-
-        // Verificación de que se agregó el mensaje de error correspondiente
-        verify(redirectAttributes, times(1)).addFlashAttribute(eq("error"), eq("Credenciales de inicio de sesión incorrectas"));
+    void home_RedirectToHomePageWhenFirstTimeIsNotNull() {
+        String result = loginController.home("yes", redirectAttributes);
+        assertEquals("redirect:/home", result);
     }
 
     @Test
-    void iniciarSContrasenaUser() {
-        String dni = "12345678";
-        String contrasena = "claveCorrecta";
+    void iniciarS_UsuarioAdminCorrecto() {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String rawPassword = "password";
+        String hashedPassword = encoder.encode(rawPassword);
 
-        // Configuración del mock para indicar que el usuario existe
-        when(usuarioDAO.findById(dni)).thenReturn(Optional.of(new Usuario(dni, "nombre", "apellidos", contrasena, "USER")));
+        Usuario mockUsuario = new Usuario();
+        mockUsuario.setContrasena(hashedPassword);
+        mockUsuario.setRol("ADMIN");
 
-        // Llamada al método que estás probando
-        loginController.iniciarS(dni, contrasena, redirectAttributes);
+        when(usuarioDAO.findById("12345678")).thenReturn(java.util.Optional.of(mockUsuario));
 
-        // Verificación de que se agregó el mensaje de error correspondiente
-        verify(redirectAttributes, times(1)).addFlashAttribute(eq("error"), eq("Credenciales de inicio de sesión incorrectas"));
+        String result = loginController.iniciarS("12345678", rawPassword, redirectAttributes);
+        assertEquals("redirect:/home", result);
     }
+    @Test
+    void iniciarS_UsuarioNormalCorrecto() {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String rawPassword = "password";
+        String hashedPassword = encoder.encode(rawPassword);
+
+        Usuario mockUsuario = new Usuario();
+        mockUsuario.setContrasena(hashedPassword);
+        mockUsuario.setRol("USUARIO");
+
+        when(usuarioDAO.findById("12345678")).thenReturn(java.util.Optional.of(mockUsuario));
+
+        String result = loginController.iniciarS("12345678", rawPassword, redirectAttributes);
+        assertEquals("redirect:/homeUsuario", result);
+    }
+
+
 
 
 
     @Test
-    void registrarUsuario() {
-        String dni = "dniExistente";
-        String contrasena = "claveCorrecta";
+    void iniciarS_UsuarioIncorrecto() {
+        when(usuarioDAO.findById("12345678")).thenReturn(java.util.Optional.empty());
 
-        // Configuración del mock para indicar que el usuario existe
-        when(usuarioDAO.findById(dni)).thenReturn(Optional.of(new Usuario(dni, "nombre", "apellidos", contrasena, "ADMIN")));
-
-        // Llamada al método que estás probando
-        loginController.registrarUsuario(dni, "nombre", "apellidos", contrasena, redirectAttributes);
-
-
-
-        // Verificación de que se agregó el mensaje de error correspondiente
-        verify(redirectAttributes, times(1)).addFlashAttribute(eq("error"), eq("Ya existe un usuario con el mismo DNI"));
+        String result = loginController.iniciarS("12345678", "password", redirectAttributes);
+        assertEquals("redirect:/login", result);
+        verify(redirectAttributes).addFlashAttribute("error", "Credenciales de inicio de sesión incorrectas");
     }
+
+    @Test
+    void showLoginForm() {
+        String result = loginController.showLoginForm();
+        assertEquals("login", result);
+    }
+
+    @Test
+    void showSigninform() {
+        String result = loginController.showSigninform();
+        assertEquals("signin", result);
+    }
+
+    @Test
+    void registrarUsuario_UsuarioYaExiste() {
+        when(usuarioDAO.findById("12345678")).thenReturn(java.util.Optional.of(new Usuario()));
+
+        String result = loginController.registrarUsuario("12345678", "Nombre", "Apellidos", "password", redirectAttributes);
+        assertEquals("redirect:/login", result);
+        verify(redirectAttributes).addFlashAttribute("error", "Ya existe un usuario con el mismo DNI");
+    }
+
+    @Test
+    void registrarUsuario_UsuarioNuevo() {
+        when(usuarioDAO.findById("12345678")).thenReturn(java.util.Optional.empty());
+
+        String result = loginController.registrarUsuario("12345678", "Nombre", "Apellidos", "password", redirectAttributes);
+        assertEquals("redirect:/login", result);
+        verify(usuarioDAO).save(any(Usuario.class));
+    }
+
+    @Test
+    void verificarContrasena_Correcta() {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashedPassword = encoder.encode("password");
+        assertTrue(loginController.verificarContrasena("password", hashedPassword));
+    }
+
+    @Test
+    void verificarContrasena_Incorrecta() {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashedPassword = encoder.encode("password");
+        assertFalse(loginController.verificarContrasena("wrongPassword", hashedPassword));
+    }
+
 }
