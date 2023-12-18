@@ -13,11 +13,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
@@ -29,6 +33,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -36,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
+
 
 @ExtendWith(MockitoExtension.class)
 class GestorTitulosTest {
@@ -442,7 +449,7 @@ class GestorTitulosTest {
     }
 
     @Test
-    void anadirFoto_SinFotoYCargaImagenPorDefecto() {
+    void anadirFoto_SinFotoYCargaImagenPorDefecto() throws IOException {
         MockMultipartFile foto = new MockMultipartFile("foto", "", "image/jpeg", new byte[0]);
 
         byte[] fotoBytes = tituloController.anadirFoto(foto, redirectAttributes);
@@ -454,7 +461,7 @@ class GestorTitulosTest {
 
 
     @Test
-    void anadirFoto_ConErrorAlLeerFoto() {
+    void anadirFoto_ConErrorAlLeerFoto() throws IOException {
         // Subclase de MockMultipartFile que lanza IOException
         MockMultipartFile mockFoto = new MockMultipartFile("foto", "test.jpg", "image/jpeg", "test content".getBytes()) {
             @Override
@@ -472,4 +479,19 @@ class GestorTitulosTest {
         assertEquals("Error al leer la foto. Por favor, inténtalo de nuevo.", redirectAttributes.getFlashAttributes().get("error"));
     }
 
+
+    @Test
+    public void anadirFoto_WhenDefaultImageNotFound_ShouldThrowException() {
+        // Arrange
+        TituloController tuClase = new TituloController();
+        MockMultipartFile foto = null; // Simulamos que no se proporciona una imagen
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+
+        // Act y Assert
+        assertThrows(IOException.class, () -> {
+            tuClase.anadirFoto(foto, redirectAttributes);
+        });
+
+        verify(redirectAttributes).addFlashAttribute(eq("error"), anyString());
+    }
 }
