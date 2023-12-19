@@ -67,7 +67,7 @@ public class GestorPenalizaciones {
 
         // Verificar si el usuario está penalizado
         if (u.getFechaFinPenalizacion() == null) {
-            return true; // El usuario no está penalizado
+            return false; // El usuario no está penalizado
         } else {
             // Verificar si la fecha de finalización de la penalización ha pasado
             if (u.getFechaFinPenalizacion().before(fechaActual)) {
