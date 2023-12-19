@@ -14,4 +14,4 @@ currently being supported.
 
 ## Reporting a Vulnerability
 
-To report a vulneraility head to one of the contributors and we will try to fix it ASAP.
+To report a vulnerability head to one of the contributors and we will try to fix it as fast as posible.
