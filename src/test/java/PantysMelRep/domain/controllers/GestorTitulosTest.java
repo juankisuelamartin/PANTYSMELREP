@@ -2,7 +2,12 @@
 package PantysMelRep.domain.controllers;
 
 
-import PantysMelRep.domain.entities.*;
+import PantysMelRep.domain.entities.Autor;
+import PantysMelRep.domain.entities.Ejemplar;
+import PantysMelRep.domain.entities.Libro;
+import PantysMelRep.domain.entities.Revista;
+import PantysMelRep.domain.entities.Titulo;
+import PantysMelRep.domain.entities.Prestamo;
 
 import PantysMelRep.persistencia.AutorDAO;
 import PantysMelRep.persistencia.EjemplarDAO;
@@ -13,35 +18,34 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
-
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
-
-import static org.junit.Assert.*;
+import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.mock;
+
 
 
 @ExtendWith(MockitoExtension.class)
@@ -471,27 +475,4 @@ class GestorTitulosTest {
         assertEquals("Error al leer la foto. Por favor, inténtalo de nuevo.", redirectAttributes.getFlashAttributes().get("error"));
     }
 
-
-
-/**
-    @Test
-    public void anadirFoto_WhenDefaultImageNotFound_ShouldThrowException() throws IOException {
-        // Arrange
-        MockMultipartFile foto = null;
-
-        // Mockear el comportamiento del getResourceAsStream para la imagen por defecto
-        // Configurar el mock para devolver null cuando se llame a getResourceAsStream
-        ClassLoader classLoaderMock = mock(ClassLoader.class);
-        Thread threadMock = mock(Thread.class);
-        when(threadMock.getContextClassLoader()).thenReturn(classLoaderMock);
-        when(classLoaderMock.getResourceAsStream("static/images/default_Portada.jpg")).thenReturn(null);
-
-        // Act y Assert
-        assertThrows(IOException.class, () -> {
-            tituloController.anadirFoto(foto, redirectAttributes);
-        });
-
-        verify(redirectAttributes).addFlashAttribute(eq("error"), anyString());
-    }
-**/
 }

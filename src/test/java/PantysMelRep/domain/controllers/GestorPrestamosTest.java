@@ -2,26 +2,37 @@ package PantysMelRep.domain.controllers;
 
 import PantysMelRep.domain.controllers.GestorPenalizaciones;
 import PantysMelRep.domain.controllers.GestorPrestamos;
-import PantysMelRep.domain.entities.*;
-import PantysMelRep.persistencia.*;
+import PantysMelRep.domain.entities.Titulo;
+import PantysMelRep.domain.entities.Usuario;
+import PantysMelRep.domain.entities.Prestamo;
+import PantysMelRep.domain.entities.Ejemplar;
+import PantysMelRep.domain.entities.Reserva;
+import PantysMelRep.persistencia.PrestamoDAO;
+import PantysMelRep.persistencia.ReservaDAO;
+import PantysMelRep.persistencia.TituloDAO;
+import PantysMelRep.persistencia.UsuarioDAO;
+import PantysMelRep.persistencia.EjemplarDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
 
 @ExtendWith(MockitoExtension.class)
 class GestorPrestamosTest {
