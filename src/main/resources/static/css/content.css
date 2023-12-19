@@ -23,7 +23,8 @@ label {
     margin-bottom: 5px;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="email"] {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
@@ -31,6 +32,8 @@ input[type="text"] {
     box-sizing: border-box;
     margin-bottom: 10px;
 }
+
+
 
 input[type="submit"] {
     background-color: #4285f4;
@@ -71,6 +74,7 @@ input[type="submit"]:hover {
     margin-bottom: 20px;
 }
 
+.form-content input[type="email"],
 .form-content input[type="text"] {
     width: 80%;
     max-width: 300px;
@@ -97,3 +101,30 @@ body {
 }
 
 
+#messageContact {
+    width: 300px; /* Ajustar al ancho del contenedor */
+    min-width: 300px;
+    max-width: 500px;
+    box-sizing: border-box; /* Incluir padding y borde en el ancho total */
+    padding: 10px; /* Ajustar según tus preferencias */
+    font-size: 14px; /* Ajustar según tus preferencias */
+    border: 1px solid #ccc; /* Añadir un borde */
+    border-radius: 5px; /* Añadir esquinas redondeadas */
+    resize:horizontal;
+    height: 200px;
+    overflow-y: auto;  /* Agrega la barra de desplazamiento vertical cuando sea necesario */
+}
+
+.header-image {
+    text-align: center;
+    margin-top: -80px; /* O cualquier otro valor que desees */
+    margin-bottom: -40px; /* O cualquier otro valor que desees */
+}
+
+#contactUsContainer {
+    margin-top: -80px;
+}
+
+#aboutUsContainer {
+    margin-top: -110px;
+}

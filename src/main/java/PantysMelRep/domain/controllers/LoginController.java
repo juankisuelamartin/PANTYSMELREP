@@ -93,15 +93,17 @@ public class LoginController {
     public String registrarUsuario(@RequestParam("dni")String dni,
                                    @RequestParam("nombre")String nombre,
                                    @RequestParam("apellidos")String apellidos,
-                                   @RequestParam("contrasena")String contrasena
+                                   @RequestParam("contrasena")String contrasena,
+                                   RedirectAttributes redirectAttributes
                                    ) {
         // Verificar si ya existe un usuario con el mismo DNI en la base de datos
         Usuario usuarioExistente = usuarioDAO.findById(dni).orElse(null);
         if (usuarioExistente != null) {
             // El usuario con el mismo DNI ya existe, puedes manejar este caso como desees
+            redirectAttributes.addFlashAttribute("error", "Ya existe un usuario con el mismo DNI");
             logLogin.info("Ya existe un usuario con el mismo DNI");
             // Puedes redirigir a una página de error, mostrar un mensaje al usuario, etc.
-            return "redirect:/error";
+            return "redirect:/login";
         } else {
             // Crear un nuevo usuario con la información proporcionada
             String contrasenaHasheada = hashPassword(contrasena);

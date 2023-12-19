@@ -144,7 +144,7 @@ public class TituloController {
 
 
 
-    private List<Autor> procesarAutores(String nuevosAutores, RedirectAttributes redirectAttributes) {
+    public List<Autor> procesarAutores(String nuevosAutores, RedirectAttributes redirectAttributes) {
 
         // Separar los nombres de los autores
         String[] nombresAutores = nuevosAutores.split(",");

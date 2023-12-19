@@ -11,7 +11,7 @@
         /* Estilos para centrar la imagen */
         .header-image {
             text-align: center;
-            margin-top: 20px; /* Espacio entre la imagen y el contenido siguiente */
+            margin-top: 5px; /* Espacio entre la imagen y el contenido siguiente */
         }
 
         .header-image img {
@@ -42,7 +42,7 @@
     <img src="https://11defebrero.files.wordpress.com/2017/02/socio-universidad-de-castilla-la-mancha.png" alt="Imagen de Encabezado">
 </div>
 
-<div class="team-section">
+<div class="team-section" id="team-sectionContainer">
     <h2>Our Team</h2>
 
     <div class="team-member">
@@ -64,22 +64,15 @@
     </div>
 
     <div class="team-member">
-        <img src="ruta/miembromasguapo.jpg" alt="Miembro 4">
+        <img src="ruta/miembromasperro.jpg" alt="Miembro 4">
         <h3>Victor Perez</h3>
         <p>victor.perez9@alu.uclm.es</p>
     </div>
 
-    <!-- Agrega más miembros del equipo según sea necesario -->
-
 </div>
 
 
 </div>
-
-<script>
-    // Tus funciones JavaScript existentes van aquí
-</script>
-
 <script th:if="${error}" th:inline="javascript">
     /* <![CDATA[*/
     alert([[${error}]]);
