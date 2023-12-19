@@ -25,9 +25,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 <h1>Coverage Summary for Class: GestorPenalizaciones (PantysMelRep.domain.controllers)</h1>
 
 <table class="coverageStats">
-
 <tr>
   <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
 <th class="coverageStat 
 ">
   Method, %
@@ -41,43 +44,30 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">GestorPenalizaciones</td>
 <td class="coverageStat">
   <span class="percent">
-    33,3%
+    100%
   </span>
   <span class="absValue">
-    (1/3)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    4,5%
+    100%
   </span>
   <span class="absValue">
-    (1/22)
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (23/23)
   </span>
 </td>
 </tr>
-  <tr>
-    <td class="name">GestorPenalizaciones$$SpringCGLIB$$0</td>
-  </tr>
-<tr>
-  <td class="name"><strong>Total</strong></td>
-<td class="coverageStat">
-  <span class="percent">
-    33,3%
-  </span>
-  <span class="absValue">
-    (1/3)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    4,5%
-  </span>
-  <span class="absValue">
-    (1/22)
-  </span>
-</td>
-</tr>
+
 </table>
 
 <br/>
@@ -86,15 +76,15 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;/*
-&nbsp; * Nombre del archivo: GestorPrestamos.java
-&nbsp; * Descripción: Clase GestorPrestamos de la aplicación PantysMelRep.
+&nbsp; * Nombre del archivo: GestorPenalizaciones.java
+&nbsp; * Descripción: Clase GestorPenalizaciones de la aplicación PantysMelRep.
 &nbsp; * Autor: Pan TyS Mel SA
 &nbsp; */
 &nbsp;package PantysMelRep.domain.controllers;
+&nbsp;
 &nbsp;import PantysMelRep.domain.entities.Usuario;
 &nbsp;import PantysMelRep.persistencia.UsuarioDAO;
 &nbsp;import jakarta.transaction.Transactional;
-&nbsp;import org.springframework.beans.factory.annotation.Autowired;
 &nbsp;import org.springframework.stereotype.Service;
 &nbsp;
 &nbsp;import java.util.Calendar;
@@ -102,45 +92,70 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import java.util.concurrent.TimeUnit;
 &nbsp;
 &nbsp;@Service
-<b class="fc">&nbsp;public class GestorPenalizaciones {</b>
+&nbsp;public class GestorPenalizaciones {
 &nbsp;
+&nbsp;    private final UsuarioDAO usuarioDAO;
 &nbsp;
-&nbsp;    @Autowired
-&nbsp;    private UsuarioDAO usuarioDAO;
+&nbsp;    // Constructor que recibe UsuarioDAO como parámetro
+<b class="fc">&nbsp;    public GestorPenalizaciones(UsuarioDAO usuarioDAO) {</b>
+<b class="fc">&nbsp;        this.usuarioDAO = usuarioDAO;</b>
+&nbsp;    }
 &nbsp;
+&nbsp;    // Método para aplicar una penalización a un usuario en función del retraso en la entrega de un ejemplar
 &nbsp;    @Transactional
 &nbsp;    public void aplicarPenalizacion(Usuario u, Date fechaFin) {
-<b class="nc">&nbsp;        Date fechaActual = new Date();</b>
-<b class="nc">&nbsp;        Calendar calendar = Calendar.getInstance();</b>
-<b class="nc">&nbsp;        calendar.setTime(fechaActual);</b>
-<b class="nc">&nbsp;        calendar.add(Calendar.DAY_OF_MONTH, 30);</b>
-<b class="nc">&nbsp;        long diffInMillies = Math.abs(fechaFin.getTime() - fechaActual.getTime());</b>
-<b class="nc">&nbsp;        long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);</b>
-<b class="nc">&nbsp;        calendar.add(Calendar.DAY_OF_MONTH, (int) (diff * 5));</b>
-<b class="nc">&nbsp;        Date fechafinpenalizacion = calendar.getTime();</b>
-<b class="nc">&nbsp;        u.setFechaFinPenalizacion(fechafinpenalizacion);</b>
-<b class="nc">&nbsp;        usuarioDAO.save(u);</b>
+&nbsp;        // Obtener la fecha actual
+<b class="fc">&nbsp;        Date fechaActual = new Date();</b>
+&nbsp;
+&nbsp;        // Crear un objeto Calendar y establecer la fecha actual
+<b class="fc">&nbsp;        Calendar calendar = Calendar.getInstance();</b>
+<b class="fc">&nbsp;        calendar.setTime(fechaActual);</b>
+&nbsp;
+&nbsp;        // Agregar 30 días al plazo de penalización por defecto
+<b class="fc">&nbsp;        calendar.add(Calendar.DAY_OF_MONTH, 30);</b>
+&nbsp;
+&nbsp;        // Calcular la diferencia en días entre la fecha de entrega y la fecha actual
+<b class="fc">&nbsp;        long diffInMillies = Math.abs(fechaFin.getTime() - fechaActual.getTime());</b>
+<b class="fc">&nbsp;        long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);</b>
+&nbsp;
+&nbsp;        // Agregar días adicionales de penalización (5 días por cada día de retraso)
+<b class="fc">&nbsp;        calendar.add(Calendar.DAY_OF_MONTH, (int) (diff * 5));</b>
+&nbsp;
+&nbsp;        // Obtener la nueva fecha de finalización de la penalización
+<b class="fc">&nbsp;        Date fechaFinPenalizacion = calendar.getTime();</b>
+&nbsp;
+&nbsp;        // Establecer la nueva fecha de finalización de la penalización y guardar los cambios en la base de datos
+<b class="fc">&nbsp;        u.setFechaFinPenalizacion(fechaFinPenalizacion);</b>
+<b class="fc">&nbsp;        usuarioDAO.save(u);</b>
 &nbsp;    }
 &nbsp;
-&nbsp;
+&nbsp;    // Método para comprobar si un usuario está penalizado
 &nbsp;    @Transactional
 &nbsp;    public boolean comprobarPenalizacion(Usuario u) {
-<b class="nc">&nbsp;        Date fechaActual = new Date();</b>
-<b class="nc">&nbsp;        Calendar calendar = Calendar.getInstance();</b>
-<b class="nc">&nbsp;        calendar.setTime(fechaActual);</b>
-<b class="nc">&nbsp;        calendar.add(Calendar.DAY_OF_MONTH, 30);</b>
-<b class="nc">&nbsp;        if (u.getFechaFinPenalizacion() == null) {</b>
-<b class="nc">&nbsp;            return false;</b>
+&nbsp;        // Obtener la fecha actual
+<b class="fc">&nbsp;        Date fechaActual = new Date();</b>
+&nbsp;
+&nbsp;        // Crear un objeto Calendar y establecer la fecha actual
+<b class="fc">&nbsp;        Calendar calendar = Calendar.getInstance();</b>
+<b class="fc">&nbsp;        calendar.setTime(fechaActual);</b>
+&nbsp;
+&nbsp;        // Agregar 30 días al plazo de penalización por defecto
+<b class="fc">&nbsp;        calendar.add(Calendar.DAY_OF_MONTH, 30);</b>
+&nbsp;
+&nbsp;        // Verificar si el usuario está penalizado
+<b class="fc">&nbsp;        if (u.getFechaFinPenalizacion() == null) {</b>
+<b class="fc">&nbsp;            return false; // El usuario no está penalizado</b>
 &nbsp;        } else {
-<b class="nc">&nbsp;            if (u.getFechaFinPenalizacion().before(fechaActual)) {</b>
-<b class="nc">&nbsp;                u.setFechaFinPenalizacion(null);</b>
-<b class="nc">&nbsp;                usuarioDAO.save(u);</b>
-<b class="nc">&nbsp;                return false;</b>
+&nbsp;            // Verificar si la fecha de finalización de la penalización ha pasado
+<b class="fc">&nbsp;            if (u.getFechaFinPenalizacion().before(fechaActual)) {</b>
+&nbsp;                // Restablecer la penalización y guardar los cambios en la base de datos
+<b class="fc">&nbsp;                u.setFechaFinPenalizacion(null);</b>
+<b class="fc">&nbsp;                usuarioDAO.save(u);</b>
+<b class="fc">&nbsp;                return false; // El usuario ya no está penalizado</b>
 &nbsp;            }
 &nbsp;        }
-<b class="nc">&nbsp;    return true;</b>
+<b class="fc">&nbsp;        return true; // El usuario está penalizado</b>
 &nbsp;    }
-&nbsp;
 &nbsp;}
 </code>
 </pre>
@@ -165,7 +180,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-12-15 20:34</div>
+    <div style="float:right;">generated on 2023-12-19 19:49</div>
 </div>
 </body>
 </html>
