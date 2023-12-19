@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://gamepedia.cursecdn.com/minecraft_de_gamepedia/3/35/Buch.png?v">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/content.css}">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://static.wikia.nocookie.net/minecraft_gamepedia/images/e/e9/Book_and_Quill_JE2_BE2.png">
     <title>Gestión Títulos - Alta de Título</title>
     <style>
         .content-altaTitulo {
@@ -17,31 +18,40 @@
 <div class="navbar">
     <div th:replace="~{header :: header}"></div>
 </div>
-<div th:fragment="altaTituloFragment" class="content-altaTitulo" id="altaTitulo">
+<div class="form-container">
+<div  class="form-content" id="altaTitulo">
 
     <h2>Alta de Título</h2>
 
-    <form action="/titulos/altaTitulo" method="post" onsubmit="return validateForm(this)">
+    <form action="/titulos/altaTitulo" method="post" onsubmit="return validateForm(this)" enctype="multipart/form-data">
         <label for="titulo">Título:</label>
-        <input type="text" id="titulo" name="titulo" required><br>
-
+        <input type="text" id="titulo" name="titulo" required>
+        <br><br>
         <label for="isbn">ISBN:</label>
-        <input type="text" id="isbn" name="isbn" required><br>
-
+        <input type="text" id="isbn" name="isbn" required>
+        <br><br>
         <label for="autores">Autores (separados por comas):</label>
-        <input type="text" id="autores" name="autores" required><br>
-
+        <input type="text" id="autores" name="autores" required>
+        <br><br>
         <!-- Desplegable para elegir tipo -->
-        <label for="DType">Tipo:</label>
-        <select id="DType" name="DType">
+        <label for="DType" style="float: left; clear: left; width: 50%;">Tipo:</label>
+        <select id="DType" name="DType" style="float: left; width: 30%;">
             <option value="1">Libro</option>
             <option value="2">Revista</option>
-        </select><br>
+        </select><br><br>
+
+        <br>
+
+        <!-- Botón para cargar la foto -->
+        <label for="foto" style="float: left; clear: left; width: 50%;">Foto Portada:</label>
+        <input type="file" id="foto" name="foto" accept="image/*" style="float: left; width: 50%;"><br>
+
+        <br><br><br>
 
         <input type="submit" value="Agregar Título">
     </form>
 </div>
-
+</div>
 <script>
     function showForm(formId) {
         var forms = document.querySelectorAll('.content-altaTitulo, .content-actualizarTitulo, .content-borrarTitulo');

@@ -1,0 +1,277 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > GestorTitulos</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">PantysMelRep.domain.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: GestorTitulos (PantysMelRep.domain.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GestorTitulos</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    79,4%
+  </span>
+  <span class="absValue">
+    (50/63)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Nombre del archivo: GestorTitulos.java
+&nbsp; * Descripción: Clase GestorTitulos de la aplicación PantysMelRep.
+&nbsp; * Autor: Pan TyS Mel SA
+&nbsp; */
+&nbsp;package PantysMelRep.domain.controllers;
+&nbsp;
+&nbsp;import PantysMelRep.domain.entities.Titulo;
+&nbsp;import PantysMelRep.domain.entities.Revista;
+&nbsp;import PantysMelRep.domain.entities.Libro;
+&nbsp;import PantysMelRep.domain.entities.Autor;
+&nbsp;import PantysMelRep.domain.entities.Prestamo;
+&nbsp;import PantysMelRep.domain.entities.Ejemplar;
+&nbsp;import PantysMelRep.persistencia.*;
+&nbsp;
+&nbsp;
+&nbsp;import jakarta.transaction.Transactional;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.dao.DataIntegrityViolationException;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+&nbsp;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;public class GestorTitulos {</b>
+&nbsp;
+&nbsp;	@Autowired
+&nbsp;	private TituloDAO tituloDAO;
+&nbsp;	@Autowired
+&nbsp;	EjemplarDAO ejemplarDAO;
+&nbsp;	@Autowired
+&nbsp;	AutorDAO autorDAO;
+&nbsp;	@Autowired
+&nbsp;	PrestamoDAO prestamoDAO;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;	private static final Logger logTitulo = LoggerFactory.getLogger(TituloController.class);</b>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;	// Gestor
+&nbsp;	public Titulo altaTitulo(String titulo, String isbn, Collection&lt;Autor&gt; autores, int DType, byte[] fotoBytes, RedirectAttributes redirectAttributes) {
+&nbsp;		try {
+&nbsp;			// Comprobar si el ISBN ya existe en la base de datos
+<b class="fc">&nbsp;			if (tituloDAO.findById(isbn).isPresent()) {</b>
+&nbsp;				// El ISBN ya existe, mostrar un mensaje de error
+<b class="nc">&nbsp;				logTitulo.info(&quot;El ISBN ya existe en la Base de Datos.&quot;);</b>
+<b class="nc">&nbsp;				redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;Error: El ISBN ya existe en la Base de Datos.&quot;);</b>
+&nbsp;			}
+&nbsp;
+&nbsp;			// Crear un nuevo libro o revista según DType
+&nbsp;			Titulo nuevoTitulo;
+<b class="fc">&nbsp;			if (DType == 1) {</b>
+<b class="fc">&nbsp;				Libro nuevolibro = new Libro();</b>
+<b class="fc">&nbsp;				nuevolibro.setAutores(autores);</b>
+<b class="fc">&nbsp;				nuevolibro.setTitulo(titulo);</b>
+<b class="fc">&nbsp;				nuevolibro.setIsbn(isbn);</b>
+<b class="fc">&nbsp;				nuevolibro.setFoto(fotoBytes);</b>
+<b class="fc">&nbsp;				nuevoTitulo = nuevolibro;</b>
+<b class="fc">&nbsp;			} else {</b>
+<b class="nc">&nbsp;				Revista nuevaRevista = new Revista();</b>
+<b class="nc">&nbsp;				nuevaRevista.setAutores(autores);</b>
+<b class="nc">&nbsp;				nuevaRevista.setTitulo(titulo);</b>
+<b class="nc">&nbsp;				nuevaRevista.setIsbn(isbn);</b>
+<b class="nc">&nbsp;				nuevaRevista.setFoto(fotoBytes);</b>
+<b class="nc">&nbsp;				nuevoTitulo = nuevaRevista;</b>
+&nbsp;			}
+&nbsp;
+&nbsp;			// Guardar el nuevo título en la base de datos
+<b class="fc">&nbsp;			tituloDAO.save(nuevoTitulo);</b>
+<b class="fc">&nbsp;			logTitulo.info(&quot;El título ha sido dado de alta con éxito.&quot;);</b>
+<b class="fc">&nbsp;			redirectAttributes.addFlashAttribute(&quot;success&quot;, &quot;El título ha sido dado de alta con éxito&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;		} catch (DataIntegrityViolationException e) {</b>
+&nbsp;			// Manejar la excepción aquí...
+<b class="fc">&nbsp;			logTitulo.info(&quot;ERROR: No se ha podido dar de alta el título.&quot;);</b>
+<b class="fc">&nbsp;			redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;ERROR: No se ha podido dar de alta el título.&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;		}</b>
+<b class="fc">&nbsp;		return null;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;	public void borrarTitulo(String isbn, RedirectAttributes redirectAttributes) {
+<b class="fc">&nbsp;		Titulo titulo = tituloDAO.findById(isbn).orElseThrow(() -&gt; new RuntimeException(&quot;Título no encontrado&quot;));</b>
+<b class="fc">&nbsp;		tituloDAO.delete(titulo);</b>
+&nbsp;	}
+&nbsp;	@Transactional
+&nbsp;	public void altaEjemplar(String isbn, RedirectAttributes redirectAttributes) {
+&nbsp;		try {
+&nbsp;			// Buscar el título en la base de datos
+<b class="fc">&nbsp;			Titulo titulo = tituloDAO.findById(isbn)</b>
+<b class="fc">&nbsp;					.orElseThrow(() -&gt; new RuntimeException(&quot;Título no encontrado&quot;));</b>
+&nbsp;
+&nbsp;			// Generar un nuevo ID automáticamente para el nuevo ejemplar
+<b class="fc">&nbsp;			Long nuevoId = generarNuevoIdParaEjemplar();</b>
+&nbsp;			// Crear un nuevo ejemplar
+<b class="fc">&nbsp;			Ejemplar ejemplar = new Ejemplar();</b>
+<b class="fc">&nbsp;			ejemplar.setId(nuevoId);</b>
+<b class="fc">&nbsp;			ejemplar.setTitulo(titulo);</b>
+&nbsp;
+&nbsp;			// Añadir el nuevo ejemplar a la lista de ejemplares del título
+<b class="fc">&nbsp;			ejemplarDAO.save(ejemplar);</b>
+<b class="fc">&nbsp;			logTitulo.info(&quot;Ejemplar dado de alta con éxito.&quot;);</b>
+<b class="fc">&nbsp;			redirectAttributes.addFlashAttribute(&quot;success&quot;, &quot;Ejemplar dado de alta con éxito&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;		} catch (RuntimeException e) {</b>
+<b class="fc">&nbsp;			logTitulo.error(&quot;ERROR: Título del ejemplar no encontrado&quot;, e);</b>
+<b class="fc">&nbsp;			redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;ERROR: Título del ejemplar no encontrado&quot;);</b>
+<b class="fc">&nbsp;			throw e; // Lanza la excepción para que pueda ser manejada o registrada por el código que llama a este método</b>
+<b class="fc">&nbsp;		}</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private Long generarNuevoIdParaEjemplar() {
+&nbsp;		// Buscar el ID máximo actual en los ejemplares existentes
+<b class="fc">&nbsp;		Long maxId = ejemplarDAO.findMaxId();</b>
+&nbsp;
+&nbsp;		// Generar el nuevo ID sumando 1 al ID máximo encontrado
+<b class="fc">&nbsp;		if (maxId != null) {</b>
+<b class="fc">&nbsp;			return maxId + 1;</b>
+&nbsp;		} else {
+&nbsp;			// Si no hay ejemplares existentes, asignar el ID inicial (por ejemplo, 1)
+<b class="nc">&nbsp;			return 1L;</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;
+&nbsp;	@Transactional
+&nbsp;	public void bajaEjemplar(String id, RedirectAttributes redirectAttributes) {
+&nbsp;
+&nbsp;		// Buscar el ejemplar en la base de datos
+<b class="fc">&nbsp;		Ejemplar ejemplar = ejemplarDAO.findById(id).orElseThrow(() -&gt; new RuntimeException(&quot;Ejemplar no encontrado&quot;));</b>
+&nbsp;
+<b class="fc">&nbsp;			if (ejemplar != null) {</b>
+<b class="fc">&nbsp;				if (prestamoDAO.findByejemplarId(Long.parseLong(id)).isPresent()) {</b>
+<b class="fc">&nbsp;					Prestamo prestamo = prestamoDAO.findByejemplarId(Long.parseLong(id)).orElseThrow(() -&gt; new RuntimeException(&quot;Prestamo no encontrado&quot;));</b>
+<b class="fc">&nbsp;					if (prestamo != null) {</b>
+<b class="fc">&nbsp;						if (prestamo.isActivo()) {</b>
+<b class="fc">&nbsp;							logTitulo.error(&quot;El ejemplar no se puede borrar porque está prestado&quot;);</b>
+<b class="fc">&nbsp;							redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;El ejemplar no se puede borrar porque está prestado&quot;);</b>
+&nbsp;						} else {
+<b class="nc">&nbsp;							prestamoDAO.delete(prestamo);</b>
+<b class="nc">&nbsp;							ejemplarDAO.delete(ejemplar);</b>
+<b class="nc">&nbsp;							logTitulo.info(&quot;Ejemplar borrado. y prestamo inactivo borrado.&quot;);</b>
+<b class="nc">&nbsp;							redirectAttributes.addFlashAttribute(&quot;success&quot;, &quot;Ejemplar borrado. y prestamo inactivo borrado.&quot;);</b>
+&nbsp;						}
+&nbsp;					}
+<b class="fc">&nbsp;				} else {</b>
+<b class="fc">&nbsp;					ejemplarDAO.delete(ejemplar);</b>
+<b class="fc">&nbsp;					logTitulo.info(&quot;Ejemplar borrado.&quot;);</b>
+<b class="fc">&nbsp;					redirectAttributes.addFlashAttribute(&quot;success&quot;, &quot;Ejemplar borrado.&quot;);</b>
+&nbsp;
+&nbsp;
+&nbsp;				}
+&nbsp;			}
+&nbsp;
+&nbsp;	}
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-15 20:39</div>
+</div>
+</body>
+</html>

@@ -1,35 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Iniciar sesión</title>
     <link rel="icon" type="image/png" sizes="16x16" href="https://gamepedia.cursecdn.com/minecraft_de_gamepedia/3/35/Buch.png?version=8e3dd84ace9c6904ac2ff2769d252230">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 <body>
 <div class="navbar">
     <h1>Comprobar credenciales</h1>
-    <div class="dropdown">
-        <div class="dropdown-content">
-            <a href="javascript:void(0)" onclick="showSection('login')">Iniciar Sesión</a>
-            <a href="javascript:void(0)" onclick="showSection('signin')">Registrarse</a>
-        </div>
+</div>
+
+
+
+<div class="form-container">
+
+    <div class="menu-content">
+        <a id="menulogin" class="active" href="javascript:void(0)" onclick="showSection('login')">Iniciar Sesión</a>
+        <a id="menusignin" href="javascript:void(0)" onclick="showSection('signin')">Registrarse</a>
     </div>
-</div>
 
-<div class="login-seccion" id="login">
-    <h1>Iniciar sesión</h1>
-    <form action="login" method="post">
-        <label for="dni_log">DNI:</label>
-        <input type="text" id="dni_log" name="dni_log" required><br>
 
-        <label for="contrasena_log">Contraseña:</label>
-        <input type="password" id="contrasena_log" name="contrasena_log" required><br>
+    <div class="login-seccion" id="login">
+        <h1>Iniciar sesión</h1>
+        <form action="login" method="post">
+            <label for="dni_log">DNI:</label>
+            <input type="text" id="dni_log" name="dni_log" required><br>
 
-        <input type="submit" name="action" value="Iniciar sesión">
-    </form>
-</div>
+            <label for="contrasena_log">Contraseña:</label>
+            <input type="password" id="contrasena_log" name="contrasena_log" required><br>
 
-<div class="registro-seccion" id="signin">
-    <h1>Registrarse</h1>
+            <input type="submit" name="action" value="Iniciar sesión">
+        </form>
+    </div>
+
+
+
+
+    <div class="registro-seccion" id="signin">
+        <h1>Registrarse</h1>
     <form action="signin" method="post">
         <label for="dni">DNI:</label>
         <input type="text" id="dni" name="dni" required><br>
@@ -45,9 +53,14 @@
 
         <input type="submit" name="action" value="Registrarse">
     </form>
+    </div>
+
+
+
+
+
+
 </div>
-
-
 <script>
     // Esta función muestra la sección especificada y oculta la otra
     function showSection(sectionId) {
@@ -58,10 +71,32 @@
 
         var sectionToShow = document.getElementById(sectionId);
         sectionToShow.style.display = 'block';
-    }
 
+        // Actualiza la clase activa en los enlaces
+        var links = document.querySelectorAll('.menu-content a');
+        links.forEach(function (link) {
+            link.classList.remove('active');
+        });
+
+        var activeLink = document.getElementById('menu' + sectionId);
+        activeLink.classList.add('active');
+
+    }
     // Mostrar la sección de inicio de sesión por defecto
     showSection('login');
 </script>
+
+<script th:if="${error}" th:inline="javascript">
+    /* <![CDATA[*/
+    alert([[${error}]]);
+    /* ]]>*/
+</script>
+
+<script th:if="${success}" th:inline="javascript">
+    /* <![CDATA[*/
+    alert([[${success}]]);
+    /* ]]>*/
+</script>
+
 </body>
 </html>

@@ -1,15 +1,26 @@
 body {
-    margin: 5px;
-    font-family: Helvetica;
+    margin: 0;
     font-size: 11px;
     text-transform: uppercase;
-    box-sizing: border-box; /* Incluye el padding y el borde en el ancho y alto del elemento */
-    background-color: #dcdcdc;
 }
-#bar, #bar2, #bar3, #bar4 {
-    font-weight: bold;
 
+
+#nav1, #nav2, #nav3, #nav4{
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Centra los elementos verticalmente */
 }
+#nav2, #nav3 {
+    height: 50%; /* O ajusta la altura según tus necesidades */
+}
+
+#Cabecera {
+    text-align: center; /* Para centrar el texto */
+    font-size: 24px; /* Ajusta el tamaño según tus preferencias */
+}
+
 .content {
     display: none;
 }
@@ -24,11 +35,12 @@ body {
 }
 
 .navbar {
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: space-between;
     align-items: stretch; /* Cambiado de center a stretch */
     background-color: #333;
-    padding: 10px;
     color: white; /* Cambiado el color del texto en la barra de navegación */
 }
 
@@ -69,15 +81,10 @@ body {
     background-color: #3e8e41;
 }
 
-body {
-    margin: 0;
-    font-family: Helvetica;
-    font-size: 11px;
-    text-transform: uppercase;
-}
+
 
 ul {
-    list-style-type: none;
+    list-style-type: none; 
     padding: 0;
 }
 
@@ -98,16 +105,18 @@ header ul.navigation-menu {
     background-color: #131517;
     color: white;
     height: 50px;
-    width: 100%;
+    width: 100vw; /* Establecer el ancho al 100% */
     border-radius: 5px;
     box-shadow: 1px 1px 10px 3px rgba(0, 0, 0, 0.1);
-    margin: 0; /* Añadido para asegurarse de que no hay margen */
-    padding: 0;/* Añadido para asegurarse de que no hay relleno */
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
+
 header ul.navigation-menu li {
     flex: 1;
+    width: 100%;
 }
 
 header ul.navigation-menu li a {
@@ -122,10 +131,9 @@ header ul.navigation-menu li a {
 header  ul.navigation-menu li ul {
     display: flex;
     flex-direction: column;
-    width: auto;
+    width: 100%;
     border-radius: 0px;
     background-color: transparent;
-    flex-direction: column;
     perspective: 500px;
     box-shadow: none;
 }
@@ -143,7 +151,7 @@ header ul.navigation-menu li ul li ul {
     position: absolute;
     top: 0px;
     left: 100%;
-    width: 200px;
+    width: 400px;
 }
 
 header ul.navigation-menu li ul li ul li {

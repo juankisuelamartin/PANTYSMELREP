@@ -1,36 +1,55 @@
+/*
+ * Nombre del archivo: App.java
+ * Descripción: Clase principal de la aplicación PantysMelRep.
+ * Autor: Pan TyS Mel SA
+ */
 package PantysMelRep;
-import java.sql.SQLException;
-import java.util.Arrays;
-
-import PantysMelRep.domain.controllers.GestorPrestamos;
-import PantysMelRep.domain.controllers.GestorTitulos;
-import PantysMelRep.domain.entities.Autor;
-import PantysMelRep.domain.entities.Titulo;
 import PantysMelRep.persistencia.AgenteBBDD;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
+
+/***************************************************************
+ * Encabezado de Propiedad y Licencia para la Aplicación Pantysmel
+ ***************************************************************/
 
 /**
- * Hello world!
+ * @file PantysmelApp.java
+ * @brief Implementación principal de la aplicación Pantysmel para la biblioteca.
  *
+ * @author [Pan TyS Mel SA]
+ * @author [Juan Carlos Suela]
+ * @author [Sergio del Pino]
+ * @author [Marcos Illan]
+ * @author [Victor Perez]
+ * @version 1.0
+ * @date [07/12/2023]
  *
+ * @copyright (c) [2023]
+ * Todos los derechos reservados.
  *
+ * @license
+ * Esta aplicación Pantysmel está bajo la Licencia [Nombre de la Licencia].
+ * Puede obtener una copia de la licencia en [URL de la Licencia].
+ * A menos que sea requerido por la ley aplicable o acordado por escrito,
+ * el software se distribuye "TAL CUAL", SIN GARANTÍAS O CONDICIONES DE
+ * NINGÚN TIPO, ya sea expresa o implícita.
+ *
+ * @see [https://github.com/juankisuelamartin/PANTYSMELREP]
  */
-@SpringBootApplication
-public class App {
-    public static void main(String[] args) throws SQLException {
-        ConfigurableApplicationContext context = SpringApplication.run(App.class, args);
-        AgenteBBDD agenteBBDD = AgenteBBDD.getAgente();
-        agenteBBDD.conectar();
-        GestorTitulos gestorTitulos = context.getBean(GestorTitulos.class);
-        gestorTitulos.setAgenteBBDD(agenteBBDD);
 
-         System.out.println("Conectado.");
-    }
+@SpringBootApplication
+//Clase principal
+public class App
+{
+    //Método principal
+  public static void main(String[] args)
+  {
+    SpringApplication.run(App.class, args);
+    AgenteBBDD agente = AgenteBBDD.getAgente();
+    agente.conectar();
+
+    System.out.println("Conectado.");
+  }
 }
+
 

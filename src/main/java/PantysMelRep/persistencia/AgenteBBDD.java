@@ -74,7 +74,7 @@ public class AgenteBBDD {
             return -1;
         }
     }
-
+//
     public int delete(String sql) {
         try {
             entityManager.getTransaction().begin();

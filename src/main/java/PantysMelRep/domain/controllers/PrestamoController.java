@@ -1,14 +1,21 @@
+/*
+ * Nombre del archivo: PrestamoController.java
+ * Descripción: Clase PrestamoController de la aplicación PantysMelRep.
+ * Autor: Pan TyS Mel SA
+ */
 package PantysMelRep.domain.controllers;
 
-import PantysMelRep.domain.entities.Prestamo;
+
 import PantysMelRep.persistencia.PrestamoDAO;
-import PantysMelRep.domain.controllers.GestorPrestamos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -29,12 +36,10 @@ public class PrestamoController {
                                    RedirectAttributes redirectAttributes) {
 
         // Realizar el préstamo usando el Gestor de Préstamos
-        gestorPrestamos.realizarPrestamo(isbn, idEjemplar, idUsuario);
-        logPrestamo.info("Prestamo realizado con éxito");
-        redirectAttributes.addFlashAttribute("success", "Prestamo realizado con éxito");
+        gestorPrestamos.realizarPrestamo(isbn, idEjemplar, idUsuario, redirectAttributes);
 
         // Redirigir a la página principal o a donde desees
-        return "redirect:/home";
+        return "redirect:/homeUsuario";
     }
 
     @PostMapping("/realizarDevolucion")
@@ -43,11 +48,9 @@ public class PrestamoController {
                                      RedirectAttributes redirectAttributes) {
 
         // Realizar la devolución usando el Gestor de Préstamos
-        gestorPrestamos.realizarDevolucion(isbn, idUsuario);
-        logPrestamo.info("Devolución realizada con éxito");
-        redirectAttributes.addFlashAttribute("success", "Devolución realizada con éxito");
+        gestorPrestamos.realizarDevolucion(isbn, idUsuario, redirectAttributes);
         // Redirigir a la página principal o a donde desees
-        return "redirect:/home";
+        return "redirect:/homeUsuario";
     }
 
     @PostMapping("/realizarReserva")
@@ -56,11 +59,9 @@ public class PrestamoController {
                                   RedirectAttributes redirectAttributes) {
 
         // Realizar la reserva usando el Gestor de Préstamos
-        gestorPrestamos.realizarReserva(idUsuario, isbn);
-        logPrestamo.info("Reserva realizada con éxito");
-        redirectAttributes.addFlashAttribute("success", "Reserva realizada con éxito");
+        gestorPrestamos.realizarReserva(idUsuario, isbn, redirectAttributes);
         // Redirigir a la página principal o a donde desees
-        return "redirect:/home";
+        return "redirect:/homeUsuario";
     }
 
     @GetMapping("/realizarPrestamo")

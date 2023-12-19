@@ -1,3 +1,8 @@
+/*
+ * Nombre del archivo: Reserva.java
+ * Descripción: Clase Reserva de la aplicación PantysMelRep.
+ * Autor: Pan TyS Mel SA
+ */
 package PantysMelRep.domain.entities;
 
 import jakarta.persistence.*;
@@ -17,14 +22,13 @@ public class Reserva {
 	@Column(name = "titulo_id")
 	private String tituloId;
 
-	@MapsId("usuarioId")
 	@ManyToOne
-	@JoinColumn(name = "usuario_id")
+	@JoinColumn(name = "usuario_id", insertable = false, updatable = false)
 	private Usuario usuario;
 
 
 	@ManyToOne
-	@JoinColumn(name = "titulo_id")
+	@JoinColumn(name = "titulo_id", insertable = false, updatable = false)
 	private Titulo titulo;
 
 	@Temporal(TemporalType.DATE)

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/content.css">
+    <script src="../script/script.js"></script>
+    <link rel="icon" type="image/png" sizes="16x16" href="https://static.wikia.nocookie.net/minecraft_gamepedia/images/e/e9/Book_and_Quill_JE2_BE2.png">
+    <style>
+        /* Estilos para centrar la imagen */
+        .header-image {
+            text-align: center;
+            margin-top: 5px; /* Espacio entre la imagen y el contenido siguiente */
+        }
+
+        .header-image img {
+            max-width: 50%; /* Ancho máximo del 50% del contenedor */
+            height: auto; /* Altura automática para mantener la proporción */
+        }
+
+        /* Estilos para la sección del equipo */
+        .team-section {
+            text-align: center;
+            margin: 20px; /* Espacio alrededor del contenido */
+        }
+
+        .team-member {
+            display: inline-block;
+            margin: 20px; /* Espacio entre los miembros del equipo */
+        }
+    </style>
+    <title>Our Team</title>
+</head>
+<body>
+
+<div class="navbar">
+    <div th:replace="~{headerUsuario :: headerUsuario}"></div>
+</div>
+
+<div class="header-image">
+    <img src="https://11defebrero.files.wordpress.com/2017/02/socio-universidad-de-castilla-la-mancha.png" alt="Imagen de Encabezado">
+</div>
+
+<div class="team-section" id="team-sectionContainer">
+    <h2>Our Team</h2>
+
+    <div class="team-member">
+        <img src="ruta/miembro1.jpg" alt="Miembro 1">
+        <h3>Juan Carlos Suela Martín</h3>
+        <p>juancarlos.suela@alu.ucml.es</p>
+    </div>
+
+    <div class="team-member">
+        <img src="ruta/miembro2.jpg" alt="Miembro 2">
+        <h3>Marcos Illán López</h3>
+        <p>marcos.illan@alu.ucml.es</p>
+    </div>
+
+    <div class="team-member">
+        <img src="ruta/miembro3.jpg" alt="Miembro 3">
+        <h3>Sergio del Pino Gómez</h3>
+        <p>sergio.pino@alu.ucml.es</p>
+    </div>
+
+    <div class="team-member">
+        <img src="ruta/miembromasperro.jpg" alt="Miembro 4">
+        <h3>Victor Perez</h3>
+        <p>victor.perez9@alu.uclm.es</p>
+    </div>
+
+</div>
+
+
+</div>
+<script th:if="${error}" th:inline="javascript">
+    /* <![CDATA[*/
+    alert([[${error}]]);
+    /* ]]>*/
+</script>
+
+<script th:if="${success}" th:inline="javascript">
+    /* <![CDATA[*/
+    alert([[${success}]]);
+    /* ]]>*/
+</script>
+
+</body>
+</html>

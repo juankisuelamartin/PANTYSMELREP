@@ -1,10 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>About US</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/content.css">
+    <script src="../script/script.js"></script>
+    <link rel="icon" type="image/png" sizes="16x16" href="https://static.wikia.nocookie.net/minecraft_gamepedia/images/e/e9/Book_and_Quill_JE2_BE2.png">
+    <style>
+        /* Estilos para centrar la imagen */
+        .header-image {
+            text-align: center;
+            margin-top: 50px; /* Espacio entre la imagen y el contenido siguiente */
+        }
+
+        .header-image img {
+            max-width: 50%; /* Ancho máximo del 50% del contenedor */
+            height: auto; /* Altura automática para mantener la proporción */
+        }
+    </style>
+    <title>About Us</title>
 </head>
 <body>
+
+<div class="navbar">
+    <div th:replace="~{headerUsuario :: headerUsuario}"></div>
+</div>
+<div class="header-image">
+    <img src="https://11defebrero.files.wordpress.com/2017/02/socio-universidad-de-castilla-la-mancha.png" alt="Imagen de Encabezado">
+</div>
+
+<div class="form-container" id="aboutUsContainer">
+    <div class="form-content" id="aboutUs">
+        <h2>Sobre Nosotros</h2><br><br>
+        <p>Bienvenido a la Biblioteca Pantysmel, donde puedes explorar un mundo de conocimiento e historias.</p><br>
+        <p>Nuestra misión es proporcionar una colección diversa de títulos, desde libros hasta revistas, para satisfacer los gustos de cada lector.</p><br>
+        <p>No dudes en contactarnos si tienes alguna pregunta o sugerencia. ¡Valoramos tu opinión!</p><br>
+    </div>
+</div>
+
+<script>
+    // Tus funciones JavaScript existentes van aquí
+</script>
+
+<script th:if="${error}" th:inline="javascript">
+    /* <![CDATA[*/
+    alert([[${error}]]);
+    /* ]]>*/
+</script>
+
+<script th:if="${success}" th:inline="javascript">
+    /* <![CDATA[*/
+    alert([[${success}]]);
+    /* ]]>*/
+</script>
 
 </body>
 </html>

@@ -1,3 +1,9 @@
+/*
+ * Nombre del archivo: Autor.java
+ * Descripción: Clase Autor de la aplicación PantysMelRep.
+ * Autor: Pan TyS Mel SA
+ */
+
 package PantysMelRep.domain.entities;
 
 import jakarta.persistence.*;
@@ -15,6 +21,8 @@ public class Usuario {
 	private String contrasena;
 	private String apellidos;
 
+	private String rol;
+
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_fin_penalizacion")
 	private Date fechaFinPenalizacion;
@@ -28,20 +36,23 @@ public class Usuario {
 	public Usuario() {
 	}
 
+
 	//Objeto usuario controlladores
-	public Usuario(String id, String nombre, String apellidos, Date fechaFinPenalizacion) {
+	public Usuario(String id, String nombre, String apellidos, Date fechaFinPenalizacion, String rol) {
 		this.id = id;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.fechaFinPenalizacion = fechaFinPenalizacion;
+		this.rol= rol;
 	}
 
 	//Usuario Básico para login
-	public Usuario(String dni, String nombre, String apellidos, String contrasena) {
+	public Usuario(String dni, String nombre, String apellidos, String contrasena, String rol) {
 		this.id = dni;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.contrasena=contrasena;
+		this.rol= rol;
 	}
 
 	public String getId() {
@@ -71,6 +82,11 @@ public class Usuario {
 	public String getContrasena() {
 		return contrasena;
 	}
+
+	public String getRol() { return rol; }
+
+
+	public void setRol(String rol) {this.rol = rol; }
 
 	public void setContrasena(String contrasena) {
 		this.contrasena = contrasena;

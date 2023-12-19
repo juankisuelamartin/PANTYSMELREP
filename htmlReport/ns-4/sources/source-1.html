@@ -1,0 +1,194 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AgenteBBDD</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">PantysMelRep.persistencia</a>
+</div>
+
+<h1>Coverage Summary for Class: AgenteBBDD (PantysMelRep.persistencia)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AgenteBBDD</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/45)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package PantysMelRep.persistencia;
+&nbsp;import jakarta.persistence.EntityManager;
+&nbsp;import jakarta.persistence.EntityManagerFactory;
+&nbsp;import jakarta.persistence.Persistence;
+&nbsp;import jakarta.persistence.Query;
+&nbsp;
+&nbsp;import java.sql.ResultSet;
+&nbsp;import java.util.List;
+&nbsp;
+<b class="nc">&nbsp;public class AgenteBBDD {</b>
+&nbsp;    private EntityManagerFactory entityManagerFactory;
+&nbsp;    private static EntityManager entityManager;
+&nbsp;
+&nbsp;    public boolean conectar() {
+&nbsp;        try {
+<b class="nc">&nbsp;            entityManagerFactory = Persistence.createEntityManagerFactory(&quot;dbproyectoiso2&quot;);</b>
+<b class="nc">&nbsp;            entityManager = entityManagerFactory.createEntityManager();</b>
+<b class="nc">&nbsp;            return true;</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean desconectar() {
+&nbsp;        try {
+<b class="nc">&nbsp;            entityManager.close();</b>
+<b class="nc">&nbsp;            entityManagerFactory.close();</b>
+<b class="nc">&nbsp;            return true;</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    public static AgenteBBDD getAgente() {
+<b class="nc">&nbsp;        return new AgenteBBDD();</b>
+&nbsp;    }
+&nbsp;    public static EntityManager getEntityManager() {
+<b class="nc">&nbsp;        return entityManager;</b>
+&nbsp;    }
+&nbsp;    public int insert(String sql) {
+&nbsp;        try {
+<b class="nc">&nbsp;            entityManager.getTransaction().begin();</b>
+<b class="nc">&nbsp;            Query query = entityManager.createNativeQuery(sql);</b>
+<b class="nc">&nbsp;            int rowCount = ((Query) query).executeUpdate();</b>
+<b class="nc">&nbsp;            entityManager.getTransaction().commit();</b>
+<b class="nc">&nbsp;            return rowCount;</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            entityManager.getTransaction().rollback();</b>
+<b class="nc">&nbsp;            return -1;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public ResultSet select(String sql) {
+&nbsp;        try {
+<b class="nc">&nbsp;            entityManager.getTransaction().begin();</b>
+<b class="nc">&nbsp;            Query query = entityManager.createNativeQuery(sql);</b>
+<b class="nc">&nbsp;            List&lt;Object&gt; results = query.getResultList();</b>
+<b class="nc">&nbsp;            entityManager.getTransaction().commit();</b>
+&nbsp;            // Ahora puedes trabajar con los resultados en la lista.
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            entityManager.getTransaction().rollback();</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return null; // Debes adaptar esto según tus necesidades.</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int update(String sql) {
+&nbsp;        try {
+<b class="nc">&nbsp;            entityManager.getTransaction().begin();</b>
+<b class="nc">&nbsp;            Query query = entityManager.createNativeQuery(sql);</b>
+<b class="nc">&nbsp;            int rowCount = query.executeUpdate();</b>
+<b class="nc">&nbsp;            entityManager.getTransaction().commit();</b>
+<b class="nc">&nbsp;            return rowCount;</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            entityManager.getTransaction().rollback();</b>
+<b class="nc">&nbsp;            return -1;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;//
+&nbsp;    public int delete(String sql) {
+&nbsp;        try {
+<b class="nc">&nbsp;            entityManager.getTransaction().begin();</b>
+<b class="nc">&nbsp;            Query query = entityManager.createNativeQuery(sql);</b>
+<b class="nc">&nbsp;            int rowCount = query.executeUpdate();</b>
+<b class="nc">&nbsp;            entityManager.getTransaction().commit();</b>
+<b class="nc">&nbsp;            return rowCount;</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            entityManager.getTransaction().rollback();</b>
+<b class="nc">&nbsp;            return -1;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-15 20:39</div>
+</div>
+</body>
+</html>

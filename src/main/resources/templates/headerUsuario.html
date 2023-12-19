@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://gamepedia.cursecdn.com/minecraft_de_gamepedia/3/35/Buch.png?v">
+    <title>BIBLIOTECA PANTYSMEL</title>
+</head>
+<body>
+
+<header th:fragment="headerUsuario">
+    <nav>
+        <h1 id="Cabecera">Biblioteca</h1>
+        <ul class="navigation-menu">
+            <li><a id="nav1" th:href="@{/homeUsuario}">Home</a></li>
+            <li><p id="nav2">Gestión Prestamos</p>
+                <ul>
+                    <li><a href="/prestamos/realizarPrestamo" onclick="showForm('realizarPrestamo')">Realizar Prestamo</a></li>
+                    <li><a href="/prestamos/realizarDevolucion" onclick="showForm('realizarDevolucion')">Realizar Devolución</a></li>
+                    <li><a href="/prestamos/realizarReserva" onclick="showForm('realizarReserva')">Realizar Reserva</a></li>
+                </ul>
+            </li>
+            <li><a id="nav4" href="/AboutUS">About Us</a>
+                <ul>
+                    <li><a href="/OurTeam">Our Team</a></li>
+                    <li><a href="/ContactUS">Contact Us</a></li>
+                </ul>
+            </li>
+            <li><a href="/login">Cerrar Sesión</a></li>
+        </ul>
+    </nav>
+</header>
+</body>
+</html>
+
