@@ -52,18 +52,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    18,2%
+    100%
   </span>
   <span class="absValue">
-    (2/11)
+    (11/11)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    4,8%
+    100%
   </span>
   <span class="absValue">
-    (2/42)
+    (43/43)
   </span>
 </td>
 </tr>
@@ -106,32 +106,32 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;    @GetMapping(&quot;/&quot;)
 &nbsp;    public String home(@RequestParam(value = &quot;firstTime&quot;, required = false) String firstTime, RedirectAttributes redirectAttributes) {
-<b class="nc">&nbsp;        if (firstTime == null) {</b>
-<b class="nc">&nbsp;            redirectAttributes.addAttribute(&quot;firstTime&quot;, &quot;no&quot;);</b>
-<b class="nc">&nbsp;            return &quot;redirect:/login&quot;;</b>
+<b class="fc">&nbsp;        if (firstTime == null) {</b>
+<b class="fc">&nbsp;            redirectAttributes.addAttribute(&quot;firstTime&quot;, &quot;no&quot;);</b>
+<b class="fc">&nbsp;            return &quot;redirect:/login&quot;;</b>
 &nbsp;        }
 &nbsp;
 &nbsp;
-<b class="nc">&nbsp;        return &quot;redirect:/home&quot;; // Nombre de la vista de la página principal</b>
+<b class="fc">&nbsp;        return &quot;redirect:/home&quot;; // Nombre de la vista de la página principal</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @GetMapping(&quot;/home&quot;)
 &nbsp;    public String homePage() {
-<b class="nc">&nbsp;        return &quot;home&quot;; // Nombre de la vista de tu página principal</b>
+<b class="fc">&nbsp;        return &quot;home&quot;; // Nombre de la vista de tu página principal</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @GetMapping(&quot;/homeUsuario&quot;)
 &nbsp;    public String homeUserPage() {
-<b class="nc">&nbsp;        return &quot;homeUsuario&quot;; // Nombre de la vista de tu página principal</b>
+<b class="fc">&nbsp;        return &quot;homeUsuario&quot;; // Nombre de la vista de tu página principal</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @GetMapping(&quot;/login&quot;)
 &nbsp;    public String showLoginForm() {
-<b class="nc">&nbsp;        return &quot;login&quot;; // Nombre de la vista de tu formulario de inicio de sesión</b>
+<b class="fc">&nbsp;        return &quot;login&quot;; // Nombre de la vista de tu formulario de inicio de sesión</b>
 &nbsp;    }
 &nbsp;    @GetMapping(&quot;/signin&quot;)
 &nbsp;    public String showSigninform() {
-<b class="nc">&nbsp;        return &quot;signin&quot;; // Nombre de la vista de tu formulario de inicio de sesión</b>
+<b class="fc">&nbsp;        return &quot;signin&quot;; // Nombre de la vista de tu formulario de inicio de sesión</b>
 &nbsp;    }
 &nbsp;
 &nbsp;
@@ -140,29 +140,29 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;                            @RequestParam(&quot;contrasena_log&quot;)String contrasena,
 &nbsp;                            RedirectAttributes redirectAttributes) {
 &nbsp;        // Buscar al usuario en la base de datos por DNI
-<b class="nc">&nbsp;        Usuario usuario = usuarioDAO.findById(dni).orElse(null);</b>
+<b class="fc">&nbsp;        Usuario usuario = usuarioDAO.findById(dni).orElse(null);</b>
 &nbsp;
 &nbsp;        // Comprobar si el usuario existe y la contraseña es correcta
-<b class="nc">&nbsp;        if (usuario != null &amp;&amp; verificarContrasena(contrasena,usuario.getContrasena())) {</b>
+<b class="fc">&nbsp;        if (usuario != null &amp;&amp; verificarContrasena(contrasena,usuario.getContrasena())) {</b>
 &nbsp;            // Aquí puedes realizar la autenticación del usuario
 &nbsp;            // Por ejemplo, establecer una sesión de usuario
 &nbsp;            // Comprobar el rol del usuario
-<b class="nc">&nbsp;            String rol = usuario.getRol();</b>
-<b class="nc">&nbsp;            if (rol.equals(&quot;ADMIN&quot;)) {</b>
-<b class="nc">&nbsp;                logLogin.info(&quot;Credenciales correctas - Administrador&quot;);</b>
-<b class="nc">&nbsp;                return &quot;redirect:/home&quot;;</b>
-<b class="nc">&nbsp;            } else if (rol.equals(&quot;USUARIO&quot;)) {</b>
-<b class="nc">&nbsp;                logLogin.info(&quot;Credenciales correctas - Usuario&quot;);</b>
-<b class="nc">&nbsp;                return &quot;redirect:/homeUsuario&quot;;</b>
+<b class="fc">&nbsp;            String rol = usuario.getRol();</b>
+<b class="fc">&nbsp;            if (rol.equals(&quot;ADMIN&quot;)) {</b>
+<b class="fc">&nbsp;                logLogin.info(&quot;Credenciales correctas - Administrador&quot;);</b>
+<b class="fc">&nbsp;                return &quot;redirect:/home&quot;;</b>
+<b class="fc">&nbsp;            } else if (rol.equals(&quot;USUARIO&quot;)) {</b>
+<b class="fc">&nbsp;                logLogin.info(&quot;Credenciales correctas - Usuario&quot;);</b>
+<b class="fc">&nbsp;                return &quot;redirect:/homeUsuario&quot;;</b>
 &nbsp;            } else {
-<b class="nc">&nbsp;                logLogin.info(&quot;Rol no reconocido&quot;);</b>
-<b class="nc">&nbsp;                return &quot;redirect:/error&quot;;</b>
+<b class="fc">&nbsp;                logLogin.info(&quot;Rol no reconocido&quot;);</b>
+<b class="fc">&nbsp;                return &quot;redirect:/error&quot;;</b>
 &nbsp;            }
 &nbsp;        } else {
 &nbsp;            // Si el inicio de sesión falla, puedes agregar un mensaje de error y redirigir nuevamente a la página de inicio de sesión
-<b class="nc">&nbsp;            redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;Credenciales de inicio de sesión incorrectas&quot;);</b>
-<b class="nc">&nbsp;            logLogin.info(&quot;Credenciales incorrectas&quot;);</b>
-<b class="nc">&nbsp;            return &quot;redirect:/login&quot;;</b>
+<b class="fc">&nbsp;            redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;Credenciales de inicio de sesión incorrectas&quot;);</b>
+<b class="fc">&nbsp;            logLogin.info(&quot;Credenciales incorrectas&quot;);</b>
+<b class="fc">&nbsp;            return &quot;redirect:/login&quot;;</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -170,45 +170,47 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    public String registrarUsuario(@RequestParam(&quot;dni&quot;)String dni,
 &nbsp;                                   @RequestParam(&quot;nombre&quot;)String nombre,
 &nbsp;                                   @RequestParam(&quot;apellidos&quot;)String apellidos,
-&nbsp;                                   @RequestParam(&quot;contrasena&quot;)String contrasena
+&nbsp;                                   @RequestParam(&quot;contrasena&quot;)String contrasena,
+&nbsp;                                   RedirectAttributes redirectAttributes
 &nbsp;                                   ) {
 &nbsp;        // Verificar si ya existe un usuario con el mismo DNI en la base de datos
-<b class="nc">&nbsp;        Usuario usuarioExistente = usuarioDAO.findById(dni).orElse(null);</b>
-<b class="nc">&nbsp;        if (usuarioExistente != null) {</b>
+<b class="fc">&nbsp;        Usuario usuarioExistente = usuarioDAO.findById(dni).orElse(null);</b>
+<b class="fc">&nbsp;        if (usuarioExistente != null) {</b>
 &nbsp;            // El usuario con el mismo DNI ya existe, puedes manejar este caso como desees
-<b class="nc">&nbsp;            logLogin.info(&quot;Ya existe un usuario con el mismo DNI&quot;);</b>
+<b class="fc">&nbsp;            redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;Ya existe un usuario con el mismo DNI&quot;);</b>
+<b class="fc">&nbsp;            logLogin.info(&quot;Ya existe un usuario con el mismo DNI&quot;);</b>
 &nbsp;            // Puedes redirigir a una página de error, mostrar un mensaje al usuario, etc.
-<b class="nc">&nbsp;            return &quot;redirect:/error&quot;;</b>
+<b class="fc">&nbsp;            return &quot;redirect:/login&quot;;</b>
 &nbsp;        } else {
 &nbsp;            // Crear un nuevo usuario con la información proporcionada
-<b class="nc">&nbsp;            String contrasenaHasheada = hashPassword(contrasena);</b>
+<b class="fc">&nbsp;            String contrasenaHasheada = hashPassword(contrasena);</b>
 &nbsp;
-<b class="nc">&nbsp;            Usuario nuevoUsuario = new Usuario();</b>
-<b class="nc">&nbsp;            nuevoUsuario.setId(dni);</b>
-<b class="nc">&nbsp;            nuevoUsuario.setNombre(nombre);</b>
-<b class="nc">&nbsp;            nuevoUsuario.setApellidos(apellidos);</b>
-<b class="nc">&nbsp;            nuevoUsuario.setContrasena(contrasenaHasheada);</b>
-<b class="nc">&nbsp;            nuevoUsuario.setRol(&quot;USUARIO&quot;);</b>
+<b class="fc">&nbsp;            Usuario nuevoUsuario = new Usuario();</b>
+<b class="fc">&nbsp;            nuevoUsuario.setId(dni);</b>
+<b class="fc">&nbsp;            nuevoUsuario.setNombre(nombre);</b>
+<b class="fc">&nbsp;            nuevoUsuario.setApellidos(apellidos);</b>
+<b class="fc">&nbsp;            nuevoUsuario.setContrasena(contrasenaHasheada);</b>
+<b class="fc">&nbsp;            nuevoUsuario.setRol(&quot;USUARIO&quot;);</b>
 &nbsp;
 &nbsp;            // Guardar el nuevo usuario en la base de datos
-<b class="nc">&nbsp;            usuarioDAO.save(nuevoUsuario);</b>
-<b class="nc">&nbsp;            logLogin.info(&quot;Usuario registrado con éxito&quot;);</b>
+<b class="fc">&nbsp;            usuarioDAO.save(nuevoUsuario);</b>
+<b class="fc">&nbsp;            logLogin.info(&quot;Usuario registrado con éxito&quot;);</b>
 &nbsp;
 &nbsp;            // Redirigir al usuario al inicio de sesión después de registrarse
-<b class="nc">&nbsp;            return &quot;redirect:/login&quot;;</b>
+<b class="fc">&nbsp;            return &quot;redirect:/login&quot;;</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
 &nbsp;    //Método Encriptar Contraseña
 &nbsp;    public String hashPassword(String password) {
-<b class="nc">&nbsp;        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();</b>
-<b class="nc">&nbsp;        return passwordEncoder.encode(password);</b>
+<b class="fc">&nbsp;        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();</b>
+<b class="fc">&nbsp;        return passwordEncoder.encode(password);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    //Método desencriptar contraseña
 &nbsp;    public boolean verificarContrasena(String contrasenaIngresada, String contrasenaAlmacenada) {
-<b class="nc">&nbsp;        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();</b>
-<b class="nc">&nbsp;        return passwordEncoder.matches(contrasenaIngresada, contrasenaAlmacenada);</b>
+<b class="fc">&nbsp;        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();</b>
+<b class="fc">&nbsp;        return passwordEncoder.matches(contrasenaIngresada, contrasenaAlmacenada);</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -234,7 +236,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-12-15 20:34</div>
+    <div style="float:right;">generated on 2023-12-19 19:49</div>
 </div>
 </body>
 </html>

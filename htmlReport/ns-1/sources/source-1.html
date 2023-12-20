@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
-  <title>Coverage Report > App</title>
+  <title>Coverage Report > AboutUsController</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -19,10 +19,10 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">PantysMelRep</a>
+    <a href="../index.html">PantysMelRep.domain.controllers</a>
 </div>
 
-<h1>Coverage Summary for Class: App (PantysMelRep)</h1>
+<h1>Coverage Summary for Class: AboutUsController (PantysMelRep.domain.controllers)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -41,29 +41,29 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">App</td>
+  <td class="name">AboutUsController</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/2)
+    (4/4)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/5)
+    (4/4)
   </span>
 </td>
 </tr>
@@ -75,29 +75,35 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;/*
-&nbsp; * Nombre del archivo: App.java
-&nbsp; * Descripción: Clase principal de la aplicación PantysMelRep.
-&nbsp; * Autor: Pan TyS Mel SA
-&nbsp; */
-&nbsp;package PantysMelRep;
-&nbsp;import PantysMelRep.persistencia.AgenteBBDD;
-&nbsp;import org.springframework.boot.SpringApplication;
-&nbsp;import org.springframework.boot.autoconfigure.SpringBootApplication;
-&nbsp;import org.springframework.context.ConfigurableApplicationContext;
+<code class="sourceCode" id="sourceCode">&nbsp;package PantysMelRep.domain.controllers;
 &nbsp;
+&nbsp;import org.springframework.stereotype.Controller;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
 &nbsp;
-&nbsp;@SpringBootApplication
-<b class="nc">&nbsp;public class App {</b>
-&nbsp;    public static void main(String[] args){
-<b class="nc">&nbsp;        ConfigurableApplicationContext context = SpringApplication.run(App.class, args);</b>
-<b class="nc">&nbsp;        AgenteBBDD agenteBBDD = AgenteBBDD.getAgente();</b>
-<b class="nc">&nbsp;        agenteBBDD.conectar();</b>
+&nbsp;//Definición del controlador AboutUsController
+&nbsp;@Controller
+<b class="fc">&nbsp;public class AboutUsController</b>
+&nbsp;{
+&nbsp;    //Mapeo de /AboutUS
+&nbsp;    @GetMapping(&quot;/AboutUS&quot;)
+&nbsp;    public String aboutUs()
+&nbsp;    {
+<b class="fc">&nbsp;        return &quot;AboutUS&quot;;</b>
+&nbsp;    }
 &nbsp;
-<b class="nc">&nbsp;         System.out.println(&quot;Conectado.&quot;);</b>
+&nbsp;    //Mapeo de /ContactUS
+&nbsp;    @GetMapping(&quot;/ContactUS&quot;)
+&nbsp;    public String contactUs()
+&nbsp;    {
+<b class="fc">&nbsp;        return &quot;ContactUS&quot;;</b>
+&nbsp;    }
+&nbsp;    //Mapeo de /OurTeam
+&nbsp;    @GetMapping(&quot;/OurTeam&quot;)
+&nbsp;    public String ourTeam()
+&nbsp;    {
+<b class="fc">&nbsp;        return &quot;OurTeam&quot;;</b>
 &nbsp;    }
 &nbsp;}
-&nbsp;
 </code>
 </pre>
 </div>
@@ -121,7 +127,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-12-15 20:39</div>
+    <div style="float:right;">generated on 2023-12-19 19:49</div>
 </div>
 </body>
 </html>

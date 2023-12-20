@@ -25,9 +25,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 <h1>Coverage Summary for Class: TituloController (PantysMelRep.domain.controllers)</h1>
 
 <table class="coverageStats">
-
 <tr>
   <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
 <th class="coverageStat 
 ">
   Method, %
@@ -41,43 +44,30 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">TituloController</td>
 <td class="coverageStat">
   <span class="percent">
-    14,3%
+    100%
   </span>
   <span class="absValue">
-    (2/14)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    1,9%
+    28,6%
   </span>
   <span class="absValue">
-    (2/106)
+    (4/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    27,4%
+  </span>
+  <span class="absValue">
+    (29/106)
   </span>
 </td>
 </tr>
-  <tr>
-    <td class="name">TituloController$$SpringCGLIB$$0</td>
-  </tr>
-<tr>
-  <td class="name"><strong>Total</strong></td>
-<td class="coverageStat">
-  <span class="percent">
-    14,3%
-  </span>
-  <span class="absValue">
-    (2/14)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    1,9%
-  </span>
-  <span class="absValue">
-    (2/106)
-  </span>
-</td>
-</tr>
+
 </table>
 
 <br/>
@@ -231,34 +221,34 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;
 &nbsp;
-&nbsp;    private List&lt;Autor&gt; procesarAutores(String nuevosAutores, RedirectAttributes redirectAttributes) {
+&nbsp;    public List&lt;Autor&gt; procesarAutores(String nuevosAutores, RedirectAttributes redirectAttributes) {
 &nbsp;
 &nbsp;        // Separar los nombres de los autores
-<b class="nc">&nbsp;        String[] nombresAutores = nuevosAutores.split(&quot;,&quot;);</b>
+<b class="fc">&nbsp;        String[] nombresAutores = nuevosAutores.split(&quot;,&quot;);</b>
 &nbsp;
 &nbsp;        // Crear una lista para almacenar los autores actualizados
-<b class="nc">&nbsp;        List&lt;Autor&gt; listaAutoresActualizados = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        List&lt;Autor&gt; listaAutoresActualizados = new ArrayList&lt;&gt;();</b>
 &nbsp;
-<b class="nc">&nbsp;        for (String nombreAutor : nombresAutores) {</b>
-<b class="nc">&nbsp;            String[] nombres = nombreAutor.trim().split(&quot; &quot;);</b>
+<b class="fc">&nbsp;        for (String nombreAutor : nombresAutores) {</b>
+<b class="fc">&nbsp;            String[] nombres = nombreAutor.trim().split(&quot; &quot;);</b>
 &nbsp;            AutorId autorId;
-<b class="nc">&nbsp;            if (nombres.length &gt;= 2) {</b>
-<b class="nc">&nbsp;                String apellido = String.join(&quot; &quot;, Arrays.copyOfRange(nombres, 1, nombres.length));</b>
-<b class="nc">&nbsp;                autorId = new AutorId(nombres[0], apellido);</b>
+<b class="fc">&nbsp;            if (nombres.length &gt;= 2) {</b>
+<b class="fc">&nbsp;                String apellido = String.join(&quot; &quot;, Arrays.copyOfRange(nombres, 1, nombres.length));</b>
+<b class="fc">&nbsp;                autorId = new AutorId(nombres[0], apellido);</b>
 &nbsp;                // Rest of your code for processing the author
-<b class="nc">&nbsp;            } else {</b>
+<b class="fc">&nbsp;            } else {</b>
 &nbsp;                // Handle the case where there are not enough elements in the array
-<b class="nc">&nbsp;                logTitulo.error(&quot;Error: Nombre de autor no válido - &quot; + nombreAutor);</b>
-<b class="nc">&nbsp;                redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;Error: Nombre de autor no válido - &quot; + nombreAutor);</b>
-<b class="nc">&nbsp;                return null;</b>
+<b class="fc">&nbsp;                logTitulo.error(&quot;Error: Nombre de autor no válido - &quot; + nombreAutor);</b>
+<b class="fc">&nbsp;                redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;Error: Nombre de autor no válido - &quot; + nombreAutor);</b>
+<b class="fc">&nbsp;                return null;</b>
 &nbsp;            }
 &nbsp;
 &nbsp;
 &nbsp;            Autor autor;
-<b class="nc">&nbsp;            Optional&lt;Autor&gt; optionalAutor = autorDAO.findById(autorId);</b>
-<b class="nc">&nbsp;            if (optionalAutor.isPresent()) {</b>
+<b class="fc">&nbsp;            Optional&lt;Autor&gt; optionalAutor = autorDAO.findById(autorId);</b>
+<b class="fc">&nbsp;            if (optionalAutor.isPresent()) {</b>
 &nbsp;                // Obtener el autor existente
-<b class="nc">&nbsp;                autor = optionalAutor.get();</b>
+<b class="fc">&nbsp;                autor = optionalAutor.get();</b>
 &nbsp;            } else {
 <b class="nc">&nbsp;                String apellido = String.join(&quot; &quot;, Arrays.copyOfRange(nombres, 1, nombres.length));</b>
 &nbsp;                // Crear un nuevo autor y guardarlo en la base de datos
@@ -266,10 +256,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;                autorDAO.save(autor);</b>
 &nbsp;            }
 &nbsp;            // Agregar el autor a la lista de autores actualizados
-<b class="nc">&nbsp;            listaAutoresActualizados.add(autor);</b>
+<b class="fc">&nbsp;            listaAutoresActualizados.add(autor);</b>
 &nbsp;
 &nbsp;        }
-<b class="nc">&nbsp;        return listaAutoresActualizados;</b>
+<b class="fc">&nbsp;        return listaAutoresActualizados;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;
@@ -379,29 +369,29 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    public byte[] anadirFoto(MultipartFile foto, RedirectAttributes redirectAttributes) {
 &nbsp;        byte[] fotoBytes;
 &nbsp;
-<b class="nc">&nbsp;        if (foto != null &amp;&amp; !foto.isEmpty()) {</b>
+<b class="fc">&nbsp;        if (foto != null &amp;&amp; !foto.isEmpty()) {</b>
 &nbsp;            // Se proporcionó una imagen, usar sus bytes
 &nbsp;            try {
-<b class="nc">&nbsp;                fotoBytes = foto.getBytes();</b>
-<b class="nc">&nbsp;            } catch (IOException e) {</b>
+<b class="fc">&nbsp;                fotoBytes = foto.getBytes();</b>
+<b class="fc">&nbsp;            } catch (IOException e) {</b>
 &nbsp;                // Manejar el error al leer los bytes de la imagen
-<b class="nc">&nbsp;                redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;Error al leer la foto. Por favor, inténtalo de nuevo.&quot;);</b>
-<b class="nc">&nbsp;                return null; // Otra opción puede ser lanzar una excepción</b>
-<b class="nc">&nbsp;            }</b>
+<b class="fc">&nbsp;                redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;Error al leer la foto. Por favor, inténtalo de nuevo.&quot;);</b>
+<b class="fc">&nbsp;                return null; // Otra opción puede ser lanzar una excepción</b>
+<b class="fc">&nbsp;            }</b>
 &nbsp;        } else {
 &nbsp;            // No se proporcionó ninguna imagen, usar una imagen por defecto (debes tener una imagen por defecto en tu proyecto)
 &nbsp;
-<b class="nc">&nbsp;            try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(&quot;static/images/default_Portada.jpg&quot;)) {</b>
-<b class="nc">&nbsp;                fotoBytes = inputStream.readAllBytes();</b>
-<b class="nc">&nbsp;            } catch (IOException e) {</b>
+<b class="fc">&nbsp;            try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(&quot;static/images/default_Portada.jpg&quot;)) {</b>
+<b class="fc">&nbsp;                fotoBytes = inputStream.readAllBytes();</b>
+<b class="fc">&nbsp;            } catch (IOException e) {</b>
 &nbsp;                // Manejar el error al cargar la imagen por defecto
 <b class="nc">&nbsp;                redirectAttributes.addFlashAttribute(&quot;error&quot;, &quot;Error al cargar la imagen por defecto.&quot;);</b>
 <b class="nc">&nbsp;                return null; // Otra opción puede ser lanzar una excepción</b>
-<b class="nc">&nbsp;            }</b>
+<b class="fc">&nbsp;            }</b>
 &nbsp;        }
 &nbsp;
 &nbsp;        // Hacer algo con fotoBytes si es necesario
-<b class="nc">&nbsp;        return fotoBytes;</b>
+<b class="fc">&nbsp;        return fotoBytes;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;
@@ -430,7 +420,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-12-15 20:34</div>
+    <div style="float:right;">generated on 2023-12-19 19:49</div>
 </div>
 </body>
 </html>
